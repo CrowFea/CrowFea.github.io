@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          如何理解特征工程 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/如何理解特征工程/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#机器学习" title="机器学习">机器学习</a>
+                            
+                        </div>
+                        <h1>如何理解特征工程</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-04-24
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0引言">0.引言</h3>
+<p>书接上回，从<a href="https://crowfeablog.com/article/Kaggle-%E6%B3%B0%E5%9D%A6%E5%B0%BC%E5%85%8B%E5%8F%B7%E4%B9%8B%E7%81%BE/">Kaggle-泰坦尼克号之灾</a>中我们提到了特征工程。</p>
+<blockquote>
+<p>数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。</p>
+</blockquote>
+<p>上面是江湖上流传的一句话，哪位大神说的亦不可考。但可见特征工程在机器学习中占有相当重要的地位。在实际应用当中，可以说特征工程是机器学习成功的关键。我们也参加过建模等比赛，每个竞赛的好成绩其实并没有用到很高深的算法，大多数都是在特征工程这个环节做出了出色的工作，然后使用一些常见的算法，比如LR，就能得到出色的性能。</p>
+<p>理解特征工程应当从以下几个角度出发：</p>
+<ul>
+<li>特征工程是什么？</li>
+<li>为什么要做特征工程？</li>
+<li>应该如何做特征工程？</li>
+</ul>
+<p>接下类我们详细论述一下。</p>
+<h3 id="1什么是特征工程">1.什么是特征工程</h3>
+<p>当我们对数据建立模型分析的时候，首先要干的事情是对数据进行处理和分析。没有数据就没有办法进行模型的建立，那么拿到什么数据就显得至关重要。很显然，怎么对原始数据进行处理，就是非常重要的一步。</p>
+<p>特征工程干的，就是这一步的工作。简而言之，特征工程就是一个把原始数据转变成特征的过程，这些特征可以很好的描述这些数据，并且利用它们建立的模型在未知数据上的表现性能可以达到最优（或者接近最佳性能）。从数学的角度来看，特征工程就是人工地去设计输入变量X。</p>
+<p>简而言之，特征工程的目的，在于<strong>获得更容易表现数据性质的训练集</strong>。</p>
+<h3 id="2为什么要做特征工程">2.为什么要做特征工程</h3>
+<p>OK！知道了特征工程是什么，那么我们必须要来了解下特征工程的重要性，为什么在实际工作中都要有特征工程这个过程，下面不同的角度来分析一下。</p>
+<p>首先，我们大家都知道，数据特征会直接影响我们模型的预测性能。你可以这么说：“选择的特征越好，最终得到的性能也就越好”。这句话说得没错，但也会给我们造成误解。事实上，你得到的实验结果取决于你选择的模型、获取的数据以及使用的特征，甚至你问题的形式和你用来评估精度的客观方法也扮演了一部分。此外，你的实验结果还受到许多相互依赖的属性的影响，你需要的是能够很好地描述你数据内部结构的好特征。</p>
+<ul>
+<li>特征越好，灵活性越强</li>
+</ul>
+<p>只要特征选得好，即使是一般的模型（或算法）也能获得很好的性能，因为大多数模型（或算法）在好的数据特征下表现的性能都还不错。好特征的灵活性在于它允许你选择不复杂的模型，同时运行速度也更快，也更容易理解和维护。</p>
+<ul>
+<li>特征越好，构建的模型越简单</li>
+</ul>
+<p>有了好的特征，即便你的参数不是最优的，你的模型性能也能仍然会表现的很好，所以你就不需要花太多的时间去寻找最优参数，这大大的降低了模型的复杂度，使模型趋于简单。</p>
+<ul>
+<li>特征越好，模型的性能越出色</li>
+</ul>
+<p>显然，这一点是毫无争议的，我们进行特征工程的最终目的就是提升模型的性能。</p>
+<h3 id="3如何做特征工程">3.如何做特征工程</h3>
+<blockquote>
+<p>Feature engineering is a super-set of activities which include feature extraction, feature construction and feature selection. Each of the three are important steps and none should be ignored. We could make a generalization of the importance though, from my experience the relative importance of the steps would be feature construction &gt; feature extraction &gt; feature selection.——Quora</p>
+<p>特征工程是一个超集，它包括特征提取、特征构建和特征选择这三个子模块。在实践当中，每一个子模块都非常重要，忽略不得。根据答主的经验，他将这三个子模块的重要性进行了一个排名，即：特征构建&gt;特征提取&gt;特征选择。</p>
+</blockquote>
+<p>特征工程并非是一个问题。他的操作步骤主要包括：Feature Selection（特征选择）、Feature Extraction（特征提取）和Feature construction（特征构造）。</p>
+<ul>
+<li>特征选择：它的目的是从特征集合中挑选一组最具统计意义的特征子集，从而达到降维的效果。</li>
+<li>特征提取：对象是原始数据（raw data），它的目的是自动地构建新的特征，将原始特征转换为一组具有明显物理意义（Gabor、几何特征[角点、不变量]、纹理[LBP HOG]）或者统计意义或核的特征。</li>
+<li>特征构建：指的是从原始数据中人工的构建新的特征。</li>
+</ul>
+<p>对于一个实际的的机器学习过程来说，一般有如下几个阶段：</p>
+<p>1.（Task before here）<br>
+2.选择数据(Select Data): 整合数据，将数据规范化成一个数据集，收集起来.<br>
+3.数据预处理（Preprocess Data）: 数据格式化，数据清理，采样等.<br>
+4.数据转换（Transform Data）: 这个阶段做特征工程.<br>
+5.数据建模（Model Data）: 建立模型，评估模型并逐步优化.<br>
+(Tasks after here…)</p>
+<p>我们发现，特征工程和数据转换其实是等价的。事实上，特征工程是一个迭代过程，我们需要不断的设计特征、选择特征、建立模型、评估模型，然后才能得到最终的model。</p>
+<p>我们接下来主要讲一下特征处理。</p>
+<h3 id="4特征处理">4.特征处理</h3>
+<p>特征处理是一个比较复杂的工作，包括清洗数据、预处理、降维、选择。是上述的特征工程三部贯通的一些方法和思路。对于不同类型的数据，会有不一样的处理。</p>
+<ul>
+<li>数据清洗</li>
+</ul>
+<p>数据清洗的意思为<strong>消除异常数据</strong>。现实生活中会出现很多意想不到的情况，在统计意义上来说可忽略，我们希望数据尽可能地表现出统计的特征，所以要清除掉一些异常的数据。</p>
+<p>我们将在另一篇文章中详细的介绍数据清洗的方法。<br>
+<a href="https://crowfeablog.com/article/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E6%96%B9%E6%B3%95%E8%AE%BA/">机器学习-数据清洗方法论</a></p>
+<ul>
+<li>数据预处理</li>
+</ul>
+<p>即使清洗完了数据，我们的数据仍可能是非常不规范的。并且各种格式的都有，接下来要干的事情就是数据的预处理。在处理的过程中，我们会面对各种类型的数据，比如数值型（、类别型（比如某个品牌的口红可能有十八种色号，比如衣服大小L XL XLL，比如星期几）、时间类、文本型、统计型、组合特征等等。</p>
+<p>如果我们对于模型有基本的想法，那么对于不同的模型所要求的数据也是不一样的。比如LR会喜欢离散的数据，所以在建模之前要将数据离散化；通过梯度下降法求解的模型一般都是需要归一化的，也是要进行处理。</p>
+<p>同样，介绍数据预处理也会有一篇文章（真的挖了好多坑）。</p>
+<ul>
+<li>特征选择</li>
+</ul>
+<p>在实际项目中，并不是特征维数越高越好。<br>
+特征维数越高，模型越容易过拟合，此时更复杂的模型就不好用。相互独立的特征维数越高，在模型不变的情况下，在测试集上达到相同的效果表现所需要的训练样本的数目就越大。<br>
+特征数量增加带来的训练、测试以及存储的开销都会增大。<br>
+<img src="https://s2.ax1x.com/2019/04/24/EZGeDs.jpg" alt="维度灾难"><br>
+在某些模型中，例如基于距离计算的模型KMeans，KNN等模型，在进行距离计算时，维度过高会影响精度和性能。5.可视化分析的需要。在低维的情况下，例如二维，三维，我们可以把数据绘制出来，可视化地看到数据。当维度增高时，就难以绘制出来了。</p>
+<p>如何选择特征请看（坑）</p>
+<h3 id="5总结">5.总结</h3>
+<p>这篇文章对特征工程有一个总览，对于其中详细的方法会在另外三篇文章中进行阐述。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/机器学习-数据清洗方法论/" data-toggle="tooltip" data-placement="top" title="机器学习-数据清洗方法论">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/Kaggle-泰坦尼克号之灾/" data-toggle="tooltip" data-placement="top" title="Kaggle-泰坦尼克号之灾">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0引言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x5F15;&#x8A00;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1什么是特征工程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x4EC0;&#x4E48;&#x662F;&#x7279;&#x5F81;&#x5DE5;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2为什么要做特征工程"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.&#x4E3A;&#x4EC0;&#x4E48;&#x8981;&#x505A;&#x7279;&#x5F81;&#x5DE5;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3如何做特征工程"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x5982;&#x4F55;&#x505A;&#x7279;&#x5F81;&#x5DE5;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4特征处理"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4.&#x7279;&#x5F81;&#x5904;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5总结"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5.&#x603B;&#x7ED3;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#机器学习" title="机器学习">机器学习</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

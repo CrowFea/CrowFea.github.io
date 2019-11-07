@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          算法-递归与分治策略 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/算法-递归与分治策略/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                            
+                              <a class="tag" href="/tags/#递归算法" title="递归算法">递归算法</a>
+                            
+                              <a class="tag" href="/tags/#二分算法" title="二分算法">二分算法</a>
+                            
+                        </div>
+                        <h1>算法-递归与分治策略</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-06-22
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="设计思想">设计思想</h3>
+<p>分治法的设计思想是，将一个难以直接解决的大问题，分割成一些规模较小的相同问题，以便各个击破，分而治之。(Divide and conqure)。</p>
+<p>由分治法产生的子问题往往是原问题的较小模式，这就为使用递归技术提供了方便。在这种情况下，反复应用分治手段，可以使子问题与原问题类型一致而其规模却不断缩小，最终使子问题缩小到很容易直接求出其解。这自然导致递归过程的产生。</p>
+<p>下面我们对递归分治的经典算法进行总结。</p>
+<h3 id="递归常见算法">递归常见算法</h3>
+<h4 id="阶乘">阶乘</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">factorial</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>)    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> n*(factorial<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="fibonacci数列">Fibonacci数列</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fibonacci</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;=<span class="number">1</span>)    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> fibonacci(n<span class="number">-1</span>)+fibonacci(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="排列问题">排列问题</h4>
+<p>排列问题可以理解为，将要进行排列的n个元素，处理为要进行排列的n-1个元素，加上一个元素的前缀。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Perm</span>(<span class="title">Type</span> <span class="title">list</span>[],<span class="title">int</span> <span class="title">k</span>,<span class="title">int</span> <span class="title">m</span>)&#123;</span></span><br><span class="line">    <span class="keyword">if</span>(k==m)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=m;i++)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="built_in">list</span>[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=k;i&lt;=m;i++)&#123;</span><br><span class="line">            swap(<span class="built_in">list</span>[i],<span class="built_in">list</span>[k]);</span><br><span class="line">            Perm(<span class="built_in">list</span>,k+<span class="number">1</span>);</span><br><span class="line">            swap(<span class="built_in">list</span>[k],<span class="built_in">list</span>[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="正整数的划分">正整数的划分</h4>
+<p>将一个正整数划分为若干个正整数之和，求划分数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">q</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> m)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;<span class="number">1</span>||m&lt;<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>||m==<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(n==m)</span><br><span class="line">        <span class="keyword">return</span> q(n,m<span class="number">-1</span>)+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> q(n-m,m)+q(n,m<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="hanoi塔">hanoi塔</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hanoi</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> c)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        hanoi(n<span class="number">-1</span>,a,b,c);</span><br><span class="line">        move(a,b);</span><br><span class="line">        hanoi(n<span class="number">-1</span>,c,b,a)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="分治常见算法">分治常见算法</h3>
+<h4 id="基本设计模式">基本设计模式</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">divide-and-conquer(P)&#123;</span><br><span class="line">    if(|P|&lt;=n0)</span><br><span class="line">        adhoc(P);</span><br><span class="line">    divide P into smaller subinstances P1,P2,...Pn;</span><br><span class="line">    for(i=1;i&lt;=k;i++)</span><br><span class="line">        yi=divide-and-conquer(Pi)</span><br><span class="line">    return merge(y1,y2...yn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分治法采用的具体设计方法往往最后会使用递归，所以时间复杂度的分析也是一致的。<br>
+<img src="https://s2.ax1x.com/2019/06/27/ZmWBJs.png" alt="img"><br>
+f(n)是合并子问题的时间。迭代求解后为：<br>
+<img src="https://s2.ax1x.com/2019/06/27/ZmW0ij.png" alt="img"></p>
+<p>仍然需要注意的是：递归所分解出的各个子问题是相互独立的，即子问题之间不包含公共的子问题。<strong>这条特征涉及到分治法的效率，如果各子问题是不独立的，则分治法要做许多不必要的工作，重复地解公共的子问题，此时虽然也可用分治法，但一般用动态规划较好。</strong></p>
+<p>人们从大量实践中发现，在用分治法设计算法时，<strong>最好使子问题的规模大致相同</strong>。即将一个问题分成大小相等的k个子问题的处理方法是行之有效的。这种使子问题规模大致相等的做法是出自一种平衡(balancing)子问题的思想，它几乎总是比子问题规模不等的做法要好。</p>
+<h4 id="二分搜索技术">二分搜索技术</h4>
+<p>使用之前一定要排序。时间复杂度在O(logn)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">BinarySearch</span>(<span class="title">Type</span> <span class="title">a</span>[],<span class="title">const</span> <span class="title">Type</span>&amp;<span class="title">x</span>,<span class="title">int</span> <span class="title">n</span>)&#123;</span></span><br><span class="line">    <span class="keyword">int</span> left=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> right=n<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">while</span>(left&lt;=right)&#123;</span><br><span class="line">        <span class="keyword">int</span> middle=(left+right)/<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(x==a[middle])   <span class="keyword">return</span> middle;</span><br><span class="line">        <span class="keyword">if</span>(x&lt;a[middle])     left=middle+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(x&gt;a[middle])     right=middle<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="大整数的乘法">大整数的乘法</h4>
+<p>在直接使用乘法运算溢出的情况下，要使用基本的乘法原理进行运算。</p>
+<h4 id="棋盘覆盖问题">棋盘覆盖问题</h4>
+<p>在一个2k×2k 个方格组成的棋盘中，恰有一个方格与其它方格不同，称该方格为一特殊方格，且称该棋盘为一特殊棋盘。在棋盘覆盖问题中，要用图示的4种不同形态的L型骨牌覆盖给定的特殊棋盘上除特殊方格以外的所有方格，且任何2个L型骨牌不得重叠覆盖。</p>
+<p>当k&gt;0时，将2k×2k棋盘分割为4个2k-1×2k-1 子棋盘(a)所示。<br>
+特殊方格必位于4个较小子棋盘之一中，其余3个子棋盘中无特殊方格。为了将这3个无特殊方格的子棋盘转化为特殊棋盘，可以用一个L型骨牌覆盖这3个较小棋盘的会合处，如 (b)所示，从而将原问题转化为4个较小规模的棋盘覆盖问题。递归地使用这种分割，直至棋盘简化为棋盘1×1。</p>
+<p><img src="https://s2.ax1x.com/2019/06/27/Zmf8k4.png" alt="img"></p>
+<p>tr表示左上角方格的行号，tc表示左上角方格的列号。dr表示特殊方格的行号，dc表示特殊方格的列号。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ChessBoard</span><span class="params">(<span class="keyword">int</span> tr,<span class="keyword">int</span> tc,<span class="keyword">int</span> dr,<span class="keyword">int</span> dc,<span class="keyword">int</span> size)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(size==<span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> t=title++;</span><br><span class="line">    s=size/<span class="number">2</span>;</span><br><span class="line">    <span class="comment">//覆盖左上角棋盘</span></span><br><span class="line">    <span class="keyword">if</span>(dr&lt;tr+s&amp;&amp;dc&lt;tc+s)&#123;<span class="comment">//特殊方格在这里</span></span><br><span class="line">        ChessBoard(tr,tc,dr,dc,s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        Board[tr+s<span class="number">-1</span>][tc+s<span class="number">-1</span>]=t;  <span class="comment">//用t号L型骨牌覆盖右下角</span></span><br><span class="line">        ChessBoard(tr,tc,tr+s<span class="number">-1</span>,tc+s<span class="number">-1</span>,s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//覆盖右上角棋盘</span></span><br><span class="line">    <span class="keyword">if</span>(dr&lt;tr+s&amp;&amp;dc&gt;=tc+s)&#123;<span class="comment">//特殊方格在这里</span></span><br><span class="line">        ChessBoard(tr,tc+s,dr,dc,s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        Board[tr+s<span class="number">-1</span>][tc+s]=t;  <span class="comment">//用t号L型骨牌覆盖左下角</span></span><br><span class="line">        ChessBoard(tr,tc+s,tr+s<span class="number">-1</span>,tc+s,s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//覆盖左下角棋盘</span></span><br><span class="line">    <span class="keyword">if</span>(dr&gt;=tr+s&amp;&amp;dc&lt;tc+s)&#123;<span class="comment">//特殊方格在这里</span></span><br><span class="line">        ChessBoard(tr+s,tc,dr,dc,s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        Board[tr+s][tc+s<span class="number">-1</span>]=t;  <span class="comment">//用t号L型骨牌覆盖右上角</span></span><br><span class="line">        ChessBoard(tr+s,tc,tr+s,tc+s<span class="number">-1</span>,s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//覆盖左下角棋盘</span></span><br><span class="line">    <span class="keyword">if</span>(dr&gt;=tr+s&amp;&amp;dc&gt;=tc+s)&#123;<span class="comment">//特殊方格在这里</span></span><br><span class="line">        ChessBoard(tr+s,tc+s,dr,dc,s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        Board[tr+s][tc+s]=t;  <span class="comment">//用t号L型骨牌覆盖左上角</span></span><br><span class="line">        ChessBoard(tr+s,tc+s,tr+s,tc+s,s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/06/27/Zm4BJH.png" alt="img"></p>
+<h4 id="合并排序">合并排序</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">MergeSort</span>(<span class="title">Type</span> <span class="title">a</span>[],<span class="title">int</span> <span class="title">left</span>,<span class="title">int</span> <span class="title">right</span>)&#123;</span></span><br><span class="line">    <span class="keyword">if</span>(left&lt;right)&#123;</span><br><span class="line">        <span class="keyword">int</span> i=(left+right)/<span class="number">2</span>;</span><br><span class="line">        Merge(a,left,i);</span><br><span class="line">        MergeSort(a,i+<span class="number">1</span>,left);</span><br><span class="line">        Merge(a,b,left,i,right); <span class="comment">//将a的结果复制到b</span></span><br><span class="line">        Copy(a,b,left,right);   <span class="comment">//最后将结果换回来</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最坏时间复杂度：O(nlogn)<br>
+平均时间复杂度：O(nlogn)<br>
+辅助空间：O(n)</p>
+<h4 id="快速排序">快速排序</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">QuickSort</span>(<span class="title">Type</span> <span class="title">a</span>[],<span class="title">int</span> <span class="title">p</span>,<span class="title">int</span> <span class="title">r</span>)&#123;</span></span><br><span class="line">    <span class="keyword">if</span>(p&lt;r)&#123;</span><br><span class="line">        <span class="keyword">int</span> q=Partition(a,p,r);</span><br><span class="line">        QuickSort(a,p,q<span class="number">-1</span>);<span class="comment">//左半段排序</span></span><br><span class="line">        QuickSort(a,q+<span class="number">1</span>,r);<span class="comment">//右半段排序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Partition</span><span class="params">(Type a[],<span class="keyword">int</span> p,<span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i=p,j=r+<span class="number">1</span>;</span><br><span class="line">    Type x=a[p];</span><br><span class="line">    <span class="comment">//将小于x的元素交换到左边区域，将大于x的元素交换到右边区域</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[++i]&lt;x&amp;&amp;i&lt;r);</span><br><span class="line">        <span class="keyword">while</span>(a[--j]&gt;x);</span><br><span class="line">        <span class="keyword">if</span>(i&gt;=j)    <span class="keyword">break</span>;</span><br><span class="line">        swap(a[i],a[j]);</span><br><span class="line">    &#125;</span><br><span class="line">    a[p]=a[j];</span><br><span class="line">    a[j]=x;</span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最坏时间复杂度：O(n2)<br>
+平均时间复杂度：O(nlogn)<br>
+辅助空间：O(n)或O(logn)</p>
+<p>快速排序算法的性能取决于划分的对称性。通过修改算法partition，可以设计出采用随机选择策略的快速排序算法。在快速排序算法的每一步中，当数组还没有被划分时，可以在a[p:r]中随机选出一个元素作为划分基准，这样可以使划分基准的选择是随机的，从而可以期望划分是较对称的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">RandomizedPartition</span> (<span class="title">Type</span> <span class="title">a</span>[], <span class="title">int</span> <span class="title">p</span>, <span class="title">int</span> <span class="title">r</span>)&#123;</span></span><br><span class="line">    <span class="keyword">int</span> i = Random(p,r);</span><br><span class="line">    Swap(a[i], a[p]);</span><br><span class="line">    <span class="keyword">return</span> Partition (a, p, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="线性时间选择">线性时间选择</h4>
+<p>给定线性序集中n个元素和一个整数k，1≤k≤n，要求找出这n个元素中第k小的元素。</p>
+<p>排序最快的时间在O(nlogn)，我们这里采用的应当是O(n)的复杂度。将n个输入元素划分成n/5个组，每组5个元素，只可能有一个组不是5个元素。用任意一种排序算法，将每组中的元素排好序，并取出每组的中位数，共n/5个。<br>
+递归调用select来找出这n/5个元素的中位数。如果n/5是偶数，就找它的2个中位数中较大的一个。以这个元素作为划分基准。</p>
+<p>设所有元素互不相同。在这种情况下，找出的基准x至少比3(n-5)/10个元素大，因为在每一组中有2个元素小于本组的中位数，而n/5个中位数中又有(n-5)/10个小于基准x。同理，基准x也至少比3(n-5)/10个元素小。而当n≥75时，3(n-5)/10≥n/4所以按此基准划分所得的2个子数组的长度都至少缩短1/4。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Type <span class="title">Select</span><span class="params">(Type a[], <span class="keyword">int</span> p, <span class="keyword">int</span> r, <span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (r-p&lt;<span class="number">75</span>) &#123;</span><br><span class="line">        用某个简单排序算法对数组a[p:r]排序;</span><br><span class="line">        <span class="keyword">return</span> a[p+k<span class="number">-1</span>];</span><br><span class="line">        &#125;;</span><br><span class="line">      <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i&lt;=(r-p<span class="number">-4</span>)/<span class="number">5</span>; i++ )</span><br><span class="line">         将a[p+<span class="number">5</span>*i]至a[p+<span class="number">5</span>*i+<span class="number">4</span>]的第<span class="number">3</span>小元素</span><br><span class="line">         与a[p+i]交换位置;</span><br><span class="line">      <span class="comment">//找中位数的中位数，r-p-4即上面所说的n-5</span></span><br><span class="line">      Type x = Select(a, p, p+(r-p<span class="number">-4</span>)/<span class="number">5</span>, (r-p<span class="number">-4</span>)/<span class="number">10</span>);</span><br><span class="line">      <span class="keyword">int</span> i=Partition(a,p,r, x),</span><br><span class="line">      j=i-p+<span class="number">1</span>;</span><br><span class="line">      <span class="keyword">if</span> (k&lt;=j) <span class="keyword">return</span> Select(a,p,i,k);</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">return</span> Select(a,i+<span class="number">1</span>,r,k-j);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述算法将每一组的大小定为5，并选取75作为是否作递归调用的分界点。这2点保证了T(n)的递归式中2个自变量之和n/5+3n/4=19n/20=εn，0&lt;ε&lt;1。这是使T(n)=O(n)的关键之处。当然，除了5和75之外，还有其他选择.</p>
+<h4 id="最接近点对问题">最接近点对问题</h4>
+<p>一维情况下的最接近点对问题：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Cpair1</span><span class="params">(S,d)</span></span>&#123;</span><br><span class="line">    n=|S|;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;<span class="number">2</span>)&#123;</span><br><span class="line">        d=∞;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    m=S中各点坐标的中位数</span><br><span class="line">    S1中所有元素小于m，S2中所有元素大于m</span><br><span class="line">    Cpair1(S1,d1);</span><br><span class="line">    Cpair1(S2,d2);</span><br><span class="line">    p=max(S1);</span><br><span class="line">    q=min(S2);</span><br><span class="line">    d=min(d1,d2,q-p);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/06/27/ZnG0ED.png" alt="img"></p>
+<p>推广到二维下，需要使用鸽笼原理进行证明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">cpair2</span><span class="params">(S)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">      n=|S|;</span><br><span class="line">      <span class="keyword">if</span> (n &lt; <span class="number">2</span>) <span class="keyword">return</span> ;</span><br><span class="line"><span class="number">1</span>、m=S中各点x间坐标的中位数;</span><br><span class="line">      构造S1和S2；</span><br><span class="line">      <span class="comment">//S1=&#123;p∈S|x(p)&lt;=m&#125;, </span></span><br><span class="line">     S2=&#123;p∈S|x(p)&gt;m&#125;</span><br><span class="line"><span class="number">2</span>、d1=cpair2(S1);</span><br><span class="line">      d2=cpair2(S2);</span><br><span class="line"><span class="number">3</span>、dm=min(d1,d2);</span><br><span class="line"><span class="number">4</span>、设P1是S1中距垂直分割线l的距离在dm之内的所有点组成的集合；</span><br><span class="line">      P2是S2中距分割线l的距离在dm之内所有点组成的集合；</span><br><span class="line">      将P1和P2中点依其y坐标值排序；</span><br><span class="line">      并设X和Y是相应的已排好序的点列；</span><br><span class="line"><span class="number">5</span>、通过扫描X以及对于X中每个点检查Y中与其距离在dm之内的所有点(最多<span class="number">6</span>个)可以完成合并；</span><br><span class="line">      当X中的扫描指针逐次向上移动时，Y中的扫描指针可在宽为<span class="number">2</span>dm的区间内移动；</span><br><span class="line">      设dl是按这种扫描方式找到的点对间的最小距离；</span><br><span class="line"><span class="number">6</span>、d=min(dm,dl);</span><br><span class="line">      <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="循环赛日程表">循环赛日程表</h4>
+<p>按分治策略，将所有的选手分为两半，n个选手的比赛日程表就可以通过为n/2个选手设计的比赛日程表来决定。递归地用对选手进行分割，直到只剩下2个选手时，比赛日程表的制定就变得很简单。这时只要让这2个选手进行比赛就可以了。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/算法-动态规划/" data-toggle="tooltip" data-placement="top" title="算法-动态规划">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/Java Web笔记-web.xml详解/" data-toggle="tooltip" data-placement="top" title="Java Web笔记-web.xml详解">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#设计思想"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x8BBE;&#x8BA1;&#x601D;&#x60F3;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#递归常见算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x9012;&#x5F52;&#x5E38;&#x89C1;&#x7B97;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#阶乘"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">&#x9636;&#x4E58;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#fibonacci数列"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Fibonacci&#x6570;&#x5217;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#排列问题"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">&#x6392;&#x5217;&#x95EE;&#x9898;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#正整数的划分"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">&#x6B63;&#x6574;&#x6570;&#x7684;&#x5212;&#x5206;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hanoi塔"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">hanoi&#x5854;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分治常见算法"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x5206;&#x6CBB;&#x5E38;&#x89C1;&#x7B97;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#基本设计模式"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">&#x57FA;&#x672C;&#x8BBE;&#x8BA1;&#x6A21;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#二分搜索技术"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">&#x4E8C;&#x5206;&#x641C;&#x7D22;&#x6280;&#x672F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#大整数的乘法"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">&#x5927;&#x6574;&#x6570;&#x7684;&#x4E58;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#棋盘覆盖问题"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">&#x68CB;&#x76D8;&#x8986;&#x76D6;&#x95EE;&#x9898;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#合并排序"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">&#x5408;&#x5E76;&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#快速排序"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">&#x5FEB;&#x901F;&#x6392;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#线性时间选择"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">&#x7EBF;&#x6027;&#x65F6;&#x95F4;&#x9009;&#x62E9;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#最接近点对问题"><span class="toc-nav-number">3.8.</span> <span class="toc-nav-text">&#x6700;&#x63A5;&#x8FD1;&#x70B9;&#x5BF9;&#x95EE;&#x9898;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#循环赛日程表"><span class="toc-nav-number">3.9.</span> <span class="toc-nav-text">&#x5FAA;&#x73AF;&#x8D5B;&#x65E5;&#x7A0B;&#x8868;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                        
+                          <a class="tag" href="/tags/#递归算法" title="递归算法">递归算法</a>
+                        
+                          <a class="tag" href="/tags/#二分算法" title="二分算法">二分算法</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

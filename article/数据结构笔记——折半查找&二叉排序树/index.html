@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——折半查找&amp;二叉排序树 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——折半查找&amp;二叉排序树/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#二叉排序树" title="二叉排序树">二叉排序树</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——折半查找&amp;二叉排序树</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-12-14
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0问题描述">0.问题描述</h3>
+<p>二分法将所有元素所在区间分成两个子区间，根据计算要求决定下一步计算是在左区间还是右区间进行；重复该过程，直到找到解为止。二分法的计算效率是O(logn),在已知的很多算法中都采用了二分法，例如：折半查找，快速排序，归并排序等。</p>
+<p>二叉排序树（二叉查找树）或者是一棵空树，或者是具有下列性质的二叉树：<br>
+（1）每个结点都有一个作为查找依据的关键字(key)，所有结点的关键字互不相同。 （2）左子树(若非空)上所有结点的关键字都小于根结点的关键字。 （3）右子树(若非空)上所有结点的关键字都大于根结点的关键字。 （4）左子树和右子树也是二叉排序树。</p>
+<ol>
+<li>
+<p>(p1) 折半查找要求查找表是有序排列的，本题给定已排序的一组整数，包含重复元素，请改写折半查找算法，找出关键字key在有序表中出现的第一个位置（下标最小的位置），保证时间代价是O(logn)。若查找不到，返回-1。</p>
+</li>
+<li>
+<p>（p2）二叉排序树的基本操作集包括：创建、查找，插入，删除，查找最大值，查找最小值等。 本题通过输入一个数据序列，创建查找表，完成基本操作，并计算等概率情况下，查找成功的平均查找长度。</p>
+</li>
+</ol>
+<h3 id="1数据结构">1.数据结构</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class OrderTNode&#123;</span><br><span class="line">public:</span><br><span class="line">	ElemType data;</span><br><span class="line">	OrderTNode *lchild;</span><br><span class="line">	OrderTNode *rchild;</span><br><span class="line">	OrderTNode()&#123;</span><br><span class="line">		lchild = NULL;</span><br><span class="line">		rchild = NULL;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="2折半查找">2.折半查找</h3>
+<p>折半查找即二分法查找，时间复杂度为O(logn)。前提要求给出的数字序列必须为有序数列。主要思想是将比较的数和当前数列的中值进行比较，如果小于该值，就将当前的比较数列减半，只对较小的一部分加入到后续比较；如果偏大，就将偏大的一部分加入到后续比较。</p>
+<p>一般的二分查找不能返回到第一次出现的查找位置，本题应该额外加入一个循环，当找到某个值符合条件时，将其向前回溯，直到回溯的值不是我们想要寻找的值，或者回溯到比较数列的最低处。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">int halfIntervalSearch(ElemType arr[], ElemType tar,int n)</span><br><span class="line">&#123;</span><br><span class="line">	int low = 0, high = n - 1;</span><br><span class="line">	int mid,i;</span><br><span class="line"></span><br><span class="line">	while (high - low &gt; 1) &#123;</span><br><span class="line">		mid = (high + low) / 2;</span><br><span class="line">		</span><br><span class="line">		if (arr[mid] == tar) &#123;</span><br><span class="line">			</span><br><span class="line">			for (i = mid;i&gt;=low; i--) &#123;</span><br><span class="line">				if (arr[i] == arr[mid]) &#123;</span><br><span class="line">					mid = i;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			return mid;</span><br><span class="line">		&#125;</span><br><span class="line">		else if (arr[mid] &lt; tar) &#123;</span><br><span class="line">			low = mid;</span><br><span class="line">			continue;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			high = mid;</span><br><span class="line">			continue;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3寻找二叉排序树元素">3.寻找二叉排序树元素</h3>
+<p>二叉排序树的特点在于左子树的所有节点均小于根节点的值，右子树的所有节点均大于根节点的值。可以根据这一特性进行查找。当寻找的节点不是空时，如果要查找的值小于当前节点的值，就将我们的寻址节点赋给左子节点；反之赋给右子节点。若没找到，返回NULL。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">OrderTNode *OrderT::Search(ElemType value, OrderTNode *&amp;p)</span><br><span class="line">&#123;</span><br><span class="line">	OrderTNode *q = NULL;</span><br><span class="line">	q = root;</span><br><span class="line">	while (q)&#123;</span><br><span class="line">		p = q;</span><br><span class="line">		if (q-&gt;data == value) &#123;</span><br><span class="line">			return p;</span><br><span class="line">		&#125;</span><br><span class="line">		else if (q-&gt;data &gt; value) &#123;</span><br><span class="line">			q = q-&gt;lchild;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			q = q-&gt;rchild;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return NULL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4插入二叉排序树">4.插入二叉排序树</h3>
+<p>首先寻找该二叉树中是否存在该结点，如果没找到，那么返回的指针的值一定是最与当前需要插入的值接近的。比较这个节点的值和插入节点的值，直接插入为左孩子或者右孩子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">void OrderT::Insert(ElemType value)</span><br><span class="line">&#123;</span><br><span class="line">	OrderTNode *p = NULL, *q;</span><br><span class="line">	q = root;</span><br><span class="line">	if (Search(value, p) == NULL)&#123;</span><br><span class="line">		OrderTNode *ins = new OrderTNode;</span><br><span class="line">		ins-&gt;data = value;</span><br><span class="line">		if (q == NULL)&#123;</span><br><span class="line">			root = ins;</span><br><span class="line">			return;</span><br><span class="line">		&#125;</span><br><span class="line">		if (p&amp;&amp;value &lt; p-&gt;data) &#123;</span><br><span class="line">			p-&gt;lchild = ins;</span><br><span class="line">		&#125;</span><br><span class="line">		else if (p&amp;&amp;value &gt; p-&gt;data) &#123;</span><br><span class="line">			p-&gt;rchild = ins;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5删除二叉排序树节点">5.删除二叉排序树节点</h3>
+<p>删除二叉排序树节点数一定要注意当前节点还存在后继的左子树和右子树。首先寻址到当前结点处，如果是我们要找的元素，判断它是否存在左子树，如果有的话，将前驱结点的左子树连接到新的节点，接着判断该结点的右节点是否存在，若存在，该右子树必定小于前驱结点的右子树，将该子树直接链到前驱结点右子树的最后即可。最后将前驱结点的右子树连接到该节点的右子树。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">int OrderT::Delete(ElemType value)</span><br><span class="line">&#123;</span><br><span class="line">	OrderTNode *pre, *lcur, *rpre, *rcur;</span><br><span class="line">	lcur = root;</span><br><span class="line">	pre = NULL;</span><br><span class="line">	while (lcur&amp;&amp;lcur-&gt;data != value)&#123;</span><br><span class="line">		pre = lcur; </span><br><span class="line">		if (lcur-&gt;data&gt;value)</span><br><span class="line">			lcur = lcur-&gt;lchild;</span><br><span class="line">		else</span><br><span class="line">			lcur = lcur-&gt;rchild;</span><br><span class="line">	&#125;</span><br><span class="line">	if (!lcur)</span><br><span class="line">		return 0;</span><br><span class="line">	if (lcur-&gt;lchild == NULL) &#123;</span><br><span class="line">		if (pre == NULL)</span><br><span class="line">			root = lcur-&gt;rchild;</span><br><span class="line">		else if (pre-&gt;lchild == lcur)</span><br><span class="line">			pre-&gt;lchild = lcur-&gt;rchild;</span><br><span class="line">		else               </span><br><span class="line">			pre-&gt;rchild = lcur-&gt;rchild;</span><br><span class="line">		delete lcur;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	else&#123;</span><br><span class="line">		rpre = lcur;</span><br><span class="line">		rcur = lcur-&gt;lchild;</span><br><span class="line">		while (rcur-&gt;rchild) &#123;</span><br><span class="line">			rpre = rcur;</span><br><span class="line">			rcur = rcur-&gt;rchild;</span><br><span class="line">		&#125;</span><br><span class="line">		if (rpre == lcur)</span><br><span class="line">			rpre-&gt;lchild = rcur-&gt;lchild;</span><br><span class="line">		else</span><br><span class="line">			rpre-&gt;rchild = rcur-&gt;lchild;</span><br><span class="line">		lcur-&gt;data = rcur-&gt;data;  </span><br><span class="line">		delete rcur;</span><br><span class="line">	&#125;</span><br><span class="line">	return 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6计算可查找长度">6.计算可查找长度</h3>
+<p>首先在先序遍历的时候加入一个level的整形变量作为层数的记载。使用一个数组进行存储。每次进入一次递归，相当于进入了下一层，将对应层数下标位置的数组元素++。可统计出所有的层的节点数目。最后将所有的节点数目乘以节点数相加，除以总的节点数，即可得到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">void OrderT::PreOrderTra(OrderTNode *p, int level)</span><br><span class="line">&#123;</span><br><span class="line">	if (p)&#123;</span><br><span class="line">		a[level]++;</span><br><span class="line">		cout &lt;&lt; p-&gt;data &lt;&lt; &quot; &quot;;</span><br><span class="line">		PreOrderTra(p-&gt;lchild, level + 1);</span><br><span class="line">		PreOrderTra(p-&gt;rchild, level + 1);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Int main()&#123;</span><br><span class="line">OrderTree.PreOrderTra(OrderTree.root, 0);</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	for (int i = 0; a[i] != 0; i++)&#123;</span><br><span class="line">		sum += (a[i] * (i + 1));</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; setiosflags(ios::fixed) &lt;&lt; setprecision(2) &lt;&lt; sum / num &lt;&lt; endl;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7另外">7.另外</h3>
+<ul>
+<li>折半查找时要返回第一次出现的值，这就要求在当前找到的基础上进行再一次的回溯。注意还要保持O(logn)的时间复杂度，所以不能回溯太久远，否则就会变成O(n)的复杂度。因为之前的操作已经确定了下界low，所以回溯到low就行。</li>
+<li>题目二同样可以使用数组计算。用一个数组模拟二叉排序树，可以避免多次申请空间带来的时间损耗。虽然在大数下空间复杂度高。<br>
+代码如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;iomanip&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">#define MAXSIZE 10000</span><br><span class="line">#define DATA 0</span><br><span class="line">#define LEFT 1</span><br><span class="line">#define RIGHT 2</span><br><span class="line"></span><br><span class="line">typedef int ElemType;</span><br><span class="line"></span><br><span class="line">struct Node &#123;</span><br><span class="line">	ElemType node[3];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Node *pre;</span><br><span class="line"></span><br><span class="line">void insert(Node *OrderT, int value) </span><br><span class="line">&#123;</span><br><span class="line">	int i = 0, pos = 0,flag=0;</span><br><span class="line">	while (OrderT[i].node[DATA]) &#123;</span><br><span class="line">		if (value &lt; OrderT[i].node[DATA]) &#123;</span><br><span class="line">			if (OrderT[i].node[LEFT]!=-1) &#123;</span><br><span class="line">				i = OrderT[i].node[LEFT];</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				flag = 1;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			if (OrderT[i].node[RIGHT]!=-1) &#123;</span><br><span class="line">				i = OrderT[i].node[RIGHT];</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				flag = 2;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	pos = i;</span><br><span class="line">	for (i=0; OrderT[i].node[DATA] != 0; i++);</span><br><span class="line">	OrderT[i].node[DATA] = value;</span><br><span class="line">	if (flag == 1) &#123;</span><br><span class="line">		OrderT[pos].node[LEFT] = i;</span><br><span class="line">	&#125;</span><br><span class="line">	if (flag == 2) &#123;</span><br><span class="line">		OrderT[pos].node[RIGHT] = i;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void delOrderNode(Node OrderT[], int value)</span><br><span class="line">&#123;</span><br><span class="line">	int i=0,pre=0,flag=0;</span><br><span class="line">	while (OrderT[i].node[DATA]) &#123;</span><br><span class="line">		if (value == OrderT[i].node[DATA]) &#123;</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">		else if (value &lt; OrderT[i].node[DATA]) &#123;</span><br><span class="line">			pre = i;</span><br><span class="line">			flag = 1;</span><br><span class="line">			if (OrderT[i].node[LEFT]!=-1) &#123;</span><br><span class="line">				i = OrderT[i].node[LEFT];</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				cout &lt;&lt; &quot;0&quot; &lt;&lt; endl;</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			pre = i;</span><br><span class="line">			flag = 2;</span><br><span class="line">			if (OrderT[i].node[RIGHT]!=-1) &#123;</span><br><span class="line">				i = OrderT[i].node[RIGHT];</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				cout &lt;&lt; &quot;0&quot; &lt;&lt; endl;</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	int pos = OrderT[i].node[LEFT];</span><br><span class="line">	int delpos = i;</span><br><span class="line">	if (flag == 1) &#123;</span><br><span class="line">		OrderT[pre].node[LEFT] = pos;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		OrderT[pre].node[RIGHT] = pos;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if (OrderT[pos].node[RIGHT]!=-1) &#123;</span><br><span class="line">		while (OrderT[i].node[RIGHT]) &#123;</span><br><span class="line">			i = OrderT[i].node[RIGHT];</span><br><span class="line">		&#125;</span><br><span class="line">		OrderT[i].node[RIGHT] = OrderT[pos].node[RIGHT];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	OrderT[pos].node[RIGHT] = OrderT[delpos].node[RIGHT];</span><br><span class="line"></span><br><span class="line">	OrderT[delpos].node[RIGHT] = -1;</span><br><span class="line">	OrderT[delpos].node[LEFT] = -1;</span><br><span class="line">	OrderT[delpos].node[DATA] = 0;</span><br><span class="line">	cout &lt;&lt; &quot;1&quot; &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void preOrderTra(Node *OrderT,int cur,int pos,int arr[],int level)</span><br><span class="line">&#123;</span><br><span class="line">	arr[0]++;</span><br><span class="line">	arr[level+1]++;</span><br><span class="line">	cout &lt;&lt; OrderT[cur].node[DATA] &lt;&lt; &quot; &quot;;</span><br><span class="line">	if (OrderT[cur].node[LEFT] != -1) &#123;</span><br><span class="line">		preOrderTra(OrderT, OrderT[cur].node[LEFT], cur,arr,level+1);</span><br><span class="line">	&#125;</span><br><span class="line">	if (OrderT[cur].node[RIGHT] != -1) &#123;</span><br><span class="line">		preOrderTra(OrderT, OrderT[cur].node[RIGHT], cur,arr, level + 1);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void searchIns(Node *OrderT, int value)</span><br><span class="line">&#123;</span><br><span class="line">	int i = 0, pre = 0, flag = 0;</span><br><span class="line">	while (OrderT[i].node[DATA]) &#123;</span><br><span class="line">		if (value == OrderT[i].node[DATA]) &#123;</span><br><span class="line">			cout &lt;&lt; &quot;1&quot; &lt;&lt; endl;</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">		else if (value &lt; OrderT[i].node[DATA]) &#123;</span><br><span class="line">			pre = i;</span><br><span class="line">			flag = 1;</span><br><span class="line">			if (OrderT[i].node[LEFT] != -1) &#123;</span><br><span class="line">				i = OrderT[i].node[LEFT];</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				cout &lt;&lt; &quot;0&quot; &lt;&lt; endl;</span><br><span class="line">				insert(OrderT, value);</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			pre = i;</span><br><span class="line">			flag = 2;</span><br><span class="line">			if (OrderT[i].node[RIGHT] != -1) &#123;</span><br><span class="line">				i = OrderT[i].node[RIGHT];</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				cout &lt;&lt; &quot;0&quot; &lt;&lt; endl;</span><br><span class="line">				insert(OrderT, value);</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int i, n;</span><br><span class="line">	int value;</span><br><span class="line">	Node OrderT[MAXSIZE];</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	for (i = 0; i &lt; n; i++) &#123;</span><br><span class="line">		OrderT[i].node[DATA] = 0;</span><br><span class="line">		OrderT[i].node[LEFT] = -1;</span><br><span class="line">		OrderT[i].node[RIGHT] = -1;</span><br><span class="line">	&#125;</span><br><span class="line">	for (i = 0; i &lt; n; i++) &#123;</span><br><span class="line">		cin &gt;&gt; value;</span><br><span class="line">		insert(OrderT, value);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	cin &gt;&gt; value;</span><br><span class="line">	delOrderNode(OrderT, value);</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	searchIns(OrderT, value);</span><br><span class="line"></span><br><span class="line">	int arr[MAXSIZE];</span><br><span class="line">	for (i = 0; i &lt;= n; i++) &#123;</span><br><span class="line">		arr[i] = 0;</span><br><span class="line">	&#125;</span><br><span class="line">	preOrderTra(OrderT, 0, 0,arr,0);</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	double sum = 0;</span><br><span class="line">	for (i = 0; arr[i+1] != 0; i++) &#123;</span><br><span class="line">		sum += (i + 1)*arr[i+1];</span><br><span class="line">	&#125;</span><br><span class="line">	if (n == 0) &#123;</span><br><span class="line">		cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; 1.00 &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; (sum / arr[0]) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/leetcode笔记-5.最长回文子串/" data-toggle="tooltip" data-placement="top" title="leetcode笔记——5.最长回文子串">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/数据结构笔记——拓扑排序/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——拓扑排序">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0问题描述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x95EE;&#x9898;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1数据结构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2折半查找"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.&#x6298;&#x534A;&#x67E5;&#x627E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3寻找二叉排序树元素"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x5BFB;&#x627E;&#x4E8C;&#x53C9;&#x6392;&#x5E8F;&#x6811;&#x5143;&#x7D20;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4插入二叉排序树"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4.&#x63D2;&#x5165;&#x4E8C;&#x53C9;&#x6392;&#x5E8F;&#x6811;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5删除二叉排序树节点"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5.&#x5220;&#x9664;&#x4E8C;&#x53C9;&#x6392;&#x5E8F;&#x6811;&#x8282;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6计算可查找长度"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">6.&#x8BA1;&#x7B97;&#x53EF;&#x67E5;&#x627E;&#x957F;&#x5EA6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7另外"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">7.&#x53E6;&#x5916;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#二叉排序树" title="二叉排序树">二叉排序树</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

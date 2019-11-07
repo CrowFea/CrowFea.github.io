@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——图 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——图/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#图" title="图">图</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——图</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-11-19
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0问题重述">0.问题重述</h3>
+<p>图是一种描述多对多关系的数据结构, 图中的数据元素称作顶点，具有关系的两个顶点形成的一个二元组称作边或弧，顶点的集合V和关系的集合R构成了图，记作G=（V,R）。图又分成有向图，无向图，有向网，无向网。图的常用存储结构有邻接矩阵、邻接表、十字链表、邻接多重表。</p>
+<h3 id="1数据结构">1.数据结构</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">typedef int Status;</span><br><span class="line">typedef char ElemType;</span><br><span class="line"></span><br><span class="line">typedef struct LNode&#123;</span><br><span class="line">	ElemType data;</span><br><span class="line">	int num;</span><br><span class="line">	int weight;</span><br><span class="line">	LNode *next;</span><br><span class="line">&#125;VextexNode, *AdjList;</span><br><span class="line"></span><br><span class="line">typedef struct MGraph &#123;</span><br><span class="line">	char vexs[MAXSIZE];</span><br><span class="line">	int arcs[MAXSIZE][MAXSIZE];</span><br><span class="line">	int vexnum, arcnum;</span><br><span class="line">	AdjList List[MAXSIZE];</span><br><span class="line">&#125;MGraph;</span><br></pre></td></tr></table></figure>
+<h3 id="2初始化图">2.初始化图</h3>
+<p>对图进行初始化时，由于仍未规定产生怎样的图，所以对图的两种储存方式：邻接表和邻接矩阵进行初始化操作。首先将输入图的顶点数和边数，其次根据顶点数和边数，将邻接矩阵中可能遇到的元素均置为0。同时，邻接表采用链表的形式，这里初始化一个有着顶点数目个数元素的指针数组，每一个数组内部储存着当前元素的编号，并将指针置为NULL。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Status InitMGraph(MGraph &amp;G)</span><br><span class="line">&#123;</span><br><span class="line">	int i, j;</span><br><span class="line">	cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum;</span><br><span class="line"></span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		cin &gt;&gt; G.vexs[i];</span><br><span class="line">		G.List[i] = new VextexNode();</span><br><span class="line">		G.List[i]-&gt;data = G.vexs[i];</span><br><span class="line">		G.List[i]-&gt;next= NULL;</span><br><span class="line">	&#125;</span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		for (j = 0; j &lt; G.vexnum; j++) &#123;</span><br><span class="line">			G.arcs[i][j] = EMPTY;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3寻找元素位置">3.寻找元素位置</h3>
+<p>寻址到当前的元素位置，输入该元素的值，在初始化时生成的字符数组内寻找该值，返回它的行或列的位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int LocateVex(MGraph G, char u)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i = 0; i &lt; G.vexnum; i++)</span><br><span class="line">		if (u==G.vexs[i]) &#123;</span><br><span class="line">			return i;</span><br><span class="line">		&#125;</span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4创建邻接表">4.创建邻接表</h3>
+<p>创建邻接表的过程实际上是不断将链表增长的过程。首先根据输入的元素，定位其在指针数组对应的位置，接着在该指针指向的链表的尾端继续申请空间，将新的元素加入。<br>
+但这样做存在的问题是，链表内的元素很有可能无序的，最好使用头插法来创建链表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">void CreatAdjList(MGraph &amp;G, char v1, char v2)</span><br><span class="line">&#123;</span><br><span class="line">	int i, j;</span><br><span class="line">	i = LocateVex(G, v1);</span><br><span class="line">	j = LocateVex(G, v2);</span><br><span class="line"></span><br><span class="line">	AdjList p1;</span><br><span class="line">	p1 = G.List[i];</span><br><span class="line">	while (p1-&gt;next!=NULL) &#123;</span><br><span class="line">		p1=p1-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	p1-&gt;next = new VextexNode();</span><br><span class="line">	p1 = p1-&gt;next;</span><br><span class="line">	p1-&gt;data = j;</span><br><span class="line">	p1-&gt;num = j;</span><br><span class="line">	p1-&gt;weight = G.arcs[i][j];</span><br><span class="line">	p1-&gt;next = NULL;</span><br><span class="line"></span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void CreatAdjList(MGraph &amp;G, ElemType i, ElemType j)</span><br><span class="line">&#123;</span><br><span class="line">	AdjList p1;</span><br><span class="line">	p1 = G.List[i];</span><br><span class="line">	if (p1-&gt;next!=NULL) &#123;</span><br><span class="line">		while (p1-&gt;next != NULL) &#123;</span><br><span class="line">			if (j &gt; p1-&gt;next-&gt;data) &#123;</span><br><span class="line">				AdjList p2=p1-&gt;next;</span><br><span class="line">				p1-&gt;next = new VextexNode();</span><br><span class="line">				p1 = p1-&gt;next;</span><br><span class="line">				p1-&gt;data = j;</span><br><span class="line">				p1-&gt;num = j;</span><br><span class="line">				p1-&gt;next = p2;</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">			p1 = p1-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	p1-&gt;next = new VextexNode();</span><br><span class="line">	p1 = p1-&gt;next;</span><br><span class="line">	p1-&gt;data = j;</span><br><span class="line">	p1-&gt;num = j;</span><br><span class="line">	p1-&gt;next = NULL;</span><br><span class="line"></span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5创建无向图">5.创建无向图</h3>
+<p>无向图的特点是一旦输入两个点，在两个点之间彼此都要产生新的边。所以调用两次生成邻接表的函数，在v1下申请一个，在v2下申请一次。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">void CreateUDG(MGraph &amp;G)</span><br><span class="line">&#123;</span><br><span class="line">	char v1, v2;</span><br><span class="line">	int i, j, k;</span><br><span class="line"></span><br><span class="line">	InitMGraph(G);</span><br><span class="line"></span><br><span class="line">	for (k = 0; k &lt; G.arcnum; k++)</span><br><span class="line">	&#123;</span><br><span class="line">		cin &gt;&gt; v1 &gt;&gt; v2;</span><br><span class="line">		i = LocateVex(G, v1);</span><br><span class="line">		j = LocateVex(G, v2);</span><br><span class="line">		G.arcs[i][j] = G.arcs[j][i] = 1;</span><br><span class="line">		CreatAdjList(G, v1, v2);</span><br><span class="line">		CreatAdjList(G, v2, v1);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6创建无向网无向加权图">6.创建无向网（无向加权图）</h3>
+<p>无向网的特点是一旦输入两个点，在两个点之间彼此都要产生新的边，并且边有权值。所以调用两次生成邻接表的函数，在v1下申请一个，在v2下申请一次。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">	void CreateUDN(MGraph &amp;G)</span><br><span class="line">&#123;</span><br><span class="line">	char v1, v2;</span><br><span class="line">	int i, j, k;</span><br><span class="line">	int w;</span><br><span class="line"></span><br><span class="line">	InitMGraph(G);</span><br><span class="line">	for (k = 0; k &lt; G.arcnum; k++) &#123;</span><br><span class="line">		cin &gt;&gt; v1 &gt;&gt; v2 &gt;&gt; w;</span><br><span class="line">		i = LocateVex(G, v1);</span><br><span class="line">		j = LocateVex(G, v2);</span><br><span class="line">		G.arcs[i][j] = G.arcs[j][i] = w;</span><br><span class="line">		CreatAdjList(G, v1, v2);</span><br><span class="line">		CreatAdjList(G, v2, v1);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7创建有向图">7.创建有向图</h3>
+<p>有向图的特点是一旦输入两个点，仅在两个点之间有顺序的产生新的边，并且边无权值。所以调用一次生成邻接表的函数，在v1下申请一个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">	void CreateDG(MGraph &amp;G)</span><br><span class="line">&#123;</span><br><span class="line">	char v1, v2;</span><br><span class="line">	int i, j, k;</span><br><span class="line"></span><br><span class="line">	InitMGraph(G);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	for (k = 0; k &lt; G.arcnum; k++)</span><br><span class="line">	&#123;</span><br><span class="line">		cin &gt;&gt; v1 &gt;&gt; v2;</span><br><span class="line">		i = LocateVex(G, v1);</span><br><span class="line">		j = LocateVex(G, v2);</span><br><span class="line">		G.arcs[i][j] = 1;</span><br><span class="line">		CreatAdjList(G, v1, v2);</span><br><span class="line">	&#125;</span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8创建有向网有向加权图">8.创建有向网（有向加权图）</h3>
+<p>有向网的特点是一旦输入两个点，仅在两个点之间有顺序的产生新的边，并且边有权值。所以调用一次生成邻接表的函数，在v1下申请一次。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">void CreateDN(MGraph &amp;G)</span><br><span class="line">&#123;</span><br><span class="line">	char v1, v2;</span><br><span class="line">	int i, j, k;</span><br><span class="line">	int w;</span><br><span class="line"></span><br><span class="line">	InitMGraph(G);</span><br><span class="line">	for (k = 0; k &lt; G.arcnum; k++)</span><br><span class="line">	&#123;</span><br><span class="line">		cin &gt;&gt; v1 &gt;&gt; v2 &gt;&gt; w;</span><br><span class="line">		i = LocateVex(G, v1);</span><br><span class="line">		j = LocateVex(G, v2);</span><br><span class="line">		G.arcs[i][j] = w;</span><br><span class="line">		CreatAdjList(G, v1, v2);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9打印邻接矩阵">9.打印邻接矩阵</h3>
+<p>输出从第0位元素开始，到第Vexnum位的邻接矩阵内的元素，注意要使用格式化的输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void PrintMar(MGraph G)</span><br><span class="line">&#123;</span><br><span class="line">	int i, j;</span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		for (j = 0; j &lt; G.vexnum; j++) &#123;</span><br><span class="line">			cout &lt;&lt; setw(4) &lt;&lt; G.arcs[i][j];</span><br><span class="line">		&#125;</span><br><span class="line">		cout &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="10打印邻接表">10.打印邻接表</h3>
+<p>由于本文第一问并未使用头插法进行链表的生成，所以链表内部的数据很有可能都是无顺序数据，首先要进行数据的排序。将链表的所有数据存入一个数组中，当数组不为空时输出数组的元素。打印无向图时需要额外打印出权值。<br>
+注意输出的格式””是两个-。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">void PrintList(MGraph G)</span><br><span class="line">&#123;</span><br><span class="line">	int i,k,j=0;</span><br><span class="line">	</span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		int sort[MAXSIZE] = &#123; -1 &#125;;</span><br><span class="line">		j = 0;</span><br><span class="line">		AdjList p;</span><br><span class="line">		p = G.List[i];</span><br><span class="line">		cout &lt;&lt; p-&gt;data &lt;&lt; &quot;--&gt;&quot;;</span><br><span class="line">		while (p-&gt;next!=NULL) &#123;</span><br><span class="line">			p = p-&gt;next;</span><br><span class="line">			sort[j] = p-&gt;num;</span><br><span class="line">			j++;</span><br><span class="line">		&#125;</span><br><span class="line">		shellSort(sort, j);</span><br><span class="line">		for (k = 0; k &lt; j; k++) &#123;</span><br><span class="line">			cout &lt;&lt; sort[k] &lt;&lt; &quot; &quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		cout &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br><span class="line">void PrintListU(MGraph G)</span><br><span class="line">&#123;</span><br><span class="line">	int i,k,j=0;</span><br><span class="line"></span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		int sort[MAXSIZE][2];</span><br><span class="line">		j = 0;</span><br><span class="line">		AdjList p;</span><br><span class="line">		p = G.List[i];</span><br><span class="line">		cout &lt;&lt; p-&gt;data &lt;&lt; &quot;--&gt;&quot;;</span><br><span class="line">		while (p-&gt;next != NULL) &#123;</span><br><span class="line">			p = p-&gt;next;</span><br><span class="line">			sort[j][0] = p-&gt;num;</span><br><span class="line">			sort[j][1] = p-&gt;weight;</span><br><span class="line">			j++;</span><br><span class="line">		&#125;</span><br><span class="line">		shellSort2(sort, j);</span><br><span class="line">		for (k = 0; k &lt; j; k++) &#123;</span><br><span class="line">			cout &lt;&lt; sort[k][0] &lt;&lt; &quot;,&quot;&lt;&lt;sort[k][1]&lt;&lt;&quot; &quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		cout &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="11dfs深度搜索">11.DFS深度搜索</h3>
+<p>深度优先搜索（缩写DFS）有点类似广度优先搜索，也是对一个连通图进行遍历的算法。它的思想是从一个顶点V0开始，沿着一条路一直走到底，如果发现不能到达目标解，那就返回到上一个节点，然后从另一条路开始走到底，这种尽量往深处走的概念即是深度优先的概念。<br>
+我们首先定义找到每一个搜索开始点的节点的方法StartFind，使用一个全局变量visit。如果寻找过就设置为false，否则就设置为true。遍历节点从小到大，如果该结点有边连接，就返回这个节点。<br>
+GonFind方法是在第一个节点的基础上继续寻找，如果有除了第一个节点外的点与之连接的话，就返回这个值。<br>
+接下来进行DFS，从第一个节点开始遍历，如果visit[i]为假，说明还未进行过遍历，可以进行DFS递归，直到某一个点连接的所有点都已经被遍历过了，返回到上一层，直到所有点被遍历结束。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">int StartFind(MGraph G, int v)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		if (G.arcs[v][i] == 1) &#123;</span><br><span class="line">			return i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int ConFind(MGraph G, int v, int w)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i = w + 1; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		if (G.arcs[v][i] == 1) &#123;</span><br><span class="line">			return i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool visited[100];</span><br><span class="line">bool first = true;</span><br><span class="line"></span><br><span class="line">void DFS(MGraph G, int v)</span><br><span class="line">&#123;</span><br><span class="line">	int w;</span><br><span class="line">	visited[v] = true;</span><br><span class="line">	if (!first) &#123;</span><br><span class="line">		cout &lt;&lt; &quot; &quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	first = false;</span><br><span class="line">	cout &lt;&lt; v ;</span><br><span class="line">	for (w = StartFind(G, v); w &gt;= 0; w = ConFind(G, v, w)) &#123;</span><br><span class="line">		if (!visited[w]) &#123;</span><br><span class="line">			DFS(G, w);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void DFSTraverse(MGraph G)</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		visited[i] = false;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		if (!visited[i]) &#123;</span><br><span class="line">			cout &lt;&lt; &quot;&#123;&quot;;</span><br><span class="line">			DFS(G, i);</span><br><span class="line">			//printf(&quot;\b&quot;);  //oj可能不通过</span><br><span class="line">			cout &lt;&lt; &quot;&#125;&quot;;</span><br><span class="line">			first = true;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="12bfs广度搜索">12.BFS广度搜索</h3>
+<p>广度优先搜索类似于树的层次遍历，首先找到所有跟起始点连接的节点，再对下一层节点进行遍历。<br>
+我们使用一个队列来进行遍历结果的存储。首先是选择第一个起始点，将其入队，当队列不空时，输出队列的第一个元素，将其出队，再将所有该元素连接的节点入队。对队列中每一个元素进行重复的操作，如果该元素被遍历过，就直接出队，直到队列为空。再在剩下未遍历的元素中按照顺序选择一个元素进行上述的步骤，直到所有的元素都被遍历过。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">	void BFSTraverse(MGraph G)</span><br><span class="line">&#123;</span><br><span class="line">	int i,e,w;</span><br><span class="line">	first = true;</span><br><span class="line">	for (i = 0; i &lt; G.vexnum; i++) &#123;</span><br><span class="line">		visited[i] = false;</span><br><span class="line">	&#125;</span><br><span class="line">	SqQueue q;</span><br><span class="line">	InitQueue(q);</span><br><span class="line">	for (i = 0; i&lt;G.vexnum; i++)&#123;</span><br><span class="line">		if (!visited[i])&#123;</span><br><span class="line">			visited[i] = true;</span><br><span class="line">			EnQueue(q,i);</span><br><span class="line">			cout &lt;&lt; &quot;&#123;&quot;;</span><br><span class="line">			while (QueueEmpty(q)==OK)&#123;</span><br><span class="line">				int v = q.base[q.front];</span><br><span class="line">				DeQueue(q,e);</span><br><span class="line">				if (!first) &#123;</span><br><span class="line">					cout &lt;&lt; &quot; &quot;;</span><br><span class="line">				&#125;</span><br><span class="line">				first = false;</span><br><span class="line">				cout &lt;&lt; v ;</span><br><span class="line">				for (w = StartFind(G, v); w &gt;= 0; w = ConFind(G, v, w))&#123;</span><br><span class="line">					if (!visited[w])&#123;</span><br><span class="line">						visited[w] = true;</span><br><span class="line">						EnQueue(q, w);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			//printf(&quot;\b&quot;);</span><br><span class="line">			cout &lt;&lt; &quot;&#125;&quot;;</span><br><span class="line">			first = true;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="13另外">13.另外</h3>
+<ul>
+<li><strong>print(“/b”);不通过OJ</strong></li>
+</ul>
+<p>acm/oj判断答案的原理，它会将标准输出重定向到文件，然后比较文件是否相同。比如下面的程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">printf(&quot;1+1=2 \b&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重定向到文件，会发现\b是作为一个字符输出到文件里面的。比如，上面的代码重定向后，查看文件的16进制是下面的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">312b 313d 3220 080d 0a</span><br><span class="line">1  +  1   =  2  \s \b \r  \n</span><br></pre></td></tr></table></figure>
+<p>20就是空白，08 就是 \b。</p>
+<ul>
+<li><strong>DFS与BFS对比</strong></li>
+</ul>
+<p>我们假设一个节点衍生出来的相邻节点平均的个数是N个，那么当起点开始搜索的时候，队列有一个节点，当起点拿出来后，把它相邻的节点放进去，那么队列就有N个节点，当下一层的搜索中再加入元素到队列的时候，节点数达到了N2，你可以想想，一旦N是一个比较大的数的时候，这个树的层次又比较深，那这个队列就得需要很大的内存空间了。</p>
+<p>于是广度优先搜索的缺点出来了：在树的层次较深&amp;子节点数较多的情况下，消耗内存十分严重。广度优先搜索适用于节点的子节点数量不多，并且树的层次不会太深的情况。</p>
+<p>那么深度优先就可以克服这个缺点，因为每次搜的过程，每一层只需维护一个节点。但回过头想想，广度优先能够找到最短路径，那深度优先能否找到呢？深度优先的方法是一条路走到黑，那显然无法知道这条路是不是最短的，所以你还得继续走别的路去判断是否是最短路？</p>
+<p>于是深度优先搜索的缺点也出来了：难以寻找最优解，仅仅只能寻找有解。其优点就是内存消耗小，克服了刚刚说的广度优先搜索的缺点。</p>
+<ul>
+<li><strong>在深度/广度搜索的过程中，其实相邻节点的加入如果是有一定策略的话，对算法的效率是有很大影响的。</strong></li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/数据结构笔记——图的经典算法/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——图的经典算法">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/数据结构笔记——线索二叉树/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——线索二叉树">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0问题重述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x95EE;&#x9898;&#x91CD;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1数据结构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2初始化图"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.&#x521D;&#x59CB;&#x5316;&#x56FE;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3寻找元素位置"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x5BFB;&#x627E;&#x5143;&#x7D20;&#x4F4D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4创建邻接表"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4.&#x521B;&#x5EFA;&#x90BB;&#x63A5;&#x8868;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5创建无向图"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5.&#x521B;&#x5EFA;&#x65E0;&#x5411;&#x56FE;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6创建无向网无向加权图"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">6.&#x521B;&#x5EFA;&#x65E0;&#x5411;&#x7F51;&#xFF08;&#x65E0;&#x5411;&#x52A0;&#x6743;&#x56FE;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7创建有向图"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">7.&#x521B;&#x5EFA;&#x6709;&#x5411;&#x56FE;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8创建有向网有向加权图"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">8.&#x521B;&#x5EFA;&#x6709;&#x5411;&#x7F51;&#xFF08;&#x6709;&#x5411;&#x52A0;&#x6743;&#x56FE;&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9打印邻接矩阵"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">9.&#x6253;&#x5370;&#x90BB;&#x63A5;&#x77E9;&#x9635;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10打印邻接表"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">10.&#x6253;&#x5370;&#x90BB;&#x63A5;&#x8868;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11dfs深度搜索"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">11.DFS&#x6DF1;&#x5EA6;&#x641C;&#x7D22;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#12bfs广度搜索"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">12.BFS&#x5E7F;&#x5EA6;&#x641C;&#x7D22;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#13另外"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">13.&#x53E6;&#x5916;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#图" title="图">图</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

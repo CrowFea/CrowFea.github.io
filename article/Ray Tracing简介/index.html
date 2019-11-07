@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Ray Tracing光线追踪 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/Ray Tracing简介/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#图形学" title="图形学">图形学</a>
+                            
+                        </div>
+                        <h1>Ray Tracing光线追踪</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-07-26
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="rendering">Rendering</h3>
+<p>图形学研究的一个基本问题是，如何将具有三维特性的物体以二维的image呈现出来。从某种层面上讲，建筑师、画家都或多或少的从事这方面的工作。在计算机中，这个过程叫<strong>渲染</strong></p>
+<blockquote>
+<p>Fundamentally, rendering is a process that takes as its input a set ofobjects and produces as its output an array of pixels</p>
+</blockquote>
+<p>渲染有两种方式：</p>
+<ul>
+<li>object-order rendering<br>
+遍历每个object，计算object对于每个像素的贡献。</li>
+<li>image-order rendering<br>
+遍历每个像素，计算当前像素有哪些object的贡献。<br>
+简单来说就是，两种方法都有一个for_each pixels的方法，object-order中这个循环在里面；image-order中这个循环在外面。</li>
+</ul>
+<p>两种渲染方式都可以得到结果，一般采用image-order，他在渲染时更容易出结果，也更灵活，耗时更久。</p>
+<p><strong>Ray tracing is an image-order algorithm for making renderings of 3D scenes</strong></p>
+<h3 id="ray-tracer">Ray Tracer</h3>
+<p>一个基本的Ray tracer有三个部分:</p>
+<ul>
+<li>ray generation，根据相机的几何形状计算出每个像素的观看射线的来源和方向;</li>
+<li>ray intersection，找到与观察射线相交最近的物体;</li>
+<li>shading，根据光线相交的结果计算像素的颜色</li>
+</ul>
+<p>生成一个Ray Tracer的基本步骤是</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> each pixel </span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">    compute viewing ray </span><br><span class="line">    find first object hit by ray <span class="keyword">and</span> its surface normal n </span><br><span class="line">    <span class="built_in">set</span> pixel color to value computed from hit point, light, <span class="keyword">and</span> n</span><br></pre></td></tr></table></figure>
+<h4 id="coordinates">Coordinates</h4>
+<p>首先要定义什么是光线。他可以解析的定义为以下的式子：</p>
+<p><img src="https://s2.ax1x.com/2019/07/26/eueho8.png" alt="img"></p>
+<p>e代表发出光线的点，在这里指我们的观察者的眼睛（虽然光线最终进入眼睛，不过在这里我们认为眼睛发出ray）。s代表光线打到成像平面上的点。这里的值域所代表的就是光线传播方向上点的向量。当t是0时，这个点就是e，当t是1时，这个点就是s。</p>
+<p>研究光线以及相应的成像我们一般在Camera Frame这个坐标系下完成。<br>
+<img src="https://s2.ax1x.com/2019/07/26/eumwXn.png" alt="img"></p>
+<h3 id="computint-viewing-rays">Computint Viewing Rays</h3>
+<p>光线分两种情况讨论，正交试图和透视视图。<br>
+<img src="https://s2.ax1x.com/2019/07/26/euuPVx.png" alt="img"></p>
+<p>对正交视图来说，光线的方向都是一样的，即坐标系的w方向。唯一不同的是光线的起点。正交视图我们可以认为，发出光线的平面和呈现的平面是一个平面，因为成像的结果不会因为这两个平面的距离变化而变化。<br>
+<img src="https://s2.ax1x.com/2019/07/26/euuprR.png" alt="img"></p>
+<p>透视视图存在一个距离问题，即成像的平面和发出光线的平面中间有一个距离d。这个我们称之为焦距。在透视试图下，所有的光线生成点是一个，但是所有光线的方向不同。<br>
+<img src="https://s2.ax1x.com/2019/07/26/euuSM9.png" alt="img"></p>
+<h3 id="ray-object-intersection">Ray-Object Intersection</h3>
+<p>在这里书里面说的很花哨，但看下来实际上就是解析几何里的，直线和平面相交的解析求法，有两个特殊的情况需要考虑。</p>
+<h4 id="ray-triangle-intersection">Ray-Triangle Intersection</h4>
+<p>当我们需要处理的平面是三角形时，有一个需要注意的判断条件,下面这个是我们需要处理的等式：<br>
+<img src="https://s2.ax1x.com/2019/07/26/euMTrd.png" alt="img"></p>
+<p>为了保证相交的点在该三角形内，需要满足β&gt;0,γ&gt;0且β+γ&lt;1。在处理等式时可以化成矩阵，用克莱姆规则求解。</p>
+<p><img src="https://s2.ax1x.com/2019/07/26/euM7qA.md.png" alt="img"></p>
+<h4 id="intersecting-a-group-of-objects">Intersecting a Group of Objects</h4>
+<p>实际上，我们更可能碰见的情况就是一个场景中有多个物体。对于这种情况要实现如下的算法：<br>
+<img src="https://s2.ax1x.com/2019/07/26/euQhoq.png" alt="img"></p>
+<h3 id="shading">Shading</h3>
+<p>大多数的Shading Model，设计来捕捉光的反射过程，即表面被光源照亮和反射光线到相机。Shading就是如何给当前的物体加上阴影的过程。在这里有几个重要的向量。l向量表示光照方向的向量，v表示视点的向量，n是成像平面的法向量。<br>
+<img src="https://s2.ax1x.com/2019/07/26/eu1Ybd.png" alt="img"></p>
+<p>接下来介绍几个简单的模型<br>
+<img src="https://s2.ax1x.com/2019/07/26/eu3nsg.png" alt="img"></p>
+<h4 id="lambertian-shading">Lambertian Shading</h4>
+<p><img src="https://s2.ax1x.com/2019/07/26/eu16bj.png" alt="img"><br>
+其中kd是一个扩散系数，I是当前方向的光照强度。后面的n·l应当注意，在这里因为n，l都是单位向量，所以n·l=|n|×|l|×cos&lt;n,l&gt;=cos&lt;n,l&gt;。所以这里指的是n和l向量的cos值。</p>
+<p>Lambertian Shading十分简单，但缺陷在于物体呈现的阴影与视角是没有关系的，因此阴影是不具有高光。就是我们看到的镜面效果。</p>
+<h4 id="blinn-phong-shading">Blinn-Phong Shading</h4>
+<p><img src="https://s2.ax1x.com/2019/07/26/eu1XPx.png" alt="img"></p>
+<p>BP的模型中加入了高光元素的修正。当人的视角与光线照射的反射角相等时，就会出现镜面反射的效果。这个时候应该非常亮。因此我们使用一个向量h来表示l和v向量相加方向的单位向量。这个向量和平面的法向量夹角越大，证明越不容易镜面反射，也越暗淡。同理，因为都是单位向量，在表示cos值的时候可以使用点乘来表示。</p>
+<p><img src="https://s2.ax1x.com/2019/07/26/eu3uLQ.png" alt="img"></p>
+<h4 id="ambient-shading">Ambient Shading</h4>
+<p><img src="https://s2.ax1x.com/2019/07/26/eu3deJ.md.png" alt="img"></p>
+<p>当我们不考虑表面角度，只考虑每一个物体本身的颜色时，就需要引入环境光。因为就算角度再变，红色的还是红色，只不过可能是暗一点或者亮一点的红色。因此在上面加入了一个环境修正，作为常数。</p>
+<p>以上三个模型结合在一起，基本上完成了一个简单但是有用的shading modle。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/并查集概念及基本操作/" data-toggle="tooltip" data-placement="top" title="并查集概念及基本操作">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/KickStart-2019 C轮解题/" data-toggle="tooltip" data-placement="top" title="KickStart-2019 C轮解题">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#rendering"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Rendering</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ray-tracer"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Ray Tracer</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#coordinates"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Coordinates</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#computint-viewing-rays"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Computint Viewing Rays</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ray-object-intersection"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Ray-Object Intersection</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ray-triangle-intersection"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">Ray-Triangle Intersection</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#intersecting-a-group-of-objects"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">Intersecting a Group of Objects</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#shading"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Shading</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#lambertian-shading"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">Lambertian Shading</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#blinn-phong-shading"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">Blinn-Phong Shading</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ambient-shading"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">Ambient Shading</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#图形学" title="图形学">图形学</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

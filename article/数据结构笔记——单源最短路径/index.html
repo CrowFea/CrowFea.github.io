@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——单源最短路径 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——单源最短路径/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#迪杰斯特拉" title="迪杰斯特拉">迪杰斯特拉</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——单源最短路径</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-12-12
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0问题描述">0.问题描述</h3>
+<p>给定一张 n 个点的无向带权图，节点的编号从 1 至 n，求从 S 到 T 的最短路径长度。</p>
+<h3 id="1数据结构">1.数据结构</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef struct MGraph &#123;</span><br><span class="line">	int vexnum, arcnum;</span><br><span class="line">	int v1[MAXVEX];</span><br><span class="line">	int v2[MAXARC];</span><br><span class="line">	int weight[MAXARC];</span><br><span class="line">&#125;MGraph;</span><br></pre></td></tr></table></figure>
+<h3 id="2spfa">2.SPFA</h3>
+<p>1、	单源最短路径<br>
+给定的图若存在负权边，这时类似Dijkstra等算法便没有了用武之地，而Bellman-Ford算法的复杂度又过高，SPFA算法便派上用场了。 我们约定有向加权图G不存在负权回路，即最短路径一定存在。当然，我们可以在执行该算法前做一次拓扑排序，以判断是否存在负权回路，但这不是我们讨论的重点。<br>
+本题不涉及负环，但我们一样可以使用SPFA，Dijkstra算法也可。<br>
+我们用数组d记录每个结点的最短路径估计值，用邻接表来存储图G。我们采取的方法是动态逼近法：设立一个先进先出的队列用来保存待优化的结点，优化时每次取出队首结点u，并且用u点当前的最短路径估计值对离开u点所指向的结点v进行松弛操作，如果v点的最短路径估计值有所调整，且v点不在当前的队列中，就将v点放入队尾。这样不断从队列中取出结点来进行松弛操作，直至队列空为止<br>
+期望的时间复杂度O(ke)， 其中k为所有顶点进队的平均次数，可以证明k一般小于等于2。<br>
+用数组模拟建立一个队列，初始时队列里只有起始点，再建立一个表格记录起始点到所有点的最短路径（该表格的初始值要赋为极大值，该点到他本身的路径赋为0）。然后执行松弛操作，用队列里有的点作为起始点去刷新到所有点的最短路，如果刷新成功且被刷新点不在队列中则把该点加入到队列最后。重复执行直到队列为空。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#define MAXVEX 10010</span><br><span class="line">#define MAXARC 500010</span><br><span class="line">#define INF 2147483647</span><br><span class="line"></span><br><span class="line">int dep;</span><br><span class="line">int v1S[MAXARC], v2S[MAXARC], weightS[MAXARC], nex[MAXARC];</span><br><span class="line">int group[MAXARC * 5], dist[MAXVEX + 1];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void Store(int v1, int v2, int weight)</span><br><span class="line">&#123;</span><br><span class="line">	dep++;</span><br><span class="line">	v2S[dep] = v2;</span><br><span class="line">	weightS[dep] = weight;</span><br><span class="line">	nex[dep] = v1S[v1];</span><br><span class="line">	v1S[v1] = dep;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void SPFA(int start, int Vexnum)</span><br><span class="line">&#123;</span><br><span class="line">	bool visited[MAXVEX + 1];</span><br><span class="line">	int i,head = 0,tail = 1;</span><br><span class="line">	for (i = 1; i &lt;= Vexnum; i++) &#123;</span><br><span class="line">		dist[i] = INF;</span><br><span class="line">		visited[i] = false;</span><br><span class="line">	&#125;</span><br><span class="line">	dist[start] = 0;</span><br><span class="line">	group[tail] = start;</span><br><span class="line">	visited[start] = true;</span><br><span class="line">	while (head &lt;= tail) &#123;</span><br><span class="line">		head++;</span><br><span class="line">		int temp = group[head];</span><br><span class="line">		int k = v1S[temp];</span><br><span class="line">		while (k != 0) &#123;</span><br><span class="line">			int cur = v2S[k];</span><br><span class="line">			if (dist[cur]&gt;dist[temp] + weightS[k]) &#123;</span><br><span class="line">				dist[cur] = dist[temp] + weightS[k];</span><br><span class="line">				if (visited[cur] == false) &#123;</span><br><span class="line">					visited[cur] = true;</span><br><span class="line">					tail++;</span><br><span class="line">					group[tail] = cur;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			k = nex[k];</span><br><span class="line">		&#125;</span><br><span class="line">		visited[temp] = false;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int Vexnum, arcnum, start, end;</span><br><span class="line">	int v1, v2, weight;</span><br><span class="line">	int i;</span><br><span class="line">	cin &gt;&gt; Vexnum &gt;&gt; arcnum &gt;&gt; start &gt;&gt; end;</span><br><span class="line">	dep = 0;</span><br><span class="line">	for (i = 1; i &lt;= arcnum; i++) &#123;</span><br><span class="line">		cin &gt;&gt; v1 &gt;&gt; v2 &gt;&gt; weight;</span><br><span class="line">		Store(v1, v2, weight);</span><br><span class="line">		Store(v2, v1, weight);</span><br><span class="line">	&#125;</span><br><span class="line">	SPFA(start, Vexnum);</span><br><span class="line">	cout &lt;&lt; dist[end] &lt;&lt; endl;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3另外">3.另外</h3>
+<p><strong>单源最短路径各种方法总结：</strong></p>
+<ul>
+<li>Floyd算法</li>
+</ul>
+<p>求多源、无负权边的最短路。用矩阵记录图。时效性较差，时间复杂度O(V^3)。</p>
+<p>Floyd算法是解决任意两点间的最短路径的一种算法，可以正确处理有向图或负权的最短路径问题。算法的时间复杂度为O(N^3)，<br>
+空间复杂度为O(N^2)。</p>
+<p>原理是动态规划：<br>
+设Di,j,k为从i到j的只以(1…k)集合中的节点为中间节点的最短路径的长度。<br>
+若最短路径经过点k，则Di,j,k = Di,k,k-1 + Dk,j,k-1；<br>
+若最短路径不经过点k，则Di,j,k = Di,j,k-1。<br>
+因此，Di,j,k = min(Di,k,k-1 + Dk,j,k-1 , Di,j,k-1)。<br>
+在实际算法中，为了节约空间，可以直接在原来空间上进行迭代，这样空间可降至二维。描述如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for k ← 1 to n do</span><br><span class="line">  for i ← 1 to n do</span><br><span class="line">    for j ← 1 to n do</span><br><span class="line">      if (Di,k + Dk,j &lt; Di,j) then</span><br><span class="line">        Di,j ← Di,k + Dk,j;</span><br></pre></td></tr></table></figure>
+<p>其中Di,j表示由点i到点j的代价，当Di,j为 ∞ 表示两点之间没有任何连接。</p>
+<ul>
+<li>Dijkstra算法</li>
+</ul>
+<p>求单源、无负权的最短路。时效性较好，时间复杂度为O（V*V+E）。</p>
+<p>源点可达的话，O（V<em>lgV+E</em>lgV）=&gt;O（E<em>lgV）。<br>
+当是稀疏图的情况时，此时E=V</em>V/lgV，所以算法的时间复杂度可为O（V^2） 。若是斐波那契堆作优先队列的话，算法时间复杂度，则为O（V*lgV + E）。</p>
+<ul>
+<li>Bellman-Ford算法</li>
+</ul>
+<p>求单源最短路，可以判断有无负权回路（若有，则不存在最短路），时效性较好，时间复杂度O（VE）。</p>
+<p>此算法日后还会在本BLOG内具体阐述。Bellman-Ford算法是求解单源最短路径问题的一种算法。Dijkstra算法不同的是，在Bellman-Ford算法中，边的权值可以为负数。假从我们可以从图中找到一个环路（即从v出发，经过若干个点之后又回到v）且这个环路中所有边的权值之和为负。那么通过这个环路，环路中任意两点的最短路径就可以无穷小下去。如果不处理这个负环路，程序就会永远运行下去。 而Bellman-Ford算法具有分辨这种负环路的能力。</p>
+<ul>
+<li>SPFA算法</li>
+</ul>
+<p>是Bellman-Ford的队列优化，时效性相对好，时间复杂度O（kE）。（k&lt;&lt;V）。与Bellman-ford算法类似，SPFA算法采用一系列的松弛操作以得到从某一个节点出发到达图中其它所有节点的最短路径。所不同的是，SPFA算法通过维护一个队列，使得一个节点的当前最短路径被更新之后没有必要立刻去更新其他的节点，从而大大减少了重复的操作次数。</p>
+<p>SPFA算法可以用于存在负数边权的图，这与dijkstra算法是不同的。与Dijkstra算法与Bellman-ford算法都不同，SPFA的算法时间效率是不稳定的，即它对于不同的图所需要的时间有很大的差别。<br>
+在最好情形下，每一个节点都只入队一次，则算法实际上变为广度优先遍历，其时间复杂度仅为O(E)。另一方面，存在这样的例子，使得每一个节点都被入队(V-1)次，此时算法退化为Bellman-ford算法，其时间复杂度为O(VE)。</p>
+<p>SPFA算法在负边权图上可以完全取代Bellman-ford算法，另外在稀疏图中也表现良好。但是在非负边权图中，为了避免最坏情况的出现，通常使用效率更加稳定的Dijkstra算法，以及它的使用堆优化的版本。通常的SPFA算法在一类网格图中的表现不尽如人意。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/数据结构笔记——拓扑排序/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——拓扑排序">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/leetcode笔记-14.最长公共前缀/" data-toggle="tooltip" data-placement="top" title="leetcode笔记——14.最长公共前缀">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0问题描述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x95EE;&#x9898;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1数据结构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2spfa"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.SPFA</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3另外"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x53E6;&#x5916;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#迪杰斯特拉" title="迪杰斯特拉">迪杰斯特拉</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

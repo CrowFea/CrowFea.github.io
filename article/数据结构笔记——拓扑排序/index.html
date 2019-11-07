@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——拓扑排序 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——拓扑排序/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#拓扑排序" title="拓扑排序">拓扑排序</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——拓扑排序</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-12-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0问题描述">0.问题描述</h3>
+<p>有向无环图（directed acycline graph,简称DAG图），是描述工程或系统的进行过程的有效工具。如果有向图中从顶点v到w有一条有向路径，则v一定排在w之前，这样构成的一个顶点序列就称为拓扑序，构造拓扑序的过程就是拓扑排序。若拓扑排序不能输出所有顶点，说明AOV网络中存在有向环，此AOV网络所代表的工程是不可行的。 拓扑排序的算法有2种：1种是删边法，另一种是采用DFS深度优先搜索的方法。 本题给出一组有向图，请采用一种拓扑排序方法判断该图是否有环。</p>
+<ol>
+<li>
+<p>(p1) 本题给出一组有向图，请采用一种拓扑排序方法判断该图是否有环。</p>
+</li>
+<li>
+<p>（p2）一个工程项目由一组活动（或称子任务）构成，活动之间有的可以并行执行，有的必须在完成了其它一些活动后才能执行，并且每个活动完成需要一定的时间。对于一个工程，需要研究的问题是：（1）由这样一组活动描述的工程是否可行？（2）若可行，计算完成整个工程需要的最短时间。（3）这些活动中，哪些活动是关键活动（也就是必须按时完成的任务，否则整个项目就要延迟）。 现给定一个AOE网，有向边（弧）表示活动，弧上权值表示活动完成需要的时间。请你编写程序，回答上述三个问题。</p>
+</li>
+</ol>
+<h3 id="1数据结构">1.数据结构</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">typedef int Status;</span><br><span class="line">typedef int ElemType;</span><br><span class="line"></span><br><span class="line">typedef struct ArcNode &#123;</span><br><span class="line">	int adjvex;                  </span><br><span class="line">	int weight;               </span><br><span class="line">	struct ArcNode *next;</span><br><span class="line">&#125;ArcNode;                   </span><br><span class="line"></span><br><span class="line">typedef struct Node &#123;</span><br><span class="line">	int date;               </span><br><span class="line">	int info;               </span><br><span class="line">	ArcNode *first;           </span><br><span class="line">&#125;Node, AdjList[MAXSIZE];        </span><br><span class="line"></span><br><span class="line">typedef struct &#123;</span><br><span class="line">	AdjList vertices;</span><br><span class="line">	int vexnum;            </span><br><span class="line">	int arcnum;            </span><br><span class="line">&#125;MGraph;</span><br><span class="line">int arr[MAXSIZE];</span><br></pre></td></tr></table></figure>
+<h3 id="2判断图是否成环">2.判断图是否成环</h3>
+<p>假设图以邻接矩阵表示，一条深度遍历路线中如果有结点被第二次访问到，那么有环。我们用一个变量来标记某结点的访问状态（未访问，访问过，其后结点都被访问过），然后判断每一个结点的深度遍历路线即可。</p>
+<p>因为采用邻接矩阵存储，一般至少需要将矩阵中元素的一半给过一下，由于矩阵元素个数为n^2， 因此时间复杂度就是O(n^2)。如果采用邻接表存储，则只存储了边结点(e条边，无向图是2e条边)，加上表头结点为n（也就是顶点个数），因此时间复杂度为O(n+e)。</p>
+<p>当然也可以使用拓扑排序的方法：</p>
+<p>方法是重复寻找一个入度为0的顶点，将该顶点从图中删除（即放进一个队列里存着，这个队列的顺序就是最后的拓扑排序，具体见程序），并将该结点及其所有的出边从图中删除（即该结点指向的结点的入度减1），最终若图中全为入度为1的点，则这些点至少组成一个回路。</p>
+<p>采用邻接矩阵存储时，遍历二维数组，求各顶点入度的时间复杂度是O(n^2)。 遍历所有结点，找出入度为0的结点的时间复杂度是O(n)。对于n个入度为0的结点，删除他们的出边的复杂度为O(n^2)。 所以总的复杂度为O(n^2)。</p>
+<p>对于邻接表，遍历所有边，求各顶点入度的时间复杂度是O(e)，即边的个数。遍历所有结点，找出入度为0的结点的时间复杂度是O(n)，即顶点的个数。遍历所有边，删除入度为0的结点的出边的复杂度为O(e)，即边的个数。所以总的时间复杂度是O(n+e)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">void dfs(MGraph *G, int i)</span><br><span class="line">&#123;</span><br><span class="line">	color[i] = -1;</span><br><span class="line">	pre[i] = ++point;</span><br><span class="line">	for (int j = 1; j &lt;= G-&gt;vexNum; j++)&#123;</span><br><span class="line">		if (G-&gt;arcs[i][j] != 0)&#123;</span><br><span class="line">			if (color[j] == -1)&#123;</span><br><span class="line">				is_DAG = false;</span><br><span class="line">			&#125;</span><br><span class="line">			else if (color[j] == 0)</span><br><span class="line">				dfs(G, j);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	post[i] = ++point;</span><br><span class="line">	color[i] = 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void DFS(MGraph *G)</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	for (i = 1; i &lt;= G-&gt;vexNum; i++)&#123;</span><br><span class="line">		color[i] = 0;</span><br><span class="line">		pre[i] = 0;</span><br><span class="line">		post[i] = 0;</span><br><span class="line">	&#125; </span><br><span class="line">	for (i = 1; i &lt;= G-&gt;vexNum; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		if (color[i] == 0)&#123;</span><br><span class="line">			dfs(G, i);</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3关键路径">3.关键路径</h3>
+<p>首先使用拓扑排序确定该有向图有没有环，如果存在，证明该工程无解，返回0；否则，再求关键路径。</p>
+<p>要准备两个数组：最早开始时间数组和最迟开始时间数组。从源点V0出发，令etv[0]（源点）=0，按拓扑有序求其余各顶点的最早发生时间etv[i]（1 ≤ i ≤ n-1）。从汇点Vn出发，令ltv[n-1] = etv[n-1]，按拓扑排序求各个其余各顶点的最迟发生时间ltv[i]（n-2 ≥ i ≥ 2）;根据各顶点的etv和ltv数组的值，求出弧（活动）的最早开工时间和最迟开工时间，求每条弧的最早开工时间和最迟开工时间是否相等，若相等，则是关键活动。应当注意的是，1，2 完成点（事件）的最早和最迟。3根据事件来计算活动最早和最迟，从而求的该弧（活动）是否为关键活动。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">bool topo(MGraph G)</span><br><span class="line">&#123;</span><br><span class="line">	SqQueue Q;</span><br><span class="line">	InitQueue(Q);</span><br><span class="line">	int i,sum = 0, flag[MAXSIZE];                       </span><br><span class="line">	for (i = 0; i &lt; MAXSIZE; i++) &#123;</span><br><span class="line">		flag[i] = false;</span><br><span class="line">	&#125;</span><br><span class="line">	for (i = 1; i &lt;= G.vexnum; i++) &#123;</span><br><span class="line">		if (G.vertices[i].info == 0) &#123;</span><br><span class="line">			EnQueue(Q, i);</span><br><span class="line">			flag[i] = 1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	while(!QueueEmpty(Q))&#123;</span><br><span class="line">		int t = Q.base[Q.front];</span><br><span class="line">		sum++; </span><br><span class="line">		DeQueue(Q);</span><br><span class="line">		arr[sum] = t;</span><br><span class="line">		ArcNode *pos = G.vertices[t].first;</span><br><span class="line">		while (pos != NULL) &#123;</span><br><span class="line">			G.vertices[pos-&gt;adjvex].info--;</span><br><span class="line">			pos = pos-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		for (i = 1; i &lt;= G.vexnum; i++) &#123;</span><br><span class="line">			if (G.vertices[i].info == 0 &amp;&amp; !flag[i]) &#123;</span><br><span class="line">				EnQueue(Q, i);</span><br><span class="line">				flag[i] = 1;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return sum == G.vexnum ? true : false;</span><br><span class="line">&#125;</span><br><span class="line">void CriticalPath(MGraph G)</span><br><span class="line">&#123;</span><br><span class="line">	int ve[MAXSIZE], vl[MAXSIZE];</span><br><span class="line">	int i;</span><br><span class="line">	for (i = 1; i &lt;= G.vexnum; i++) &#123;</span><br><span class="line">		ve[i] = 0;</span><br><span class="line">	&#125;</span><br><span class="line">	for (i = 1; i &lt;= G.vexnum; i++)&#123;</span><br><span class="line">		ArcNode *pos = G.vertices[arr[i]].first;</span><br><span class="line">		while (pos != NULL) &#123;</span><br><span class="line">			int t = pos-&gt;adjvex;</span><br><span class="line">			if (ve[arr[i]] + pos-&gt;weight &gt; ve[t]) &#123;</span><br><span class="line">				ve[t] = ve[arr[i]] + pos-&gt;weight;</span><br><span class="line">			&#125;</span><br><span class="line">			pos = pos-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	for (i = 1; i &lt;= G.vexnum; i++) &#123;</span><br><span class="line">		vl[i] = ve[arr[G.vexnum]];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; ve[arr[G.vexnum]] &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	for (i = G.vexnum; i &gt;= 1; i--)&#123;</span><br><span class="line">		ArcNode *pos = G.vertices[arr[i]].first;</span><br><span class="line">		while (pos != NULL) &#123;</span><br><span class="line">			int t = pos-&gt;adjvex;</span><br><span class="line">			if (vl[t] - pos-&gt;weight &lt; vl[arr[i]])</span><br><span class="line">				vl[arr[i]] = vl[t] - pos-&gt;weight;</span><br><span class="line">			pos = pos-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	for (i = 1; i &lt;= G.vexnum; i++)&#123;</span><br><span class="line">		ArcNode *pos = G.vertices[i].first;</span><br><span class="line">		while (pos != NULL) &#123;</span><br><span class="line">			int t = pos-&gt;adjvex;</span><br><span class="line">			int e = ve[i];</span><br><span class="line">			int l = vl[t] - pos-&gt;weight;</span><br><span class="line">			if (e == l) &#123;</span><br><span class="line">				cout &lt;&lt; i &lt;&lt; &quot;-&gt;&quot; &lt;&lt; t &lt;&lt; endl;</span><br><span class="line">			&#125;</span><br><span class="line">			pos = pos-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5另外">5.另外</h3>
+<ul>
+<li>关于关键路径的思考：我们寻找关键路径——关键路径就是关键活动（顶点与顶点之间的边组成），就是我们怎么判断该顶点是否为关键活动（边）的顶点，即判断边是否为关键活动。前面定义过，关键路径就是图中从源点到汇点最长（权值最大）的路径。这条路径就决定了整个工程的工期，这说明一个什么问题？</li>
+</ul>
+<p>关键路径上的顶点与顶点之间的活动的应该最早开始和最迟开始时间是相等的，如果不等那么说明活动还有余额时间（在最早开始时间和最迟开始时间之间可以任选一个时间点开始），这说明还有其他活动是决定这个工程时间的，那就不是关键路径了。</p>
+<ul>
+<li>判断无向图是否有环：</li>
+</ul>
+<p>求出图中所有顶点的度，</p>
+<p>删除图中所有度&lt;=1的顶点以及与该顶点相关的边，把与这些边相关的顶点的度减一</p>
+<p>如果还有度&lt;=1的顶点重复步骤2</p>
+<p>最后如果还存在未被删除的顶点，则表示有环；否则没有环</p>
+<p>时间复杂度为O（E+V），其中E、V分别为图中边和顶点的数目。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/数据结构笔记——折半查找&二叉排序树/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——折半查找&二叉排序树">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/数据结构笔记——单源最短路径/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——单源最短路径">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0问题描述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x95EE;&#x9898;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1数据结构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2判断图是否成环"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.&#x5224;&#x65AD;&#x56FE;&#x662F;&#x5426;&#x6210;&#x73AF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3关键路径"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x5173;&#x952E;&#x8DEF;&#x5F84;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5另外"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">5.&#x53E6;&#x5916;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#拓扑排序" title="拓扑排序">拓扑排序</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

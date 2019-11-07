@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          C++，Java中的Hashmap与python中的dict比较 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/C++，Java中的Hashmap与python中的dict比较/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#hashMap" title="hashMap">hashMap</a>
+                            
+                        </div>
+                        <h1>C++，Java中的Hashmap与python中的dict比较</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-04-16
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="前言">前言</h3>
+<p>之前在做leetcode的两数之和，用三种不同的语言进行了研究。思路都是用key-value形式的数据结构：C++、Java是Hashmap，在Python里面是字典。这篇文章我们就分析一下这几种不同语言下的数据结构。</p>
+<h3 id="c-中的-map-amp-unoerdered_map">C++ 中的 map &amp; unoerdered_map</h3>
+<p>我们这里讨论的结构来源于STL标准模板库。</p>
+<p>先说STL：它是于1994年正式成为ANSI/ISO C++的一部份，STL不是面向对象编程，而是一种不同的编程模式——泛式编程。这使得STL在功能和方法方面都很有趣。我们简单的将它的作用理解如下：</p>
+<p>STL 将“**在数据上执行的操作”**与“<strong>要执行操作的数据分开</strong>”，分别以如下概念指代：</p>
+<ul>
+<li>容器：包含、放置数据的地方。</li>
+<li>迭代器：在容器中指出一个位置、或成对使用以划定一个区域，用来限定操作所涉及到的数据范围。</li>
+<li>算法：要执行的操作。</li>
+</ul>
+<blockquote>
+<p>1994年1月6日，Koenig寄封電子郵件給Stepanov，表示如果Stepanov願意將标准模板库的說明文件撰寫齊全，在1月25日前提出，便可能成為標準C++的一部份。Stepanov回信道：“Andy, are you crazy?” 。 Koenig便說：“Well, yes I am crazy,but why not try it?”。</p>
+</blockquote>
+<p>在STL的容器内部有11种通用容器，其中包括7种序列容器和4种关联容器。关联容器全部是key-value形式的数据结构：map、set、multimap、multiset。</p>
+<ul>
+<li>set：值和键类型相同，且只能有唯一的值 [1,2,3]</li>
+<li>multiset:值和键类型相同，值可以存在相同的 [1,1,2,2,3]</li>
+<li>map:值和键类型可以不同，值只能与唯一的键关联 [[1,2],[2,3],[3,4]]</li>
+<li>multimap:值和键类型可以不同，值可与多个键关联 [[1,2],[1,3],[3,4]]</li>
+</ul>
+<p>set, multiset, map, multimap内部采用的就是一种非常高效的平衡检索二叉树：红黑树(Red-Black Tree，也称AVL树)。RB树的统计性能要好于一般的平衡二叉树。使用红黑树操作的复杂度在O(logN),但搜索的过程是保持<strong>动态且有序的</strong>。这就意味着使用红黑树的数据结构可以在顺序上进行更多的操作，并且计算的复杂度随key值的变化波动不大，可以稳定在O(logN)。</p>
+<p>在c++ 11中添加了一个新的序列容器：unordered_map。使用的是散列进行哈希，时间复杂度为O(1)。但取而代之的是空间消耗更大，同时不能提供一个稳定的输出，随着key值算法的时间波动较大。关于两者的性能看到了这篇文章写的很好 [Sam-Cen的博客]<a href="https://blog.csdn.net/blues1021/article/details/45054159%E3%80%82" target="_blank" rel="noopener">https://blog.csdn.net/blues1021/article/details/45054159。</a></p>
+<blockquote>
+<p>unordered_map 查找效率快五倍，插入更快，节省一定内存。如果没有必要排序的话，尽量使用 hash_map(unordered_map 就是 boost 里面的 hash_map 实现)。</p>
+</blockquote>
+<h3 id="java中的hashmap-amp-treemap">Java中的HashMap &amp; TreeMap</h3>
+<p>java里面的HashMap是根据map接口的一个实现，我们直接从JDK里来看HashMap的构造：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">(<span class="keyword">int</span> initialCapacity, <span class="keyword">float</span> loadFactor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal initial capacity: "</span> +</span><br><span class="line">                                               initialCapacity);</span><br><span class="line">        <span class="keyword">if</span> (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line">            initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line">        <span class="keyword">if</span> (loadFactor &lt;= <span class="number">0</span> || Float.isNaN(loadFactor))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal load factor: "</span> +</span><br><span class="line">                                               loadFactor);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Find a power of 2 &gt;= initialCapacity</span></span><br><span class="line">        <span class="keyword">int</span> capacity = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (capacity &lt; initialCapacity)</span><br><span class="line">            capacity &lt;&lt;= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.loadFactor = loadFactor;</span><br><span class="line">        threshold = (<span class="keyword">int</span>)Math.min(capacity * loadFactor, MAXIMUM_CAPACITY + <span class="number">1</span>);</span><br><span class="line">        table = <span class="keyword">new</span> Entry[capacity];</span><br><span class="line">        useAltHashing = sun.misc.VM.isBooted() &amp;&amp;</span><br><span class="line">                (capacity &gt;= Holder.ALTERNATIVE_HASHING_THRESHOLD);</span><br><span class="line">        init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中table就是我们得到的散列表，在第 18 行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table = <span class="keyword">new</span> Entry[capacity];</span><br></pre></td></tr></table></figure>
+<p>在构造函数中，创建了一个 Entry 的数组，其大小为 capacity。再让我们看一下Entry的结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> K key;</span><br><span class="line">    V value;</span><br><span class="line">    Entry&lt;K,V&gt; next;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Entry 是一个 static class，其中包含了 key 和 value，也就是键值对，另外还包含了一个 next 的 Entry 指针。也就是说，在java内部散列的过程，采用的是链地址法：在哈希表每个单元中设置链表。某个数据项的关键值仍然映射到哈希表的单元中，而数据项本身插入这个单元的链表中其他同样映射到这个位置的数据项只需要加入到链表中。时间复杂度平均能达到O(1)。</p>
+<p>同样的，Java中也存在以红黑树为原型的key-value数据结构，称为TreeMap。其原理与特性与C++中的map类似，我们略去不表。只是将Java的两种数据结构的调用方法陈列如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化</span></span><br><span class="line">HashMap&lt;String,Integer&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="comment">//添加。如果key不存在，则返回null</span></span><br><span class="line">hashMap.put(<span class="string">"key"</span>,value);</span><br><span class="line"><span class="comment">//添加。若有则不添加。</span></span><br><span class="line">hashMap.putIfAbsent(<span class="string">"key"</span>,value);</span><br><span class="line"><span class="comment">//删除元素</span></span><br><span class="line">hashMap.remove(<span class="string">"key"</span>);</span><br><span class="line">hashMap.remove(<span class="string">"key"</span>,value);</span><br><span class="line"><span class="comment">//获取元素</span></span><br><span class="line">hashMap.get(<span class="string">"key"</span>)</span><br><span class="line"><span class="comment">//元素遍历</span></span><br><span class="line">Iterator iterator = hashMap.keySet().iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">   String key = (String)iterator.next();</span><br><span class="line">   System.out.println(key+<span class="string">"="</span>+hashMap.get(key));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//或者：</span></span><br><span class="line">Iterator iterator1 = hashMap.entrySet().iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator1.hasNext())&#123;</span><br><span class="line">    Map.Entry entry = (Map.Entry) iterator1.next();</span><br><span class="line">    String key = (String) entry.getKey();</span><br><span class="line">    Integer value = (Integer) entry.getValue();</span><br><span class="line">    System.out.println(key+<span class="string">"="</span>+value);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//判断key或value是否存在</span></span><br><span class="line">hashMap.containsKey(<span class="string">"key"</span>);</span><br><span class="line">hashMap.containsValue(value);</span><br></pre></td></tr></table></figure>
+<h3 id="python中的字典">Python中的字典</h3>
+<p>对于Python来说，字典就是数组形式的哈希表，数据结构为数组，采用了哈希的散列，解决冲突的办法为开放寻址法。</p>
+<p>神奇的一点是，python在散列的过程中，会根据当前表的疏松程度进行空间的再申请。当使用量超过总槽数的2/3，就会申请不少于当前活动槽数4倍的新空间。统计的来说，最后得到的表所利用的空间达不到一开始的1/3。这在空间上的损耗是巨大的，但是以空间换时间，在时间上的复杂度为O(1)。</p>
+<p>Python里面的字典方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">info = dict()</span><br><span class="line"><span class="comment"># 添加</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info[<span class="string">'name'</span>] = <span class="string">'cold'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info[<span class="string">'blog'</span>] = <span class="string">'linuxzen.com'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info</span><br><span class="line">&#123;<span class="string">'blog'</span>: <span class="string">'linuxzen.com'</span>, <span class="string">'name'</span>: <span class="string">'cold'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info</span><br><span class="line">&#123;<span class="string">'blog'</span>: <span class="string">'linuxzen.com'</span>, <span class="string">'name'</span>: <span class="string">'cold night'</span>&#125;</span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line"><span class="keyword">del</span> info[<span class="string">'name'</span>]</span><br><span class="line"><span class="comment"># 遍历</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info = dict(name=<span class="string">'cold'</span>, blog=<span class="string">'linuxzen.com'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> key, value <span class="keyword">in</span> info.items():</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">print</span> key, <span class="string">':'</span>,  value</span><br></pre></td></tr></table></figure>
+<h3 id="总结">总结</h3>
+<p>总结看下来，基本上key-value形式的数据结构分为两类：</p>
+<ul>
+<li>以红黑树为基础的数据结构：map、set、TreeMap</li>
+<li>基于散列哈希的数据结构：HashMap、dictionary</li>
+</ul>
+<p>前者的优势在于有序，能提供较为稳定的复杂度算法，并且可以在顺序上做文章。但后者更快，在大数据的情况下更实用。</p>
+<p>最后值得注意的是，红黑树为基础的数据结构内部重载了<strong>小于</strong>的操作（因为红黑树的插入本身要先排序）；而哈希重载了<strong>等于</strong>的操作（哈希通过判断相等来确定要不要处理冲突）。在自定义时记得自己声明重载。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Leetcode笔记-62.不同路径/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-62.不同路径">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/leetcode笔记-337.打家劫舍III/" data-toggle="tooltip" data-placement="top" title="leetcode笔记-337.打家劫舍III">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x524D;&#x8A00;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#c-中的-map-amp-unoerdered_map"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">C++ &#x4E2D;&#x7684; map &amp; unoerdered_map</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#java中的hashmap-amp-treemap"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Java&#x4E2D;&#x7684;HashMap &amp; TreeMap</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#python中的字典"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Python&#x4E2D;&#x7684;&#x5B57;&#x5178;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#hashMap" title="hashMap">hashMap</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

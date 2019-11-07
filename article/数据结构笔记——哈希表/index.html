@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——哈希表 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——哈希表/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#哈希表" title="哈希表">哈希表</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——哈希表</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-12-18
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0问题描述">0.问题描述</h3>
+<p>哈希表（hash table,散列表）是一种用于以常数平均时间执行插入、删除和查找的查找表，其基本思想是：找到一个从关键字到查找表的地址的映射h（称为散列函数），将关键字key的元素存到h(key)所指示的存储单元中。当两个不相等的关键字被散列到同一个值时称为冲突，产生冲突的两个（或多个）关键字称为同义词，冲突处理的方法主要有：开放定址法，再哈希法，链地址法。</p>
+<p>本题针对字符串设计哈希函数。假定有一个班级的人名名单，用汉语拼音（英文字母）表示。</p>
+<p>要求：首先把人名转换成整数，采用函数h(key)=key[0] * 37^(n-1)+key[1] * 37^(n-2)+…+key[n-2] * 37+key[n-1]，其中key[i]表示人名从左往右的第i个字母(i从0计数,字符串长度为n)，例如字母a和A的序号都是1。</p>
+<p>采取除留余数法（模是M）将整数映射到长度为p的散列表中，h(key)=h(key)%M；</p>
+<p>采用线性探测法解决冲突；</p>
+<p>注意：计算h(key)时会发生溢出，需要先取模再计算。</p>
+<h3 id="1数据结构">1.数据结构</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">typedef string ElemType;</span><br><span class="line"></span><br><span class="line">typedef struct Node &#123;</span><br><span class="line">	ElemType value;</span><br><span class="line">	int choosed;</span><br><span class="line">&#125; *PNode;</span><br><span class="line"></span><br><span class="line">typedef struct HashTable &#123;</span><br><span class="line">	int size;</span><br><span class="line">	PNode arr;</span><br><span class="line">&#125; *PHashTable;</span><br></pre></td></tr></table></figure>
+<h3 id="2哈希表初始化">2.哈希表初始化</h3>
+<p>使用一个动态分配的数组来模拟哈希表。首先分配需要大小的数组，然后将哈希表的长度初始化，再将哈希表中所有的元素均设为空字符串（因为本题中给出的元素为人名，即字符串）。再将查找次数的整型数设置为0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PHashTable init(int P)</span><br><span class="line">&#123;</span><br><span class="line">	PHashTable table = (PHashTable)malloc(sizeof(struct HashTable));</span><br><span class="line">	table-&gt;size = P;</span><br><span class="line">	table-&gt;arr = new Node[P];</span><br><span class="line">	int i;</span><br><span class="line">	for (i = 0; i &lt; P; i++) &#123;</span><br><span class="line">		table-&gt;arr[i].choosed = 0;</span><br><span class="line">		table-&gt;arr[i].value = &quot;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	return table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3散列计算">3.散列计算</h3>
+<p>散列计算最主要的是要进行溢出判断。首先判断输入的字符是大写字母还是小写字母，将他们统一转换为与之对应的数字。接下来进行散列公示的计算，注意每一次乘以37的n次方都有可能溢出。所以不应该直接调用pow函数，而是应该使用一个循环进行判断。如果当前的数大于INT_MAX的37分之一，那么接下来的计算一定会溢出。将现在的数mod37再进行计算。<br>
+注意判断是使用除法，如果判断value*37和INT_MAX的关系那在判断时就已经溢出了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">int hashcal(string key, int M)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	unsigned int i;</span><br><span class="line">	int value = 0;</span><br><span class="line">	for (i = 0; i&lt;key.length(); i++) &#123;</span><br><span class="line">		if (key[i] &gt;= 97) &#123;</span><br><span class="line">			key[i] -= 96;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			key[i] -= 64;</span><br><span class="line">		&#125;</span><br><span class="line">		//value += (int)(key[i] * pow(37, key.length() - 1 - i));</span><br><span class="line">		int len = key.length() - 1 - i;</span><br><span class="line">		int temp = key[i];</span><br><span class="line">		while (len) &#123;</span><br><span class="line">			if (temp&gt;= 2147483647 / 37) &#123;</span><br><span class="line">				temp %= M;</span><br><span class="line">			&#125;</span><br><span class="line">			temp *= 37;</span><br><span class="line">			len--;</span><br><span class="line">		&#125;</span><br><span class="line">		temp %= M;</span><br><span class="line">		value += temp;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		value %= M;</span><br><span class="line">	&#125;</span><br><span class="line">	return value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4插入与线性探测">4.插入与线性探测</h3>
+<p>Insert函数实现每一个元素的插入，同时进行冲突的检测。首先调用散列计算函数得到插入的位置，接下来如果这个位置的choosed为1，即已经被选择，那么根据线性检测的原则，递增向后面的元素进行检测。直到找到choosed为0的状况，将值赋进去，将choosed赋为1。注意在线性递增的时候有可能会超出数组的边界，所有要及时的使用mod回到数组的开始。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">int insert(PHashTable table, string key, int M)</span><br><span class="line">&#123;</span><br><span class="line">	int index = hashcal(key, M);</span><br><span class="line">	while (table-&gt;arr[index].choosed</span><br><span class="line">		&amp;&amp; table-&gt;arr[index].value != key &amp;&amp; table-&gt;arr[index].value != &quot;&quot;) &#123;</span><br><span class="line">		table-&gt;arr[index].choosed++;</span><br><span class="line">		index++;</span><br><span class="line">		index = index % table-&gt;size;</span><br><span class="line">	&#125;</span><br><span class="line">	if (!table-&gt;arr[index].choosed) &#123;</span><br><span class="line">		table-&gt;arr[index].value = key;</span><br><span class="line">		table-&gt;arr[index].choosed = 1;</span><br><span class="line">	&#125;</span><br><span class="line">	return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5哈希查找">5.哈希查找</h3>
+<p>哈希查找的思想和插入的思想一致。首先调用散列计算函数得到插入的位置，接下来如果这个位置的元素就是搜求的，返回1。否则，根据线性检测的原则，递增向后面的元素进行检测，每次检测一个将计数器加一，最后返回计数器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int hashFind(PHashTable table, string key, int M, int P)</span><br><span class="line">&#123;</span><br><span class="line">	int index = hashcal(key, M);</span><br><span class="line">	int count = 1;</span><br><span class="line">	while (index&lt;P) &#123;</span><br><span class="line">		if (table-&gt;arr[index].value == key &amp;&amp; table-&gt;arr[index].value != &quot;&quot;) &#123;</span><br><span class="line">			return count;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			index++;</span><br><span class="line">			index = index % table-&gt;size;</span><br><span class="line">			count++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6另外">6.另外</h3>
+<ul>
+<li>判断溢出是注意使用除法，否则在判断条件中就会出现溢出。</li>
+<li>在进行溢出的计算时注意要使用一个整型的变量temp，不能直接使用char类型的key[i]来进行计算，这样会超出char的范围，带来不可预知的结果。</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/leetcode笔记-53.最大子序和/" data-toggle="tooltip" data-placement="top" title="leetcode笔记——53.最大子序和">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/leetcode笔记-8.实现atoi函数/" data-toggle="tooltip" data-placement="top" title="leetcode笔记——8.实现atoi函数">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0问题描述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x95EE;&#x9898;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1数据结构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2哈希表初始化"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.&#x54C8;&#x5E0C;&#x8868;&#x521D;&#x59CB;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3散列计算"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x6563;&#x5217;&#x8BA1;&#x7B97;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4插入与线性探测"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4.&#x63D2;&#x5165;&#x4E0E;&#x7EBF;&#x6027;&#x63A2;&#x6D4B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5哈希查找"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5.&#x54C8;&#x5E0C;&#x67E5;&#x627E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6另外"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">6.&#x53E6;&#x5916;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#哈希表" title="哈希表">哈希表</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

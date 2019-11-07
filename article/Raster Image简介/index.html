@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Raster Image简介 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/Raster Image简介/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#图形学" title="图形学">图形学</a>
+                            
+                        </div>
+                        <h1>Raster Image简介</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-07-18
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>开始之前可以先看一看这个视频，虽然是一个Photoshop的教学，但是讲的还是很原理的。<br>
+<a href="https://www.youtube.com/watch?v=FVOF0CR9ass" target="_blank" rel="noopener"> What is a raster image? on youtube</a></p>
+<h3 id="raster-image">Raster Image</h3>
+<p>中文直接翻译是<strong>光栅影像</strong>，可能有一个真正的专业名词，在这里为了避免歧义我们都用英文的Raster Image来说。</p>
+<blockquote>
+<p>A raster image is simply a 2D array that stores the pixel value for each pixel—usually a color stored as three numbers, for red, green, and blue.</p>
+</blockquote>
+<p>根据Fundamentals of computer graphics的描述，Raster Image是一个储存了每一个像素值（一般来说是三个RGB)的二维数组。</p>
+<p>这个其实很好理解，我们都知道在计算机内表示颜色一般都使用RGB，通过三原色的不同混合得到其他的颜色。一个image就是多个影像的集合，以二维数组的形式存储。</p>
+<h3 id="raster-device">Raster Device</h3>
+<p>在深入理解Raster Image之前，我们先看看使用他的仪器。可以分为两方面</p>
+<ul>
+<li>output
+<ul>
+<li>Display
+<ul>
+<li>Transmissive: liquid crystal display (LCD)</li>
+<li>Emissive: light emitting diode display(LED)</li>
+</ul>
+</li>
+<li>Hardcopy
+<ul>
+<li>Binary: ink-jet printer</li>
+<li>Continuous tone: dye sublimation printer</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Input
+<ul>
+<li>2D array sensor: digital camera</li>
+<li>1D array sensor: flatbed scanner</li>
+</ul>
+</li>
+</ul>
+<p>这里我们主要说一下LCD和LED。虽然在现实生活中听了很多遍，但其实还是非常陌生的两个概念。</p>
+<p>目前的显示器，包括电视和数字电影放映机以及计算机显示器和放映机，几乎都是基于固定的像素阵列。它们可以分为<strong>发射式显示器</strong>和<strong>透射式显示器</strong>，前者使用直接发射可控制数量的光的像素，后者使用像素本身不发射光，而是改变允许通过它们的光的数量。透射显示器需要光源来照亮它们:在直视显示器中，这是阵列后面的背光;在投影仪中，它是一种发出光的灯，光经过阵列后投射到屏幕上。发射显示器是它自己的光源。</p>
+<p>LCD（液晶显示器）是典型的投射式显示器。液晶是一种材料，它的分子结构使它能够旋转通过它的光的偏振，并且旋转的程度可以通过施加的电压来调节。一个LCD像素（如下图）的后面有一层偏振光膜，所以它被偏振光照射。</p>
+<p><img src="https://s2.ax1x.com/2019/07/18/ZXJ4KA.png" alt="image"></p>
+<p>LED（发光二极管）显示器是一种发射型显示器 每个像素由一个或多个LED组成,LED是半导体器件(基于无机或有机半导体),其发光强度取决于通过它们的电流(见图3.1) 彩色显示器中的像素分为三个独立控制的子像素,一个红色,一个绿色,一个蓝色,每个像素都有自己的LED,使用不同的材料制成,所以它们发出不同颜色的光(图3.2)</p>
+<p>!<img src="https://s2.ax1x.com/2019/07/18/ZXY9aV.png" alt="image"></p>
+<h3 id="pixel-format">Pixel Format</h3>
+<p>Here are some pixel formats with typical applications:</p>
+<ul>
+<li>1-bit grayscale—text and other images where intermediate grays are not desired (high resolution required);</li>
+<li>8-bit RGB fixed-range color (24 bits total per pixel)—web and email applications, consumer photographs;</li>
+<li>8- or 10-bit fixed-range RGB (24–30 bits/pixel)—digital interfaces to computer displays;</li>
+<li>12- to 14-bit fixed-range RGB (36–42 bits/pixel)—raw camera images for professional photography;</li>
+<li>16-bit fixed-rangeRGB (48 bits/pixel)—professional photographyand printing; intermediate format for image processing offixed-range images;</li>
+<li>16-bit fixed-range grayscale (16 bits/pixel)—radiology and medical imaging;</li>
+<li>16-bit “half-precision”floating-pointRGB—HDR images; intermediate format for real-time rendering;</li>
+<li>32-bit floating-point RGB—general-purpose intermediate format for software rendering and processing ofHDR images.</li>
+</ul>
+<h3 id="monitor-intensities-and-gamma">Monitor Intensities and Gamma</h3>
+<p>这里讨论的是显示强度和伽马。</p>
+<p>所有的现代显示器都接受像素值的数字输入，并将其转换为强度级别。真正的显示器在关闭时会有一些非零强度，因为屏幕会反射一些光。出于我们的目的，我们可以认为这是黑色的，而显示器完全是白色的。我们假设像素颜色的数值描述范围从0到1。黑色是0，白色是1，介于黑色和白色之间的灰色是0.5。注意这里half指的是来自像素的物理光量，而不是外观。人类对强度的感知是非线性的，不会成为当前讨论的一部分。</p>
+<p>要在监视器上生成正确的图像，必须理解两个关键问题。</p>
+<p>首先，<strong>监视器对于输入是非线性的</strong>。例如，如果将监视器0、0.5和1.0作为三个像素的输入，则显示的强度可能是0、0.25和1.0(关闭、四分之一完全打开和完全打开)。这种非线性的近似描述,显示器通常表现为一个γ(γ)值。这个值就是公式中的自由度</p>
+<p><img src="https://s2.ax1x.com/2019/07/18/ZXURot.png" alt="img"></p>
+<p>其中a为0到1之间的输入像素值。例如，如果监视器的gamma值为2.0，而我们输入的值为a =0.5，则显示的强度将是最大可能强度的四分之一，因为0.5^2 =0.25。请注意α= 0映射到零强度和α= 1映射到最大强度不管γ的值。描述一个显示年代使用γ只是一个近似非线性;我们不需要大量的精度估计γ的设备。测量非线性的一个很好的直观方法是找出α的值，再通过上式进行一个对数运算。</p>
+<p><img src="https://s2.ax1x.com/2019/07/18/ZXaeSO.png" alt="img"></p>
+<p>找到阿尔法可以通过这种方式：显示一个黑白的棋盘图，旁边显示一个灰色像素的输入,然后要求用户调整(例如滑块之类的),直到双方平均亮度相匹配。当你从远处看这幅图像时(如果你是近视眼，或者不戴眼镜)，当α在黑白之间产生一种强度时，图像的两边看起来差不多。这是因为模糊的棋盘混合了偶数个黑白像素，所以整体效果是介于黑白之间的统一颜色。</p>
+<p>显示器的另一个重要特性是它们接受量子化的输入值。因此，虽然我们可以在浮点范围[0,1]中操作强度，但是监视器的详细输入是一个固定大小的整数。这个整数最常见的范围是0-255，它可以保存在8位存储中。这意味着a的可能值不是[0,1]中的任何数字，而是</p>
+<p><img src="https://s2.ax1x.com/2019/07/18/ZXaw0s.md.png" alt="img"></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/C++泛型编程和迭代器/" data-toggle="tooltip" data-placement="top" title="C++泛型编程和迭代器">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/KickStart-2019 B轮解题/" data-toggle="tooltip" data-placement="top" title="KickStart-2019 B轮解题">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#raster-image"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Raster Image</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#raster-device"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Raster Device</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#pixel-format"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Pixel Format</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#monitor-intensities-and-gamma"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Monitor Intensities and Gamma</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#图形学" title="图形学">图形学</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

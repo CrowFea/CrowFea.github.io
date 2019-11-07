@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Linux-ubuntu安装与踩坑指南 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/Linux-ubuntu安装与踩坑指南/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#操作系统" title="操作系统">操作系统</a>
+                            
+                              <a class="tag" href="/tags/#linux" title="linux">linux</a>
+                            
+                        </div>
+                        <h1>Linux-ubuntu安装与踩坑指南</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-05-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="引言">引言</h3>
+<p>基本上看完了<strong>Abraham-Silberschatz的 Operating-System-Concepts</strong>，恰好上周从姐姐那里骗来了的lenovo也到了。这几日折腾了一下linux系统，还是有些坑，记录一下以备之后再装。</p>
+<p>先上成果图：<img src="https://s2.ax1x.com/2019/05/15/ETxYwV.md.png" alt="img"></p>
+<p>颜值控表示没办法，上来以后先换主题和壁纸，整成了mac os的风格。主要实现了下面几个功能</p>
+<ul>
+<li><a href="https://crowfeablog.com/article/Linux-ubuntu%E5%AE%89%E8%A3%85%E4%B8%8E%E8%B8%A9%E5%9D%91%E6%8C%87%E5%8D%97/">ubuntu系统的安装</a></li>
+<li><a href="https://crowfeablog.com/article/Linux-ubuntu%E5%9F%BA%E6%9C%AC%E8%BD%AF%E4%BB%B6%E4%B8%8Esynergy%E9%85%8D%E7%BD%AE/">软件安装问题</a></li>
+<li><a href="https://crowfeablog.com/article/Linux-ubuntu%E5%9F%BA%E6%9C%AC%E8%BD%AF%E4%BB%B6%E4%B8%8Esynergy%E9%85%8D%E7%BD%AE/">synergy安装配置</a></li>
+<li><a href="https://crowfeablog.com/article/Linux-ubuntu%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AEmacOS/">gnome主题更换（以mac为例）</a></li>
+</ul>
+<p>我们这篇文章主要讲一下ubuntu的安装</p>
+<h3 id="选择自己的发行版">选择自己的发行版</h3>
+<p><font color="#006400"> <strong>灵魂拷问：为什么选择Ubuntu？</strong></font><br></p>
+<p>其实在安装之前纠结了好一阵，毕竟这个是装的第一个linux系统，稍稍的有一些仪式感。好几个发行版在我的list中：Deepin，Mint等，（Deepin是国产，尽量支持国产！）。最后还是选择了Ubuntu。有以下几个原因：</p>
+<ol>
+<li>
+<p>ubuntu有很<strong>强大的软件仓库</strong>：里面绝大部分软件都是符合gpl协议的免费开源软件。如果你看到free和non-free字样，很多时候并不是说免费与否，而是开源与否。相比起windows下下载什么不官方的话就要考虑病毒好多了。</p>
+</li>
+<li>
+<p>ubuntu很<strong>安全</strong>，一方面是linux用户比较少，黑客不感兴趣吧，另外一方面，linux系统设计的框架比较好，普通用户权限是有限的，病毒很难感染整个系统。</p>
+</li>
+<li>
+<p><strong>高度的可定制性</strong>，你可以打造自己的系统。ubuntu的很多配置文件都在/home/用户名文件夹里面，所以即便重装系统，只要格式化/分区（前提是/和/home不在一个分区），你的配置文件几乎完全被保留，个人习惯也会保留。</p>
+</li>
+<li>
+<p>我更喜欢新奇，和瞎折腾。可以<strong>自定义</strong>出自己的风格，ubuntu不断的更新，从9.10版本，到现在的18.04，每一个版本都会有很多改进。而且，即便重装，也很方便。</p>
+</li>
+</ol>
+<p>当然了，操作系统也是程序，选自己趁手的。也可能在使用了Ubuntu几个月之后就腻了，选择别的发行版试试，这就是后话不表。</p>
+<h3 id="准备ubuntu-1804系统">准备Ubuntu 18.04系统</h3>
+<h4 id="下载">下载</h4>
+<p>来这个网站 <a href="https://www.ubuntu.com/download/desktop" target="_blank" rel="noopener">ubuntu 18.04</a><br>
+<img src="https://s2.ax1x.com/2019/05/15/E7C2zF.png" alt="img"></p>
+<p>虽说现在出了19.04的发行版，但是最稳定的还是18.04，官网的建议也是18.04。没有金刚钻，先玩18版。</p>
+<h4 id="设置启动盘">设置启动盘</h4>
+<p>下载下来后我们需要一个u盘，windows可以直接从硬盘的bootstrap，使用BIOS引导启动，也可以从u盘，UEFI引导启动。</p>
+<p><font color="#006400"> <strong>BIOS启动流程</strong></font><br></p>
+<ul>
+<li>系统开机 - 上电自检（Power On Self Test 或 POST）</li>
+<li>POST过后初始化用于启动的硬件（磁盘、键盘控制器等）</li>
+<li>BIOS会运行BIOS磁盘启动顺序中第一个磁盘的首440bytes（MBR启动代码区域）内的代码</li>
+<li>启动引导代码从BIOS获得控制权，然后引导启动下一阶段的代码（如果有的话）（一般是系统的启动引导代码）</li>
+<li>再次被启动的代码（二阶段代码）（即启动引导）会查阅支持和配置文件。根据配置文件中的信息，启动引导程序会将内核和initramfs文件载入系统的RAM中，然后开始启动内核。</li>
+</ul>
+<p><font color="#006400"> <strong>UEFI启动流程</strong></font><br></p>
+<ul>
+<li>系统开机 - 上电自检（Power On Self Test 或 POST）。</li>
+<li>UEFI 固件被加载，并由它初始化启动要用的硬件。</li>
+<li>固件读取其引导管理器以确定从何处（比如，从哪个硬盘及分区）加载哪个 UEFI 应用。</li>
+<li>固件按照引导管理器中的启动项目，加载UEFI 应用。</li>
+<li>已启动的 UEFI 应用还可以启动其他应用（对应于 UEFI shell 或 rEFInd 之类的引导管理器的情况）或者启动内核及initramfs（对应于GRUB之类引导器的情况），这取决于 UEFI 应用的配置。</li>
+</ul>
+<p>我们这里找一个u盘，大小16g左右，最好里面不要有东西，或者提前备份一下，我们之后要格式化u盘。下载一个制作工具<a href="https://www.nch.com.au/burn/index.html?kw=&amp;gclid=EAIaIQobChMIqM6Ypped4gIVtgStBh0SSARlEAEYASAAEgJdOvD_BwE" target="_blank" rel="noopener">rufus</a></p>
+<p><img src="https://s2.ax1x.com/2019/05/15/E7iXVA.png" alt="img"></p>
+<p>设备选择是u盘（<strong>记得备份！记得备份！记得备份！</strong>），镜像文件选择是自己下载的iso。其他的默认选择，开始就完了。之后会跳出一个窗口，默认选择就行了。</p>
+<p>最后结束之后不会提示结束哦，不要又来一遍…我就又来了一遍…</p>
+<p>注意不要对u盘进行任何改动，完了之后拔下来，准备装Ubuntu的电脑了。</p>
+<h3 id="安装ubuntu-1804">安装Ubuntu 18.04</h3>
+<p>将u盘插到电脑上，开机。</p>
+<p>我使用的是hp和lenovo的电脑，进入BIOS的按键都为F12。进入BIOS后进入。<br>
+如果你的电脑有两个USB…选项可供选择，可能一个带有“USB…UEFI”,另一个没有“UEFI”，请选择没有“UEFI”的，选带有“UEFI”的可能会出现问题。</p>
+<p>接下来没有截图，很显然因为要装系统。要注意的点有：</p>
+<ul>
+<li>尽量先选择try ubuntu。因为如果电脑有nvidia的话好像直接选安装会出问题。</li>
+<li>之后选择安装图形或无线硬件。</li>
+<li>接下来有个很重要的事情，就是分区</li>
+</ul>
+<h4 id="分区">分区</h4>
+<p>我们已经安装了windows的系统，他要进行选择：</p>
+<ul>
+<li>安装Ubuntu，与windows共存。双系统，但是不能自定义每个区的大小。</li>
+<li>抹除windows。直接把windows抹掉了，想彻底一点就选这个。</li>
+<li>自定义。一般都选择这个，可以自定义，也比较保险。</li>
+</ul>
+<p>第一点设置/boot挂载点，用来存放系统引导的挂载点，大小400MB。</p>
+<p>第二点设置交换空间swap，即硬盘与内存互动的空间，虚拟内存的意思。如果内存小于8G，按1:2，否则1:1就够了。比如内存4G，这里设置8000M，16G的话，设置16000M。</p>
+<p>第三点设置设置/ 挂载点，视硬盘的空间，几个G到20个G足够了。</p>
+<p>第四点设置设置/home用户挂载点，把剩下的空间全部设置在这里了。</p>
+<p>接下来最重要的是，安装启动引导器的设备选择。只有一块硬盘的话，默认就好。有多块盘，一定要设置和系统安装一致的盘，而不是分区，一定要搞清楚了，否则会引导失败！</p>
+<p>具体的分区可以看这篇文章<a href="http://www.cnblogs.com/Duane/p/5424218.html" target="_blank" rel="noopener">分区</a></p>
+<p>接下来要干的就是选择地址、设置管理员账号密码等等。一路next，完成后重启。</p>
+<h3 id="配置引导程序">配置引导程序</h3>
+<p>我们碰到了一个问题是</p>
+<blockquote>
+<p>无法将grub-efi-amd64-signed软件包安装到/target/</p>
+</blockquote>
+<p>意思是安装成功了，但是没有引导项。我们要下载一个包修复一下。打开终端，crtl-alt-t。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -i</span><br><span class="line">add-apt-repository ppa:yannubuntu/boot-repair</span><br><span class="line">apt upgrade</span><br><span class="line">apt update</span><br><span class="line">apt install boot-repair</span><br></pre></td></tr></table></figure>
+<p>安装好后打开launchpad，打开boot-repair，使用recommend的方法继续修复即可。</p>
+<p>那么接下来就安装好啦！</p>
+<h3 id="tips">tips</h3>
+<ul>
+<li>每次登入系统的时候，要输入两次密码。一次进入电脑输密码，这次输密码的时候usb接口是不打开的，也就是说外接的鼠标、键盘是输入不了的。</li>
+<li>如果安装过程有什么问题，直接google。基本上问题都apt-get都可以解决。</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Linux-ubuntu基本软件与synergy配置/" data-toggle="tooltip" data-placement="top" title="Linux-ubuntu软件安装问题与synergy配置">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/Leetcode笔记-第136场周赛/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-第136场周赛">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#引言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x5F15;&#x8A00;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#选择自己的发行版"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x9009;&#x62E9;&#x81EA;&#x5DF1;&#x7684;&#x53D1;&#x884C;&#x7248;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#准备ubuntu-1804系统"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x51C6;&#x5907;Ubuntu 18.04&#x7CFB;&#x7EDF;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#下载"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">&#x4E0B;&#x8F7D;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#设置启动盘"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">&#x8BBE;&#x7F6E;&#x542F;&#x52A8;&#x76D8;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装ubuntu-1804"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;Ubuntu 18.04</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#分区"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">&#x5206;&#x533A;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置引导程序"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;&#x5F15;&#x5BFC;&#x7A0B;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#tips"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">tips</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#操作系统" title="操作系统">操作系统</a>
+                        
+                          <a class="tag" href="/tags/#linux" title="linux">linux</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

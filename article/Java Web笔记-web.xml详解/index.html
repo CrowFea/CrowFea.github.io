@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java Web笔记-web.xml详解 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/Java Web笔记-web.xml详解/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Java" title="Java">Java</a>
+                            
+                              <a class="tag" href="/tags/#Java Web" title="Java Web">Java Web</a>
+                            
+                        </div>
+                        <h1>Java Web笔记-web.xml详解</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-06-11
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="什么是webxml">什么是web.xml</h3>
+<p>web.xml文件是用来配置：欢迎页、servlet、filter等的。当你的web工程没用到这些时，你可以不用web.xml文件来配置你的web工程。</p>
+<p>首先web.xml并不是必需的，一个web中完全可以没有web.xml文件，也就是说，web.xml文件并不是web工程必须的。</p>
+<h3 id="webxml的加载顺序">web.xml的加载顺序</h3>
+<p>web容器的加载顺序ServletContext -&gt; context-param -&gt; listener -&gt; filter -&gt; servlet。并且这些元素可以配置在文件中的任意位置，不会因为filter在web.xml文件中写在listener前面就先加载filter。<br>
+加载过程顺序如下</p>
+<p>启动一个web项目，web容器会读取它的配置文件web.xml，读取<listener>和<context-param>两个结点。<br>
+创建一个ServletContext(Servlet上下文)，这个web项目的所有部分都将共享这个上下文<br>
+容器将<context-param>转换为键值对，并交给ServletContext<br>
+容器创建<listener>中的类实例，创建监听器</listener></context-param></context-param></listener></p>
+<h3 id="schema标签">Schema标签</h3>
+<p>web.xml的模式(Schema)文件中定义了多少种标签元素，web.xml中就可以出现它的模式文件所定义的标签元素，它就能拥有定义出来的那些功能。web.xml的模式文件是由Sun公司定义的，每个web.xml文件的根元素<web-app>中，都必须标明这个web.xml使用的是哪个模式文件。如：</web-app></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">version</span>=<span class="string">"2.5"</span> </span></span><br><span class="line"><span class="tag"> <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span></span></span><br><span class="line"><span class="tag"> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag"> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee</span></span></span><br><span class="line"><span class="tag"><span class="string"> http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>而且web.xml的模式文件中定义的标签并不是定死的，模式文件也是可以改变的，一般来说，随着web.mxl模式文件的版本升级，里面定义的功能会越来越复杂，也即标签元素的种类会越来越多，但有些是不常用的，我们只需记住一些常用的就可以了。</p>
+<p>下面列出web.xml常用的标签元素及这些标签元素的功能：</p>
+<h3 id="常用标签">常用标签</h3>
+<h4 id="欢迎">欢迎</h4>
+<p>指定欢迎页面，例如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">welcome-file-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">welcome-file-list</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.jsp<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index1.jsp<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">welcome-file-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的例子指定了2个欢迎页面，显示时按顺序从第一个找起，如果第一个存在，就显示第一个，后面的不起作用。如果第一个不存在，就找第二个，以此类推。</p>
+<p>访问一个网站时，默认看到的第一个页面就叫欢迎页，一般情况下是由首页来充当欢迎页的。一般情况下，我们会在web.xml中指定欢迎页。但web.xml并不是一个Web的必要文件，没有web.xml，网站仍然是可以正常工作的。只不过网站的功能复杂起来后，web.xml的确有非常大用处，所以，默认创建的动态web工程在WEB-INF文件夹下面都有一个web.xml文件。</p>
+<p>当你只指定一个web的根名，没有指定具体页面，去访问时一个web时，如果web.xml文件中配置了欢迎页，那么就返回指定的那个页面作为欢迎页，而在文中没有web.xml文件，或虽然有web.xml，但web.xml也没指定欢迎页的情况下，那么不同的应用服务器可能会有不同的行为，对于tomcat来说，它默认先查找index.html文件，如果找到了，就把index.html作为欢迎页还回给浏览器。如果没找到index.html，tomcat就去找index.jsp。找到index.jsp就把它作为欢迎页面返回。而如果index.html和index.jsp都没找到，又没有用web.xml文件指定欢迎页面，那此时tomcat就不知道该返回哪个文件了，它就显示The requested resource (/XXX) is not available的页面。其中XXX表示web的根名。但如果你指定了具体页面，是可以正常访问的。(如果web根名下存在index.html和index.jsp，而某些应用服务器在web.xml中没指定欢迎页的情况下默认先查找index.jsp的话，其行为跟tomcat就不一样了，因此可能造成没配置web.xml欢迎页的项目，部署到不同的应用服务器看到不一样的首页的现象)。</p>
+<h4 id="命名与定制url">命名与定制URL</h4>
+<p>我们可以为Servlet和JSP文件命名并定制URL,其中定制URL是依赖一命名的，命名必须在定制URL前。下面拿serlet来举例：</p>
+<ul>
+<li>
+<p>为Servlet命名：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>net.test.TestServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>为Servlet定制URL</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.do<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>定制初始化参数<br>
+可以定制servlet、JSP、Context的初始化参数，然后可以再servlet、JSP、Context中获取这些参数值。下面拿servlet来举例：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>net.test.TestServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>userName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Tommy<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>E-mail<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Tommy@163.com<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>经过上面的配置，在servlet中能够调用getServletConfig().getInitParameter(“param1”)获得参数名对应的值。</p>
+</li>
+</ul>
+<h4 id="指定错误处理页面可以通过异常类型或错误码来指定错误处理页面">指定错误处理页面，可以通过“异常类型”或“错误码”来指定错误处理页面。</h4>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">error-page</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="name">error-code</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">location</span>&gt;</span>/error404.jsp<span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">error-page</span>&gt;</span></span><br><span class="line">-----------------------------</span><br><span class="line"><span class="tag">&lt;<span class="name">error-page</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exception-type</span>&gt;</span>java.lang.Exception<span class="tag">&lt;<span class="name">exception-type</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">location</span>&gt;</span>/exception.jsp<span class="tag">&lt;<span class="name">location</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">error-page</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="设置过滤器">设置过滤器</h4>
+<p>比如设置一个编码过滤器，过滤所有资源</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>XXXCharaSetFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>net.test.CharSetFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>XXXCharaSetFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p></p>
+<h4 id="设置监听器">设置监听器</h4>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>net.test.XXXListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p></p>
+<h4 id="设置会话session过期时间">设置会话(Session)过期时间</h4>
+<p>其中时间以分钟为单位，假如设置60分钟超时：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;/<span class="name">session-timeout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="web应用图标">Web应用图标</h4>
+<p>指出IDE和GUI工具用来表示Web应用的大图标和小图标</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">icon</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;<span class="name">small-icon</span>&gt;</span>/images/app_small.gif<span class="tag">&lt;/<span class="name">small-icon</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;<span class="name">large-icon</span>&gt;</span>/images/app_large.gif<span class="tag">&lt;/<span class="name">large-icon</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">icon</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="web-应用名称">Web 应用名称</h4>
+<p>提供GUI工具可能会用来标记这个特定的Web应用的一个名称</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">display-name</span>&gt;</span>Tomcat Example<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p></p>
+<h4 id="web-应用描述">Web 应用描述</h4>
+<p>给出于此相关的说明性文本</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">disciption</span>&gt;</span>Tomcat Example servlets and JSP pages.<span class="tag">&lt;/<span class="name">disciption</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p></p>
+<h4 id="上下文参数">上下文参数</h4>
+<p>声明应用范围内的初始化参数。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>ContextParameter<span class="tag">&lt;/<span class="name">para-name</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>test<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>It is a test parameter.<span class="tag">&lt;/<span class="name">description</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在servlet里面可以通过getServletContext().getInitParameter(“context/param”)得到</p>
+<h4 id="servlet配置">Servlet配置</h4>
+<ul>
+<li>基本配置</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   <span class="tag">&lt;<span class="name">servlet</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>snoop<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>SnoopServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span>    </span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span>    </span><br><span class="line">   <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>snoop<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/snoop<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span>    </span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>高级配置</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="tag">&lt;<span class="name">servlet</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>snoop<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>SnoopServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">init-param</span>&gt;</span>    </span><br><span class="line">         <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>foo<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span>    </span><br><span class="line">         <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">run-as</span>&gt;</span>    </span><br><span class="line">         <span class="tag">&lt;<span class="name">description</span>&gt;</span>Security role for anonymous access<span class="tag">&lt;/<span class="name">description</span>&gt;</span>    </span><br><span class="line">         <span class="tag">&lt;<span class="name">role-name</span>&gt;</span>tomcat<span class="tag">&lt;/<span class="name">role-name</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;/<span class="name">run-as</span>&gt;</span>    </span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span>    </span><br><span class="line">   <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>snoop<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/snoop<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span>    </span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span>  </span><br><span class="line">```  </span><br><span class="line">元素说明   </span><br><span class="line">```xml </span><br><span class="line">     <span class="tag">&lt;<span class="name">servlet</span>&gt;</span><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span> 用来声明一个servlet的数据，主要有以下子元素：    </span><br><span class="line">     <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span><span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span> 指定servlet的名称    </span><br><span class="line">     <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span><span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span> 指定servlet的类名称    </span><br><span class="line">     <span class="tag">&lt;<span class="name">jsp-file</span>&gt;</span><span class="tag">&lt;/<span class="name">jsp-file</span>&gt;</span> 指定web站台中的某个JSP网页的完整路径    </span><br><span class="line">     <span class="tag">&lt;<span class="name">init-param</span>&gt;</span><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span> 用来定义参数，可有多个init-param。在servlet类中通过getInitParamenter(String name)方法访问初始化参数    </span><br><span class="line">     <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span><span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span>指定当Web应用启动时，装载Servlet的次序。    </span><br><span class="line">                                 当值为正数或零时：Servlet容器先加载数值小的servlet，再依次加载其他数值大的servlet.    </span><br><span class="line">                                 当值为负或未定义：Servlet容器将在Web客户首次访问这个servlet时加载它    </span><br><span class="line">     <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span> 用来定义servlet所对应的URL，包含两个子元素    </span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span><span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span> 指定servlet的名称    </span><br><span class="line">       <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span><span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span> 指定servlet所对应的URL</span><br></pre></td></tr></table></figure>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/算法-递归与分治策略/" data-toggle="tooltip" data-placement="top" title="算法-递归与分治策略">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/Java Web笔记-目录组织详解/" data-toggle="tooltip" data-placement="top" title="Java Web笔记-目录组织详解">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#什么是webxml"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x4EC0;&#x4E48;&#x662F;web.xml</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#webxml的加载顺序"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">web.xml&#x7684;&#x52A0;&#x8F7D;&#x987A;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#schema标签"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Schema&#x6807;&#x7B7E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常用标签"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x5E38;&#x7528;&#x6807;&#x7B7E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#欢迎"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">&#x6B22;&#x8FCE;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#命名与定制url"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">&#x547D;&#x540D;&#x4E0E;&#x5B9A;&#x5236;URL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#指定错误处理页面可以通过异常类型或错误码来指定错误处理页面"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">&#x6307;&#x5B9A;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x9875;&#x9762;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x201C;&#x5F02;&#x5E38;&#x7C7B;&#x578B;&#x201D;&#x6216;&#x201C;&#x9519;&#x8BEF;&#x7801;&#x201D;&#x6765;&#x6307;&#x5B9A;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x9875;&#x9762;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#设置过滤器"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text">&#x8BBE;&#x7F6E;&#x8FC7;&#x6EE4;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#设置监听器"><span class="toc-nav-number">4.5.</span> <span class="toc-nav-text">&#x8BBE;&#x7F6E;&#x76D1;&#x542C;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#设置会话session过期时间"><span class="toc-nav-number">4.6.</span> <span class="toc-nav-text">&#x8BBE;&#x7F6E;&#x4F1A;&#x8BDD;(Session)&#x8FC7;&#x671F;&#x65F6;&#x95F4;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#web应用图标"><span class="toc-nav-number">4.7.</span> <span class="toc-nav-text">Web&#x5E94;&#x7528;&#x56FE;&#x6807;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#web-应用名称"><span class="toc-nav-number">4.8.</span> <span class="toc-nav-text">Web &#x5E94;&#x7528;&#x540D;&#x79F0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#web-应用描述"><span class="toc-nav-number">4.9.</span> <span class="toc-nav-text">Web &#x5E94;&#x7528;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#上下文参数"><span class="toc-nav-number">4.10.</span> <span class="toc-nav-text">&#x4E0A;&#x4E0B;&#x6587;&#x53C2;&#x6570;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#servlet配置"><span class="toc-nav-number">4.11.</span> <span class="toc-nav-text">Servlet&#x914D;&#x7F6E;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Java" title="Java">Java</a>
+                        
+                          <a class="tag" href="/tags/#Java Web" title="Java Web">Java Web</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

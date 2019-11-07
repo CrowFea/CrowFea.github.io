@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          操作系统-进程 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/操作系统-进程/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#操作系统" title="操作系统">操作系统</a>
+                            
+                        </div>
+                        <h1>操作系统-进程</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-05-06
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="进程的概念">进程的概念</h3>
+<blockquote>
+<p>a process is a program in execution</p>
+</blockquote>
+<p>进程是正在执行中的程序。但这不是确切的说法。进程不只包含代码，这作为他的一部分，被称作<strong>文本段</strong>或者<strong>代码段</strong>。</p>
+<p><img src="https://s2.ax1x.com/2019/05/06/EDYuHP.md.png" alt="img"></p>
+<p>除此以外，进程还包括<strong>当前活动</strong>，通过PC的值和寄存器的内容来表示。还包括<strong>堆栈段</strong>，其中有临时数据（函数参数、返回地址、局部变量）和<strong>数据段</strong>（全局变量）。还有可能包含<strong>堆</strong>，因为有可能动态申请了内存。</p>
+<p><img src="https://s2.ax1x.com/2019/05/06/EDtE5T.png" alt="img"></p>
+<p>强调：**程序不是进程。程序是被动实体，进程是活动实体。**当程序被装入内存后才会成为进程。（原文这里使用的是become）多个进程可与一个程序相关，比如可以同时打开三个相同的播放器播放复仇者联盟4，因为这太好看了。（虽然文本段相同，但数据段、堆栈段、堆却不同）。</p>
+<p>值得一提的是，进程本身可作为一部分代码的运行环境。java就是典型的例子，当我们运行java的时候，实际上运行了JVM来执行我们的java代码。</p>
+<h4 id="进程状态">进程状态</h4>
+<ul>
+<li><strong>New 新的</strong> 进程正在被创建</li>
+<li><strong>Running 运行</strong> 进程正在被执行</li>
+<li><strong>Waiting 等待</strong> 进程等待某个事件的发生（例如I/O）</li>
+<li><strong>Ready 就绪</strong> 进程等待分配处理器</li>
+<li><strong>Terminated 终止</strong> 进程完成执行</li>
+</ul>
+<p><strong>一次只有一个进程运行在处理器上，但是可以有多个在等待或者就绪</strong></p>
+<p><img src="https://s2.ax1x.com/2019/05/06/EDd9YV.png" alt="img"></p>
+<h4 id="进程控制块">进程控制块</h4>
+<p>每个进程在OS内用**进程控制块（PCB，也称任务控制块）**来表示。<br>
+<img src="https://s2.ax1x.com/2019/05/06/EDdZwR.png" alt="img"></p>
+<ul>
+<li>进程状态</li>
+<li>进程编号</li>
+<li>PC</li>
+<li>寄存器</li>
+<li>调度信息：包含进程优先级、调度队列的指针等</li>
+<li>内存管理信息</li>
+<li>记账信息：CPU时间、实际使用时间、时间界限、记账数据、进程数量等</li>
+<li>I/O状态信息</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/05/06/EDdYTI.png" alt="img"><br>
+PCB实际上完成的是保存现场和恢复现场的记录员的功能。</p>
+<h4 id="线程">线程</h4>
+<p><strong>线程 thread 是操作系统能够进行运算调度的最小单位。</strong><br>
+目前的暗示是：一个进程只能执行单个的线程。比如我们不能一边输入一边进行拼写检查。许多现代OS进行了扩展，我们将在之后讨论多线程进程。</p>
+<h3 id="进程调度">进程调度</h3>
+<p>多道程序设计的目的在于无论何时都有程序运行；分时系统的目的是在进程之间快速切换CPU以便用户进行交互。为了达到这个目的，进程调度选择一个可用的进程（可能从多个可用进程集合中选择）到cpu上执行。</p>
+<h4 id="调度队列">调度队列</h4>
+<p>进程进入系统后会被加入到<strong>作业队列</strong>中，该队列包括系统中的所有进程。驻留在内存中就绪的、等待运行的进程保存在<strong>就绪队列</strong>中。该队列通常用链表实现，其头结点指向链表的第一个和最后一个PCB块的指针，每个PCB块包括一个指向就绪队列的下一个PCB的指针域。<br>
+<img src="https://s2.ax1x.com/2019/05/06/EDgzGj.png" alt="img"></p>
+<p>除了上述队列外还有设备队列，假设进程像一个共享设备发送I/O请求，他会加入到该设备的设备队列内。</p>
+<p>讨论进程调度多用<strong>队列图</strong>，如下图：<br>
+<img src="https://s2.ax1x.com/2019/05/06/ED2rTS.png" alt="img"></p>
+<h4 id="调度程序">调度程序</h4>
+<p>进程选择往往是由<strong>调度程序 scheduler</strong>执行。</p>
+<p>通常对于批处理程序，进程更多的是被提交而不是被直接执行。这些进程被放到大容量存储设备（如磁盘）的缓冲池中。<strong>长期调度程序</strong>或<strong>作业调度程序</strong>从池中选择。<strong>短期调度程序</strong>或<strong>CPU调度程序</strong>从准备执行的进程中选择进程。</p>
+<p>短期调度程序运行频繁，因为进程可能数毫秒就要发出I/O请求，那么短期调度程序的时间要远小于毫秒。长期调度程序有数分钟的间隔。</p>
+<p>对有些OS可能没有或很少有长期调度程序。有些系统会加入<strong>中期调度程序，能将进程从内存中移出，降低多道程序设计的程度。</strong></p>
+<p><img src="https://s2.ax1x.com/2019/05/06/EDhXCD.png" alt="img"></p>
+<h4 id="上下文切换">上下文切换</h4>
+<p>当发生一个中断时，系统需保存当前运行在CPU中进程的上下文，从而在处理完后能恢复上下文。将CPU切换到另一个进程需要保存当前进程的状态并恢复另一个进程的状态，这一任务称为<strong>上下文切换</strong>。使用PCB，先执行<strong>状态保存</strong>，再执行<strong>状态恢复</strong>。</p>
+<p>上下文切换时系统不会做什么有效的工作，速度依赖于内存速度、需要复制的寄存器数量，与硬件支持紧密相关，一般需要几毫秒。</p>
+<h3 id="进程调度算法">进程调度算法</h3>
+<p>不同环境的调度算法目标不同，因此需要针对不同环境来讨论调度算法。</p>
+<h4 id="批处理系统">批处理系统</h4>
+<p>批处理系统没有太多的用户操作，在该系统中，调度算法目标是保证吞吐量和周转时间（从提交到终止的时间）。</p>
+<p><strong>先来先服务 first-come first-serverd（FCFS）</strong></p>
+<p>按照请求的顺序进行调度。</p>
+<p>有利于长作业，但不利于短作业，因为短作业必须一直等待前面的长作业执行完毕才能执行，而长作业又需要执行很长时间，造成了短作业等待时间过长。</p>
+<p><strong>短作业优先 shortest job first（SJF）</strong></p>
+<p>按估计运行时间最短的顺序进行调度。</p>
+<p>长作业有可能会饿死，处于一直等待短作业执行完毕的状态。因为如果一直有短作业到来，那么长作业永远得不到调度。</p>
+<p><strong>最短剩余时间优先 shortest remaining time next（SRTN）</strong></p>
+<p>按估计剩余时间最短的顺序进行调度。</p>
+<h4 id="交互式系统">交互式系统</h4>
+<p>交互式系统有大量的用户交互操作，在该系统中调度算法的目标是快速地进行响应。</p>
+<p><strong>时间片轮转</strong></p>
+<p>将所有就绪进程按 FCFS 的原则排成一个队列，每次调度时，把 CPU 时间分配给队首进程，该进程可以执行一个时间片。当时间片用完时，由计时器发出时钟中断，调度程序便停止该进程的执行，并将它送往就绪队列的末尾，同时继续把 CPU 时间分配给队首的进程。</p>
+<p>时间片轮转算法的效率和时间片的大小有很大关系：</p>
+<ul>
+<li>因为进程切换都要保存进程的信息并且载入新进程的信息，如果时间片太小，会导致进程切换得太频繁，在进程切换上就会花过多时间。</li>
+<li>而如果时间片过长，那么实时性就不能得到保证。</li>
+</ul>
+<p><strong>优先级调度</strong></p>
+<p>为每个进程分配一个优先级，按优先级进行调度。</p>
+<p>为了防止低优先级的进程永远等不到调度，可以随着时间的推移增加等待进程的优先级。</p>
+<p><strong>多级反馈队列</strong></p>
+<p>一个进程需要执行 100 个时间片，如果采用时间片轮转调度算法，那么需要交换 100 次。</p>
+<p>多级队列是为这种需要连续执行多个时间片的进程考虑，它设置了多个队列，每个队列时间片大小都不同，例如 1,2,4,8,…。进程在第一个队列没执行完，就会被移到下一个队列。这种方式下，之前的进程只需要交换 7 次。</p>
+<p>每个队列优先权也不同，最上面的优先权最高。因此只有上一个队列没有进程在排队，才能调度当前队列上的进程。</p>
+<p>可以将这种调度算法看成是时间片轮转调度算法和优先级调度算法的结合。</p>
+<h4 id="实时系统">实时系统</h4>
+<p>实时系统要求一个请求在一个确定时间内得到响应。</p>
+<p>分为硬实时和软实时，前者必须满足绝对的截止时间，后者可以容忍一定的超时。</p>
+<h3 id="进程同步">进程同步</h3>
+<h4 id="临界区">临界区</h4>
+<p>对临界资源进行访问的那段代码称为临界区。</p>
+<p>为了互斥访问临界资源，每个进程在进入临界区之前，需要先进行检查。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// entry section</span><br><span class="line">// critical section;</span><br><span class="line">// exit section</span><br></pre></td></tr></table></figure>
+<h4 id="同步与互斥">同步与互斥</h4>
+<ul>
+<li>同步：多个进程按一定顺序执行；</li>
+<li>互斥：多个进程在同一时刻只有一个进程能进入临界区。</li>
+</ul>
+<h4 id="信号量">信号量</h4>
+<p>信号量（Semaphore）是一个整型变量，可以对其执行 down 和 up 操作，也就是常见的 P 和 V 操作。</p>
+<ul>
+<li><strong>down</strong>  : 如果信号量大于 0 ，执行 -1 操作；如果信号量等于 0，进程睡眠，等待信号量大于 0；</li>
+<li><strong>up</strong> ：对信号量执行 +1 操作，唤醒睡眠的进程让其完成 down 操作。</li>
+</ul>
+<p>down 和 up 操作需要被设计成<strong>原语</strong>，不可分割，通常的做法是在执行这些操作的时候屏蔽中断。</p>
+<p>如果信号量的取值只能为 0 或者 1，那么就成为了  <strong>互斥量（Mutex）</strong> ，0 表示临界区已经加锁，1 表示临界区解锁。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> semaphore;</span><br><span class="line">semaphore mutex = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">P1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    down(&amp;mutex);</span><br><span class="line">    <span class="comment">// 临界区</span></span><br><span class="line">    up(&amp;mutex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">P2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    down(&amp;mutex);</span><br><span class="line">    <span class="comment">// 临界区</span></span><br><span class="line">    up(&amp;mutex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="管程">管程</h3>
+<p>使用信号量机制实现的生产者消费者问题需要客户端代码做很多控制，而管程把控制的代码独立出来，不仅不容易出错，也使得客户端代码调用更容易。</p>
+<p>c 语言不支持管程，下面的示例代码使用了类 Pascal 语言来描述管程。示例代码的管程提供了 insert() 和 remove() 方法，客户端代码通过调用这两个方法来解决生产者-消费者问题。</p>
+<figure class="highlight pascal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">monitor ProducerConsumer</span><br><span class="line">    integer i;</span><br><span class="line">    condition c;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">procedure</span> <span class="title">insert</span><span class="params">()</span>;</span></span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">procedure</span> <span class="title">remove</span><span class="params">()</span>;</span></span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line"><span class="keyword">end</span> monitor;</span><br></pre></td></tr></table></figure>
+<p>管程有一个重要特性：在一个时刻只能有一个进程使用管程。进程在无法继续执行的时候不能一直占用管程，否则其它进程永远不能使用管程。</p>
+<p>管程引入了  <strong>条件变量</strong>  以及相关的操作：<strong>wait()</strong> 和 <strong>signal()</strong> 来实现同步操作。对条件变量执行 wait() 操作会导致调用进程阻塞，把管程让出来给另一个进程持有。signal() 操作用于唤醒被阻塞的进程。</p>
+<h3 id="进程通信">进程通信</h3>
+<p>进程同步与进程通信很容易混淆，它们的区别在于：</p>
+<ul>
+<li>进程同步：控制多个进程按一定顺序执行；</li>
+<li>进程通信：进程间传输信息。</li>
+</ul>
+<p>进程通信是一种手段，而进程同步是一种目的。也可以说，为了能够达到进程同步的目的，需要让进程进行通信，传输一些进程同步所需要的信息。</p>
+<h4 id="管道">管道</h4>
+<p>管道是通过调用 pipe 函数创建的，fd[0] 用于读，fd[1] 用于写。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br></pre></td></tr></table></figure>
+<p>它具有以下限制：</p>
+<ul>
+<li>只支持半双工通信（单向交替传输）；</li>
+<li>只能在父子进程中使用。</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/05/08/EclniT.png" alt="img"></p>
+<h4 id="fifo">FIFO</h4>
+<p>也称为命名管道，去除了管道只能在父子进程中使用的限制。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifoat</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>FIFO 常用于客户-服务器应用程序中，FIFO 用作汇聚点，在客户进程和服务器进程之间传递数据。</p>
+<h4 id="消息队列">消息队列</h4>
+<p>相比于 FIFO，消息队列具有以下优点：</p>
+<ul>
+<li>消息队列可以独立于读写进程存在，从而避免了 FIFO 中同步管道的打开和关闭时可能产生的困难；</li>
+<li>避免了 FIFO 的同步阻塞问题，不需要进程自己提供同步方法；</li>
+<li>读进程可以根据消息类型有选择地接收消息，而不像 FIFO 那样只能默认地接收。</li>
+</ul>
+<h4 id="信号量">信号量</h4>
+<p>它是一个计数器，用于为多个进程提供对共享数据对象的访问。</p>
+<h4 id="共享存储">共享存储</h4>
+<p>允许多个进程共享一个给定的存储区。因为数据不需要在进程之间复制，所以这是最快的一种 IPC。</p>
+<p>需要使用信号量用来同步对共享存储的访问。</p>
+<p>多个进程可以将同一个文件映射到它们的地址空间从而实现共享内存。另外 XSI 共享内存不是使用文件，而是使用内存的匿名段。</p>
+<h4 id="套接字">套接字</h4>
+<p>与其它通信机制不同的是，它可用于不同机器间的进程通信。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Leetcode笔记-51.N皇后/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-51.N皇后">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/leetcode笔记-120.三角形最小路径和/" data-toggle="tooltip" data-placement="top" title="leetcode笔记-120.三角形最小路径和">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#进程的概念"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x8FDB;&#x7A0B;&#x7684;&#x6982;&#x5FF5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#进程状态"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x8FDB;&#x7A0B;&#x72B6;&#x6001;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#进程控制块"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x8FDB;&#x7A0B;&#x63A7;&#x5236;&#x5757;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#线程"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x7EBF;&#x7A0B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#进程调度"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x8FDB;&#x7A0B;&#x8C03;&#x5EA6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#调度队列"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">&#x8C03;&#x5EA6;&#x961F;&#x5217;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#调度程序"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">&#x8C03;&#x5EA6;&#x7A0B;&#x5E8F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#上下文切换"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#进程调度算法"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x8FDB;&#x7A0B;&#x8C03;&#x5EA6;&#x7B97;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#批处理系统"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">&#x6279;&#x5904;&#x7406;&#x7CFB;&#x7EDF;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#交互式系统"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">&#x4EA4;&#x4E92;&#x5F0F;&#x7CFB;&#x7EDF;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#实时系统"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">&#x5B9E;&#x65F6;&#x7CFB;&#x7EDF;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#进程同步"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x8FDB;&#x7A0B;&#x540C;&#x6B65;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#临界区"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">&#x4E34;&#x754C;&#x533A;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#同步与互斥"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">&#x540C;&#x6B65;&#x4E0E;&#x4E92;&#x65A5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#信号量"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">&#x4FE1;&#x53F7;&#x91CF;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#管程"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x7BA1;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#进程通信"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">&#x8FDB;&#x7A0B;&#x901A;&#x4FE1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#管道"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">&#x7BA1;&#x9053;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#fifo"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">FIFO</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#消息队列"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">&#x6D88;&#x606F;&#x961F;&#x5217;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#信号量"><span class="toc-nav-number">6.4.</span> <span class="toc-nav-text">&#x4FE1;&#x53F7;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#共享存储"><span class="toc-nav-number">6.5.</span> <span class="toc-nav-text">&#x5171;&#x4EAB;&#x5B58;&#x50A8;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#套接字"><span class="toc-nav-number">6.6.</span> <span class="toc-nav-text">&#x5957;&#x63A5;&#x5B57;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#操作系统" title="操作系统">操作系统</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

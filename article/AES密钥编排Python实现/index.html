@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          AES密钥编排Python实现 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/AES密钥编排Python实现/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#密码学" title="密码学">密码学</a>
+                            
+                        </div>
+                        <h1>AES密钥编排Python实现</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-04-26
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="引言">引言</h3>
+<p>对想出AES的前辈大写的佩服，光是写了密钥编排我就写了一下午…这里把AES讲述一下，再把代码过程总结一下</p>
+<h3 id="aes密钥扩展原理">AES密钥扩展原理</h3>
+<p>AES加密算法涉及4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。</p>
+<p>我们这里提及的是构造密钥的方法，密钥扩展，原理如下：<br>
+<img src="https://s2.ax1x.com/2019/04/26/EnZj1A.md.png" alt="密钥拼接"></p>
+<h3 id="代码构造">代码构造</h3>
+<p>首先我们构造RotWord的函数，他的目的在于增加扩散性。这里实际上我们要干的事情就是完成一个置换，做的方式是一个字符串的拼接。注意python内部不能使用word[2:4]之类的方法，只能是word[2:]表示从第2个往后。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def RotWord(word):</span><br><span class="line">    return word[2:]+word[:2]</span><br></pre></td></tr></table></figure>
+<p>接下来构造SubBytes方法。这个方法实现的就是S盒。我们这里的方法是输入字符串，转换为相应的十六进制的字符。Python里不能使用switch方法，只能用字典进行搜索。<br>
+对于字典来说，我们可以用key来搜索value。如果没搜索到就默认为None。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">numbers = &#123;</span><br><span class="line">         <span class="string">'0'</span> : <span class="string">'0000'</span>,<span class="string">'1'</span> : <span class="string">'0001'</span>,<span class="string">'2'</span> : <span class="string">'0010'</span>,<span class="string">'3'</span> : <span class="string">'0011'</span>,<span class="string">'4'</span> : <span class="string">'0100'</span>,<span class="string">'5'</span> : <span class="string">'0101'</span>,<span class="string">'6'</span> : <span class="string">'0110'</span>,</span><br><span class="line">         <span class="string">'7'</span> : <span class="string">'0111'</span>,<span class="string">'8'</span> : <span class="string">'1000'</span>,<span class="string">'9'</span> : <span class="string">'1001'</span>,<span class="string">'A'</span> : <span class="string">'1010'</span>,<span class="string">'B'</span> : <span class="string">'1011'</span>,<span class="string">'C'</span> : <span class="string">'1100'</span>,<span class="string">'D'</span> : <span class="string">'1101'</span>,</span><br><span class="line">         <span class="string">'E'</span> : <span class="string">'1110'</span>,<span class="string">'F'</span> : <span class="string">'1111'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hex2Bin</span><span class="params">(key)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> numbers.get(key[<span class="number">0</span>], <span class="keyword">None</span>)+numbers.get(key[<span class="number">1</span>], <span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>当然我们这里还需要的方法，要从value来搜索key，要自定义一个get_key方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_key</span> <span class="params">(dict, value)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> dict.items():</span><br><span class="line">        <span class="keyword">if</span> v == value:</span><br><span class="line">            <span class="keyword">return</span> k</span><br></pre></td></tr></table></figure>
+<p>接下来实现SubBytes方法，注意原方法中，要先求key在域中的乘法逆，在进行计算。但是计算机内的0指的是第一个元素，所以不必求逆。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubBytes</span><span class="params">(key)</span>:</span></span><br><span class="line">    <span class="comment">#print(key)</span></span><br><span class="line">    key=hex2Bin(key)</span><br><span class="line">    c=<span class="string">'11000110'</span></span><br><span class="line">    b=<span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        temp=(int(key[i])+int(key[(i+<span class="number">4</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">5</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">6</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">7</span>)%<span class="number">8</span>])+int(c[i]))%<span class="number">2</span></span><br><span class="line">       <span class="comment"># print(temp)</span></span><br><span class="line">        temp=str(temp)</span><br><span class="line">        b+=temp</span><br><span class="line">    b=b[::<span class="number">-1</span>]</span><br><span class="line">    <span class="comment">#print(b)</span></span><br><span class="line">    <span class="keyword">return</span> get_key(numbers,b[:<span class="number">4</span>])+get_key(numbers,b[<span class="number">4</span>:])</span><br></pre></td></tr></table></figure>
+<p>再者进行构造SubWord方法，这个方法的目的在于混淆。使用S盒对原序列进行S置换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubWord</span><span class="params">(word)</span>:</span></span><br><span class="line">    temp=<span class="string">''</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i&lt;len(word):</span><br><span class="line">        temp+=SubBytes(word[i]+word[i+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> temp</span><br></pre></td></tr></table></figure>
+<p>最后我们来实现KeyExpansion方法。这里注意在循环中，temp是一个字符串，binnum是一个二进制数。注意不能将二者混用，因为不是每一次temp的值是更新的，在实践中就会出现问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">KeyExpansion</span><span class="params">(m)</span>:</span></span><br><span class="line">    RCon=[<span class="string">'01000000'</span>,<span class="string">'02000000'</span>,<span class="string">'04000000'</span>,<span class="string">'08000000'</span>,<span class="string">'10000000'</span>,<span class="string">'20000000'</span>,<span class="string">'40000000'</span>,<span class="string">'80000000'</span>,<span class="string">'1B000000'</span>,<span class="string">'36000000'</span>]</span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    key=[]</span><br><span class="line">    <span class="keyword">while</span> i&lt;<span class="number">16</span>:</span><br><span class="line">        key.append(m[i*<span class="number">2</span>]+m[i*<span class="number">2</span>+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line">    w=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">4</span>):</span><br><span class="line">        w.append(key[<span class="number">4</span>*i]+key[<span class="number">4</span>*i+<span class="number">1</span>]+key[<span class="number">4</span>*i+<span class="number">2</span>]+key[<span class="number">4</span>*i+<span class="number">3</span>])</span><br><span class="line">        <span class="comment">#print(w[i])</span></span><br><span class="line">    <span class="comment">#temp=SubWord(RotWord(w[0]))</span></span><br><span class="line">    <span class="comment">#temp=hex2Bin(temp)</span></span><br><span class="line">    <span class="comment">#temp=w[0]</span></span><br><span class="line">    <span class="comment">#temp=int(hex2Bin8(SubWord(RotWord(temp))),2)|int(hex2Bin8(RCon[i//4-1]),2)</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>,<span class="number">44</span>):</span><br><span class="line">        temp=w[i<span class="number">-1</span>]</span><br><span class="line">        </span><br><span class="line">        binnum=int(hex2Bin8(temp),<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">4</span>==<span class="number">0</span>):</span><br><span class="line">            binnum=int(hex2Bin8(SubWord(RotWord(temp))),<span class="number">2</span>)^int(hex2Bin8(RCon[i//<span class="number">4</span><span class="number">-1</span>]),<span class="number">2</span>)</span><br><span class="line">        wapp=hex((int(hex2Bin8(w[i<span class="number">-4</span>]),<span class="number">2</span>)^binnum))</span><br><span class="line">        wapp=wapp[<span class="number">2</span>:].upper()</span><br><span class="line">        zernum=<span class="number">8</span>-len(wapp)</span><br><span class="line">        <span class="keyword">while</span> zernum:</span><br><span class="line">            wapp=<span class="string">'0'</span>+wapp</span><br><span class="line">            zernum-=<span class="number">1</span></span><br><span class="line">        w.append(wapp)</span><br><span class="line">    <span class="keyword">return</span> w</span><br></pre></td></tr></table></figure>
+<p>最后我们将全部的代码放在下面：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RotWord</span><span class="params">(word)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> word[<span class="number">2</span>:]+word[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">numbers = &#123;</span><br><span class="line">         <span class="string">'0'</span> : <span class="string">'0000'</span>,<span class="string">'1'</span> : <span class="string">'0001'</span>,<span class="string">'2'</span> : <span class="string">'0010'</span>,<span class="string">'3'</span> : <span class="string">'0011'</span>,<span class="string">'4'</span> : <span class="string">'0100'</span>,<span class="string">'5'</span> : <span class="string">'0101'</span>,<span class="string">'6'</span> : <span class="string">'0110'</span>,</span><br><span class="line">         <span class="string">'7'</span> : <span class="string">'0111'</span>,<span class="string">'8'</span> : <span class="string">'1000'</span>,<span class="string">'9'</span> : <span class="string">'1001'</span>,<span class="string">'A'</span> : <span class="string">'1010'</span>,<span class="string">'B'</span> : <span class="string">'1011'</span>,<span class="string">'C'</span> : <span class="string">'1100'</span>,<span class="string">'D'</span> : <span class="string">'1101'</span>,</span><br><span class="line">         <span class="string">'E'</span> : <span class="string">'1110'</span>,<span class="string">'F'</span> : <span class="string">'1111'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_key</span> <span class="params">(dict, value)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> dict.items():</span><br><span class="line">        <span class="keyword">if</span> v == value:</span><br><span class="line">            <span class="keyword">return</span> k</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hex2Bin</span><span class="params">(key)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> numbers.get(key[<span class="number">0</span>], <span class="keyword">None</span>)+numbers.get(key[<span class="number">1</span>], <span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hex2Bin8</span><span class="params">(key)</span>:</span></span><br><span class="line">    str=<span class="string">''</span></span><br><span class="line">    zernum=<span class="number">8</span>-len(key)</span><br><span class="line">    <span class="keyword">while</span> zernum:</span><br><span class="line">        key=<span class="string">'0'</span>+key</span><br><span class="line">        zernum-=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        str+=numbers.get(key[i], <span class="keyword">None</span>)</span><br><span class="line">    <span class="comment">#print(str)</span></span><br><span class="line">    <span class="keyword">return</span> str</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubBytes</span><span class="params">(key)</span>:</span></span><br><span class="line">    <span class="comment">#print(key)</span></span><br><span class="line">    key=hex2Bin(key)</span><br><span class="line">    c=<span class="string">'11000110'</span></span><br><span class="line">    b=<span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        temp=(int(key[i])+int(key[(i+<span class="number">4</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">5</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">6</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">7</span>)%<span class="number">8</span>])+int(c[i]))%<span class="number">2</span></span><br><span class="line">       <span class="comment"># print(temp)</span></span><br><span class="line">        temp=str(temp)</span><br><span class="line">        b+=temp</span><br><span class="line">    b=b[::<span class="number">-1</span>]</span><br><span class="line">    <span class="comment">#print(b)</span></span><br><span class="line">    <span class="keyword">return</span> get_key(numbers,b[:<span class="number">4</span>])+get_key(numbers,b[<span class="number">4</span>:])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubWord</span><span class="params">(word)</span>:</span></span><br><span class="line">    temp=<span class="string">''</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i&lt;len(word):</span><br><span class="line">        temp+=SubBytes(word[i]+word[i+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> temp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">KeyExpansion</span><span class="params">(m)</span>:</span></span><br><span class="line">    RCon=[<span class="string">'01000000'</span>,<span class="string">'02000000'</span>,<span class="string">'04000000'</span>,<span class="string">'08000000'</span>,<span class="string">'10000000'</span>,<span class="string">'20000000'</span>,<span class="string">'40000000'</span>,<span class="string">'80000000'</span>,<span class="string">'1B000000'</span>,<span class="string">'36000000'</span>]</span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    key=[]</span><br><span class="line">    <span class="keyword">while</span> i&lt;<span class="number">16</span>:</span><br><span class="line">        key.append(m[i*<span class="number">2</span>]+m[i*<span class="number">2</span>+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line">    w=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">4</span>):</span><br><span class="line">        w.append(key[<span class="number">4</span>*i]+key[<span class="number">4</span>*i+<span class="number">1</span>]+key[<span class="number">4</span>*i+<span class="number">2</span>]+key[<span class="number">4</span>*i+<span class="number">3</span>])</span><br><span class="line">        <span class="comment">#print(w[i])</span></span><br><span class="line">    <span class="comment">#temp=SubWord(RotWord(w[0]))</span></span><br><span class="line">    <span class="comment">#temp=hex2Bin(temp)</span></span><br><span class="line">    <span class="comment">#temp=w[0]</span></span><br><span class="line">    <span class="comment">#temp=int(hex2Bin8(SubWord(RotWord(temp))),2)|int(hex2Bin8(RCon[i//4-1]),2)</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>,<span class="number">44</span>):</span><br><span class="line">        temp=w[i<span class="number">-1</span>]</span><br><span class="line">        </span><br><span class="line">        binnum=int(hex2Bin8(temp),<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">4</span>==<span class="number">0</span>):</span><br><span class="line">            binnum=int(hex2Bin8(SubWord(RotWord(temp))),<span class="number">2</span>)^int(hex2Bin8(RCon[i//<span class="number">4</span><span class="number">-1</span>]),<span class="number">2</span>)</span><br><span class="line">        wapp=hex((int(hex2Bin8(w[i<span class="number">-4</span>]),<span class="number">2</span>)^binnum))</span><br><span class="line">        wapp=wapp[<span class="number">2</span>:].upper()</span><br><span class="line">        zernum=<span class="number">8</span>-len(wapp)</span><br><span class="line">        <span class="keyword">while</span> zernum:</span><br><span class="line">            wapp=<span class="string">'0'</span>+wapp</span><br><span class="line">            zernum-=<span class="number">1</span></span><br><span class="line">        w.append(wapp)</span><br><span class="line">    <span class="keyword">return</span> w</span><br><span class="line"></span><br><span class="line">m=<span class="string">'2B7E151628AED2A6ABF7158809CF4F3C'</span></span><br><span class="line">key=KeyExpansion(m)</span><br><span class="line">key</span><br></pre></td></tr></table></figure>
+<p>最后的结果如下：<br>
+<img src="https://s2.ax1x.com/2019/04/26/EnZ7TO.png" alt="result"></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/机器学习-数据预处理/" data-toggle="tooltip" data-placement="top" title="机器学习-数据预处理">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/机器学习-数据清洗方法论/" data-toggle="tooltip" data-placement="top" title="机器学习-数据清洗方法论">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#引言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x5F15;&#x8A00;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#aes密钥扩展原理"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">AES&#x5BC6;&#x94A5;&#x6269;&#x5C55;&#x539F;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#代码构造"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x4EE3;&#x7801;&#x6784;&#x9020;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#密码学" title="密码学">密码学</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

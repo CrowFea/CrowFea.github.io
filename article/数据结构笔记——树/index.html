@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——树 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——树/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#树" title="树">树</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——树</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-10-26
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0问题描述">0.问题描述</h3>
+<p>树状图是一种数据结构，它是由n（n&gt;=1）个有限结点组成一个具有层次关系的集合。把它叫做“树”是因为它看起来像一棵倒挂的树，也就是说它是根朝上，而叶朝下的。它具有以下的特点：<br>
+每个结点有零个或多个子结点；没有父结点的结点称为根结点；每一个非根结点有且只有一个父结点；除了根结点外，每个子结点可以分为多个不相交的子树</p>
+<h3 id="1-二叉树的初始化">1、	二叉树的初始化</h3>
+<p>采用递归算法。先序输入的顺序是：根节点——左子树——右子树。设定一个中间变量ch，持续输入，如果ch是空符号#，就将该结点置为NULL。否则，申请一个新的树节点，将该输入的值赋给新的结点的数据域，同时创造该结点的左子节点和右子节点。进入下一步的递归。因为是先序输入，所以可以直接将根节点赋值，接下来再对左节点递归直到结束，再对右节点递归直到结束。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void CreateBiTree(BiTree &amp;T)</span><br><span class="line">&#123;</span><br><span class="line">	ElemType ch;</span><br><span class="line">	cin &gt;&gt; ch;</span><br><span class="line">	if (ch == &apos;#&apos;) &#123;</span><br><span class="line">		T = NULL;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		T = new BiTNode;</span><br><span class="line">		T-&gt;data = ch;</span><br><span class="line">		CreateBiTree(T-&gt;lchild);</span><br><span class="line">		CreateBiTree(T-&gt;rchild);</span><br><span class="line">	&#125;</span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-先序递归遍历">2、	先序递归遍历</h3>
+<p>先序输遍历的顺序是：根节点——左子树——右子树。开始遍历时，如果树非空，就访问根节点，同时输出根节点的值，进入根节点的左子树进行遍历，直到左子树下的每一个结点都遍历完成，一步一步回退，开始遍历右子树，直到右子树都遍历完成。一步一步回退直到根节点，遍历完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void PreOrderTraverse(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	if (T)&#123;</span><br><span class="line">		cout &lt;&lt; T-&gt;data;</span><br><span class="line">		PreOrderTraverse(T-&gt;lchild);</span><br><span class="line">		PreOrderTraverse(T-&gt;rchild);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-中序递归遍历">3、	中序递归遍历</h3>
+<p>中序输遍历的顺序是：左子树——根节点——右子树。开始遍历时，如果树非空，就进入根节点的左子树进行遍历，直到左子树下的每一个结点都遍历完成，都某一个节点不存在左子树时，输出该节点的值，一步回退，同时输出上一级根节点的值。开始遍历右子树，直到右子树都遍历完成。一步一步回退直到根节点，输出根节点的值，开始遍历根节点的右子树，重复上述的步骤，遍历完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void InOrderTraverse(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	if (T)&#123;</span><br><span class="line">		InOrderTraverse(T-&gt;lchild);</span><br><span class="line">		cout &lt;&lt; T-&gt;data;</span><br><span class="line">		InOrderTraverse(T-&gt;rchild);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-后序递归遍历">4、	后序递归遍历</h3>
+<p>后序输遍历的顺序是：左子树——右子树——根节点。开始遍历时，如果树非空，就进入根节点的右子树进行遍历，直到左子树下的每一个结点都遍历完成，都某一个节点不存在左子树时，一步回退，开始遍历右子树，直到右子树都遍历完成。一步回退直到根节点，输出根节点的值重复上述的步骤，遍历完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void PostOrderTraverse(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	if (T)&#123;</span><br><span class="line">		PostOrderTraverse(T-&gt;lchild);</span><br><span class="line">		PostOrderTraverse(T-&gt;rchild);</span><br><span class="line">		cout &lt;&lt; T-&gt;data;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-中序递归遍历的非递归算法">5、	中序递归遍历的非递归算法</h3>
+<p>递归函数的本质就是栈。所以我们可以使用栈的数据结构来模拟递归函数的运行方式。首先我们要定义一个新的结构SqStack，它的数据类型是BiTNode*。用来存储每一个树的节点。接下来开始遍历，我们定义一个指向树根节点的指针p。如果p非空，即树非空，或者栈非空的时候，我们进入遍历的循环。如果p非空，就将p的节点压入栈内，同时输出提示语句。将p指向自己的左节点。否则，如果p这个时候是空的，则证明上一个节点没有左子树，就将栈顶的节点Pop出去，输出提示语句（这个时候输出的是根节点的值）。再将p指向它的右子树。<br>
+直到栈为空的时候，就完成了中序遍历。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">void InOrderTraverse2(BiTree  T)</span><br><span class="line">&#123;</span><br><span class="line">	StackNode * S;</span><br><span class="line">	BiTNode * p;</span><br><span class="line">	S = NULL;</span><br><span class="line">	p = T;</span><br><span class="line">	S = InitStack(S);</span><br><span class="line"></span><br><span class="line">	if (NULL == p)&#123;	</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	while (p || !StackEmpty(S))&#123;</span><br><span class="line">		if (p)&#123;</span><br><span class="line">			StackPush(S, p);</span><br><span class="line">			cout &lt;&lt; &quot;push &quot; &lt;&lt; p-&gt;data &lt;&lt; endl;</span><br><span class="line">			p = p-&gt;lchild;</span><br><span class="line">		&#125;</span><br><span class="line">		else</span><br><span class="line">		&#123;</span><br><span class="line">			StackPop(S, p);</span><br><span class="line">			cout &lt;&lt; &quot;pop&quot; &lt;&lt; endl;</span><br><span class="line">			cout &lt;&lt; p-&gt;data &lt;&lt; endl;</span><br><span class="line">			p = p-&gt;rchild;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	free(S);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-先序遍历的非递归算法">6、	先序遍历的非递归算法</h3>
+<p>先序的非递归算法和中序的十分接近，唯一不同的是输出的位置不一样。由于题目中并未出现这个算法的要求，该算法就没有用中序算法的格式进行输出，只完成遍历输出的部分。<br>
+可见，先序遍历的顺序是根节点——左子树——右子树。所以将根节点入栈的同时就进行输出，Pop的时候不进行输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">void PreTraverseTree2(BiTree  T)</span><br><span class="line">&#123;</span><br><span class="line">	StackNode  *S;</span><br><span class="line">	BiTNode * p;</span><br><span class="line">	S = NULL;</span><br><span class="line">	p = T;</span><br><span class="line">	S = InitStack(S);</span><br><span class="line">	if (NULL == p)&#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	while (p || !StackEmpty(S))&#123;</span><br><span class="line">		if (p)&#123;</span><br><span class="line">			StackPush(S, p);</span><br><span class="line">			cout  &lt;&lt; p-&gt;data &lt;&lt; endl;</span><br><span class="line">			p = p-&gt;lchild;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			StackPop(S, p);</span><br><span class="line">			p = p-&gt;rchild;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	free(S);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7-后序遍历的非递归算法">7、	后序遍历的非递归算法</h3>
+<p>后序遍历的非递归算法会稍显复杂。首先我们定义两个指针pre，cur。一个指向当前访问的树节点，另一个指向上一个访问的树节点。首先将树的根节点压入栈中，当栈非空时，进入循环。每次都将cur置为NULL，再将当前栈顶的节点赋给cur。如果cur是一个叶节点，没有左子树和右子树的话；或者pre节点有值，并且是cur的左子节点或者右子节点的话，就输出当前cur的值，把cur的节点赋给pre，再把cur节点Pop出去。<br>
+如果不满足上述情况，意味着该结点下还有左子树或者右子树，那么就先把右子节点压进栈（如果存在的话），再把左子节点压进栈。这样顺序的目的在于每次要先访问左子节点，栈的特点是LIFO，所以后压进左子节点，先访问左子节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">void LastTraverseTree2(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	StackNode * S;</span><br><span class="line">	BiTNode * cur, *pre;</span><br><span class="line">	S = NULL;</span><br><span class="line">	S = InitStack(S);</span><br><span class="line">	if (NULL == T)&#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	pre = NULL;    </span><br><span class="line">	cur = NULL;</span><br><span class="line">	StackPush(S, T);</span><br><span class="line">	while (!StackEmpty(S))&#123;</span><br><span class="line">		cur = NULL;</span><br><span class="line">		StackGetTop(S, cur);</span><br><span class="line">		if ((cur-&gt;lchild == NULL &amp;&amp; cur-&gt;rchild == NULL) || (pre != NULL &amp;&amp; (pre == cur-&gt;lchild </span><br><span class="line">			|| pre == cur-&gt;rchild)))&#123;</span><br><span class="line">			cout&lt;&lt;cur-&gt;data&lt;&lt;endl;</span><br><span class="line">			pre = cur;</span><br><span class="line">			StackPop(S, cur);</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			if (cur-&gt;rchild != NULL)&#123;</span><br><span class="line">				StackPush(S, cur-&gt;rchild);</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			if (cur-&gt;lchild != NULL)&#123;</span><br><span class="line">				StackPush(S, cur-&gt;lchild);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	free(S);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8-层次遍历">8、	层次遍历</h3>
+<p>层次遍历是根据树的每一层进行遍历。我们用指针数组模拟一个循环队列。首先将根节点入栈，用rear指向我们要入队判断的节点，用front来指向要输出的节点。如果front不等于rear，就将front后移一位，将当前front指向的节点赋给q。输出q的值，如果q的左子树不为空，就将左子节点压入队列，同样的将右子节点入队列。逐个输出完成遍历。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">	void LevelOrderTraverse(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	int front, rear;</span><br><span class="line">	BiTNode *que[MAXSIZE];</span><br><span class="line">	front = rear = 0;</span><br><span class="line">	BiTNode *q;</span><br><span class="line">	if (T)&#123;</span><br><span class="line">		rear = (rear + 1) % MAXSIZE;</span><br><span class="line">		que[rear] = T;</span><br><span class="line">		while (front != rear)&#123;</span><br><span class="line">			front = (front + 1) % MAXSIZE;</span><br><span class="line">			q = que[front];</span><br><span class="line">			cout &lt;&lt; q-&gt;data;</span><br><span class="line">			if (q-&gt;lchild != 0)&#123;</span><br><span class="line">				rear = (rear + 1) % MAXSIZE;</span><br><span class="line">				que[rear] = q-&gt;lchild;</span><br><span class="line">			&#125;</span><br><span class="line">			if (q-&gt;rchild != 0)&#123;</span><br><span class="line">				rear = (rear + 1) % MAXSIZE;</span><br><span class="line">				que[rear] = q-&gt;rchild;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-树形打印">9、	树形打印</h3>
+<p>树形打印要求是树形逆时针旋转90度后完成打印。如果树本身是空的，就返回。使用一个level的整型变量记录树的层数。Level初始为0，使用递归算法，先对根节点的右子树进行递归。直到没有右子树，打印level*5个空格，在打印当前节点的值。返回，对上一级节点的左子树进行递归。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void TreePrint(BiTree T,int level)</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	if (!T)&#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	TreePrint(T-&gt;rchild, level + 1);	</span><br><span class="line">	for (i = 0; i&lt;level; i++)&#123;</span><br><span class="line">		cout&lt;&lt;&quot;     &quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;T-&gt;data&lt;&lt;endl;	</span><br><span class="line">	TreePrint(T-&gt;lchild, level + 1);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="10-求树的高度">10、	求树的高度</h3>
+<p>仍然使用递归算法。使用两个整形变量m，n记录左右子树的高度。对每一个节点而言，遍历它下面左右子树的高度，求得较大的值+1返回给上一层。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int Depth(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	if (T == NULL)</span><br><span class="line">		return 0;</span><br><span class="line">	else &#123;</span><br><span class="line">		int m = Depth(T-&gt;lchild);</span><br><span class="line">		int n = Depth(T-&gt;rchild);</span><br><span class="line">		if (m&gt;n) return (m + 1);</span><br><span class="line">		else return (n + 1);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="11-求树节点的个数">11、	求树节点的个数</h3>
+<p>如果树是空的，返回0。否则，采用递归算法，将每个节点下面的左右节点数量相加。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int NodeCount(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	if (T == NULL) &#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		return NodeCount(T-&gt;lchild) + NodeCount(T-&gt;rchild) + 1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="12-求叶节点的数量">12、	求叶节点的数量</h3>
+<p>如果树是空的，返回0。如果树的根节点下面没有左右节点，就返回1。否则，对每个节点使用递归，记录没有下属节点的节点的个数并相加。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">	int LeafCount(BiTree T)</span><br><span class="line">&#123;</span><br><span class="line">	if (!T) &#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	if (!T-&gt;lchild &amp;&amp; !T-&gt;rchild) &#123;</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		return LeafCount(T-&gt;lchild) + LeafCount(T-&gt;rchild);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="13-树的复制左右颠倒">13、	树的复制（左右颠倒）</h3>
+<p>形参是直接将新的树传进。使用递归，将原树的左节点赋给新树的右节点。直到左子树都完成后，一步一步回退，对右子树进行复制。（如果题目不要求左右颠倒，就将左子节点赋给左子节点，右子节点赋给右子节点）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void Copy(BiTree T, BiTree &amp;NewT)</span><br><span class="line">&#123;</span><br><span class="line">	if (T == NULL) &#123;</span><br><span class="line">		NewT = NULL;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		NewT = new BiTNode;</span><br><span class="line">		NewT-&gt;data = T-&gt;data;</span><br><span class="line">		Copy(T-&gt;lchild, NewT-&gt;rchild);</span><br><span class="line">		Copy(T-&gt;rchild, NewT-&gt;lchild);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外</p>
+<p><strong>树的递归使用</strong></p>
+<p>涉及到树的各种算法，遍历，求值，一般都使用递归算法。因为对于每一个树都可以看成是很多个小的子树组成的。但递归函数可能会存在溢出的情况，所以当数据量过大的时候，可以考虑使用非递归的方法，直接使用栈的数据结构对算法进行优化。</p>
+<p><strong>关于树的存储栈</strong></p>
+<p>使用非递归方法对树的节点继续存储时，注意定义好栈的数据类型。一般是树的节点指针类型。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/unity——Survival Shooter：计分&生成敌人/" data-toggle="tooltip" data-placement="top" title="unity——Survival Shooter：计分&生成敌人">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/unity——Survival Shooter：攻击敌人/" data-toggle="tooltip" data-placement="top" title="unity——Survival Shooter：攻击敌人">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0问题描述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x95EE;&#x9898;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-二叉树的初始化"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1&#x3001;	&#x4E8C;&#x53C9;&#x6811;&#x7684;&#x521D;&#x59CB;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-先序递归遍历"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2&#x3001;	&#x5148;&#x5E8F;&#x9012;&#x5F52;&#x904D;&#x5386;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-中序递归遍历"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3&#x3001;	&#x4E2D;&#x5E8F;&#x9012;&#x5F52;&#x904D;&#x5386;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-后序递归遍历"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4&#x3001;	&#x540E;&#x5E8F;&#x9012;&#x5F52;&#x904D;&#x5386;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-中序递归遍历的非递归算法"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5&#x3001;	&#x4E2D;&#x5E8F;&#x9012;&#x5F52;&#x904D;&#x5386;&#x7684;&#x975E;&#x9012;&#x5F52;&#x7B97;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-先序遍历的非递归算法"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">6&#x3001;	&#x5148;&#x5E8F;&#x904D;&#x5386;&#x7684;&#x975E;&#x9012;&#x5F52;&#x7B97;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-后序遍历的非递归算法"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">7&#x3001;	&#x540E;&#x5E8F;&#x904D;&#x5386;&#x7684;&#x975E;&#x9012;&#x5F52;&#x7B97;&#x6CD5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8-层次遍历"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">8&#x3001;	&#x5C42;&#x6B21;&#x904D;&#x5386;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9-树形打印"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">9&#x3001;	&#x6811;&#x5F62;&#x6253;&#x5370;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10-求树的高度"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">10&#x3001;	&#x6C42;&#x6811;&#x7684;&#x9AD8;&#x5EA6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11-求树节点的个数"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">11&#x3001;	&#x6C42;&#x6811;&#x8282;&#x70B9;&#x7684;&#x4E2A;&#x6570;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#12-求叶节点的数量"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">12&#x3001;	&#x6C42;&#x53F6;&#x8282;&#x70B9;&#x7684;&#x6570;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#13-树的复制左右颠倒"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">13&#x3001;	&#x6811;&#x7684;&#x590D;&#x5236;&#xFF08;&#x5DE6;&#x53F3;&#x98A0;&#x5012;&#xFF09;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#树" title="树">树</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

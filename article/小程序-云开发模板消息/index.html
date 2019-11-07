@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          小程序-云开发模板消息 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/小程序-云开发模板消息/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#微信小程序" title="微信小程序">微信小程序</a>
+                            
+                              <a class="tag" href="/tags/#云开发" title="云开发">云开发</a>
+                            
+                        </div>
+                        <h1>小程序-云开发模板消息</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-05-24
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="需求">需求</h3>
+<p>有时候我们需要小程序向用户发送通知。比如说需要支付，提示支付成功；需要报名，提示报名成功等。一般这种情况我们有两种方法：</p>
+<ul>
+<li>使用模板消息，发送的结果显示在微信的服务通知</li>
+<li>连接公众号，发送消息的时候直接在公众号进行发送。</li>
+</ul>
+<p>毫无疑问，如果我没有公众号推广之类的任务的话，强行让用户关注一个只给他发消息的公众号有点愚蠢，我们这里还是采用模板消息的做法。</p>
+<h3 id="什么是模板消息">什么是模板消息</h3>
+<p><s><strong>烦死人的玩意儿</strong></s></p>
+<blockquote>
+<p>基于微信的通知渠道，我们为开发者提供了可以高效触达用户的模板消息能力，以便实现服务的闭环并提供更佳的体验。<br>
+模板推送位置：服务通知<br>
+模板下发条件：用户本人在微信体系内与页面有交互行为后触发，详见下发条件说明<br>
+模板跳转能力：点击查看详情仅能跳转下发模板的该帐号的各个页面</p>
+</blockquote>
+<p>简单来说，就是给了一个使用微信官方通知服务的接口。但是模板消息有诸多的限制:<br>
+只有两种行为可以引发模板消息：</p>
+<ul>
+<li>
+<p>支付<br>
+当用户在小程序内完成过支付行为，可允许开发者向用户在<strong>7天内推送有限条数的模板消息</strong>（<strong>1次支付可下发3条</strong>，多次支付下发条数独立，互相不影响）</p>
+</li>
+<li>
+<p>提交表单<br>
+当用户在小程序内发生过提交表单行为且该表单声明为要发模板消息的，开发者需要向用户提供服务时，可允许开发者向用户在<strong>7天内推送有限条数的模板消息</strong>（<strong>1次提交表单可下发1条</strong>，多次提交下发条数独立，相互不影响）</p>
+</li>
+</ul>
+<p>因此这给我们带来了一定的麻烦：</p>
+<ul>
+<li>如何在用户没提交的情况下发送</li>
+<li>如何在一个用户提交后向另一个用户通知<br>
+我们在后续会使用一些方法解决。</li>
+</ul>
+<h3 id="使用模板消息的准备">使用模板消息的准备</h3>
+<p>模板消息有着比较复杂的发送方式。他需要以下几样东西：</p>
+<ul>
+<li>
+<p>模板消息号 templateID。<br>
+这个直接在微信开发者后台申请，开发者后台提供了大量的模板可以使用，这里主要看的就是title和keywords的数量就好了。申请好后得到templateID。<br>
+<img src="https://s2.ax1x.com/2019/05/23/VCauOU.png" alt="img"></p>
+</li>
+<li>
+<p>appid和appsecret<br>
+这两个参数作为标识，来和后台进行模板消息的确认和发送。直接在后台获取。</p>
+<p>值得注意的是，appsecret不能显式的表示，直接复制到剪贴板，注意保存。</p>
+</li>
+</ul>
+<p>接下来前期的配置就ok了，我们来看一看模板消息的接口：</p>
+<p><img src="https://s2.ax1x.com/2019/05/23/VCaIts.png" alt="img"></p>
+<p>这里需要注意的就是需要用户的openid和一个formid。openid我们在之前的文章中说过<a href="https://crowfeablog.com/article/%E5%B0%8F%E7%A8%8B%E5%BA%8F-%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96%E4%B8%89%E8%BF%9E/">小程序-获取用户信息</a>，接下来我们详细的说一说formid。</p>
+<h3 id="formid">formid</h3>
+<h4 id="意义">意义</h4>
+<p>我们可以理解为，发送一次模板消息就像打枪。需要一个目标和一发子弹。openid就是目标，formid就是子弹。</p>
+<p>上面已经说了，用户在提交表单或者支付的时候会引发模板消息，这是因为在特定的模板消息相应按钮下，我们生成了一个<strong>只用于当前openid的formid</strong>。每次在发送后，这个formid就失效了。因此可以立即为formid是一个消耗品。</p>
+<p><strong>注意在生成formid的时候，不能将生成的formid强行塞到另一个openid的记录里。</strong></p>
+<p>这么一来我们就能针对性的解决一些问题。</p>
+<h4 id="一次发送多个消息">一次发送多个消息</h4>
+<p>有些小程序，比如说打卡类的程序。是需要不断地提醒用户来玩的。或者日历类的，一天一推是必要的。但是formid必须是用户自主生成。所以我们必须要让用户一次生成足够多的formid，存储下来作为之后一周内的储备。</p>
+<p>formid的表单的提交可以埋在任何的button处，只需要在该组件的外层加上一对<form>标签。注意在button中设置formType=“submit”。</form></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">report-submit</span>=<span class="string">"true"</span> <span class="attr">bindsubmit</span>=<span class="string">"button_two"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">formType</span>=<span class="string">"submit"</span>&gt;</span>发送<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>一个button生成一个formid，我们可以增加生成formid的按钮，在程序中埋雷，等着用户踩就完事了。</p>
+<h4 id="在一个用户提交后向另一个用户通知">在一个用户提交后向另一个用户通知</h4>
+<p>这个功能同样也常见。比如说我们有一个协作类的程序，需要在一方做完后向另一方通知。由于每一个formid和openid都是对应的，我们这时在用户数据库中拿到目标用户的openid，那这个检索他的formid，取出来。将这两个参数传入来进行发送。</p>
+<h3 id="实现">实现</h3>
+<h4 id="生成formid">生成formid</h4>
+<p>这里我在每一个formid中打上了时间戳。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">save_formid(e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.formId)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">new</span> <span class="built_in">Date</span>())</span><br><span class="line">    db.collection(<span class="string">'formId'</span>).add(&#123;</span><br><span class="line">      data: &#123;</span><br><span class="line">        openid: wx.getStorageSync(<span class="string">"openid"</span>),</span><br><span class="line">        formId: e.detail.formId,</span><br><span class="line">        date: (<span class="keyword">new</span> <span class="built_in">Date</span>()).valueOf()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">      .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res)</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="发送模板消息云函数">发送模板消息云函数</h4>
+<p>在这个地方加入自己的appid和appsecret用来换取access_token</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 云函数入口文件</span></span><br><span class="line"><span class="keyword">const</span> cloud = <span class="built_in">require</span>(<span class="string">'wx-server-sdk'</span>)</span><br><span class="line"><span class="keyword">const</span> got = <span class="built_in">require</span>(<span class="string">'got'</span>);</span><br><span class="line"><span class="comment">//输入自己的APPID和SECRET</span></span><br><span class="line"><span class="keyword">const</span> reptileUrl = <span class="string">"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=&amp;secret="</span>;</span><br><span class="line"><span class="comment">//分别填入appid和secret</span></span><br><span class="line"><span class="keyword">const</span> MessageUrl = <span class="string">"https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token="</span></span><br><span class="line">cloud.init()</span><br><span class="line"><span class="comment">// 云函数入口函数</span></span><br><span class="line">exports.main = <span class="keyword">async</span> (event, context) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> data = <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">    touser: event.openid,</span><br><span class="line">    template_id: event.template_id,</span><br><span class="line">    page: event.page,</span><br><span class="line">    form_id: event.form_id,</span><br><span class="line">    data: <span class="built_in">JSON</span>.parse(event.data),</span><br><span class="line">    emphasis_keyword: event.emphasis_keyword</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(data)</span><br><span class="line">  <span class="keyword">let</span> http = <span class="keyword">await</span> got(reptileUrl)</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(http.body).access_token)</span><br><span class="line">  <span class="keyword">let</span> access_token = <span class="built_in">JSON</span>.parse(http.body).access_token</span><br><span class="line">  <span class="keyword">let</span> Message = <span class="keyword">await</span> got(MessageUrl + access_token, &#123;</span><br><span class="line">    method: <span class="string">'POST'</span>,</span><br><span class="line">    headers: &#123;</span><br><span class="line">      <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    body: data</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> Message.body</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="发送模板消息">发送模板消息</h4>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">button_two(e) &#123;</span><br><span class="line">    <span class="keyword">let</span> week = <span class="keyword">new</span> <span class="built_in">Date</span>() - (<span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span>) <span class="comment">//建立7天时间戳</span></span><br><span class="line">    <span class="comment">//储存formId，并打时间戳</span></span><br><span class="line">    db.collection(<span class="string">'formId'</span>).add(&#123;</span><br><span class="line">      data: &#123;</span><br><span class="line">        openid: wx.getStorageSync(<span class="string">"openid"</span>),</span><br><span class="line">        formId: e.detail.formId,</span><br><span class="line">        date: (<span class="keyword">new</span> <span class="built_in">Date</span>()).valueOf()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">      .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res)</span><br><span class="line">      &#125;)</span><br><span class="line">    <span class="comment">//获取formId数据 </span></span><br><span class="line">    db.collection(<span class="string">'formId'</span>).where(&#123;</span><br><span class="line">      _openid: <span class="string">""</span>,</span><br><span class="line">      date: _.gt(week) <span class="comment">//获取7天内</span></span><br><span class="line">    &#125;).get().then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(res.data)</span><br><span class="line">      <span class="keyword">var</span> formIdList = res.data</span><br><span class="line">      <span class="keyword">let</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">      <span class="keyword">let</span> data = <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        <span class="string">"keyword1"</span>: &#123;</span><br><span class="line">          <span class="string">"value"</span>: <span class="string">"fasfasf"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"keyword2"</span>: &#123;</span><br><span class="line">          <span class="string">"value"</span>: date</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="comment">//调用云函数发送模版消息</span></span><br><span class="line">      wx.cloud.callFunction(&#123;</span><br><span class="line">        name: <span class="string">'moban'</span>,</span><br><span class="line">        data: &#123;</span><br><span class="line">          openid: formIdList[<span class="number">0</span>].openid,</span><br><span class="line">          template_id: <span class="string">""</span>,</span><br><span class="line">          <span class="comment">//page: "/pages/fromID/index?sender_openid=" + wx.getStorageSync("openid") + "&amp;value=" + value, //携带参数</span></span><br><span class="line">          form_id: formIdList[<span class="number">0</span>].formId,</span><br><span class="line">          data,</span><br><span class="line">          emphasis_keyword: <span class="string">"keyword1.DATA"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        success: <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">'模版消息发送成功: '</span>, res)</span><br><span class="line">          <span class="keyword">this</span>.remove(formIdList[<span class="number">0</span>]._id); <span class="comment">//调用删除formId函数</span></span><br><span class="line">        &#125;,</span><br><span class="line">        fail: <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.error(<span class="string">'模版消息发送失败：'</span>, err)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>注意在生成formid的时候必须要真机调试，要不然生成出来的formid是mock one。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Leetcode笔记-56.合并区间/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-56.合并区间">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/小程序-云开发模糊搜索/" data-toggle="tooltip" data-placement="top" title="小程序-云开发模糊搜索">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#需求"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x9700;&#x6C42;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#什么是模板消息"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x4EC0;&#x4E48;&#x662F;&#x6A21;&#x677F;&#x6D88;&#x606F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用模板消息的准备"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;&#x6A21;&#x677F;&#x6D88;&#x606F;&#x7684;&#x51C6;&#x5907;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#formid"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">formid</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#意义"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">&#x610F;&#x4E49;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#一次发送多个消息"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">&#x4E00;&#x6B21;&#x53D1;&#x9001;&#x591A;&#x4E2A;&#x6D88;&#x606F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#在一个用户提交后向另一个用户通知"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">&#x5728;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x63D0;&#x4EA4;&#x540E;&#x5411;&#x53E6;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x901A;&#x77E5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#实现"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x5B9E;&#x73B0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#生成formid"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">&#x751F;&#x6210;formid</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#发送模板消息云函数"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">&#x53D1;&#x9001;&#x6A21;&#x677F;&#x6D88;&#x606F;&#x4E91;&#x51FD;&#x6570;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#发送模板消息"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">&#x53D1;&#x9001;&#x6A21;&#x677F;&#x6D88;&#x606F;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#微信小程序" title="微信小程序">微信小程序</a>
+                        
+                          <a class="tag" href="/tags/#云开发" title="云开发">云开发</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

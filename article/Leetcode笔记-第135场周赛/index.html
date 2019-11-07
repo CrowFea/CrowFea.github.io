@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Leetcode笔记-第135场周赛 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/Leetcode笔记-第135场周赛/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Leetcode" title="Leetcode">Leetcode</a>
+                            
+                              <a class="tag" href="/tags/#深度优先搜索" title="深度优先搜索">深度优先搜索</a>
+                            
+                              <a class="tag" href="/tags/#数学" title="数学">数学</a>
+                            
+                              <a class="tag" href="/tags/#动态规划" title="动态规划">动态规划</a>
+                            
+                        </div>
+                        <h1>Leetcode笔记-第135场周赛</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-05-05
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>参加这一场周赛只有500多人，看来大家都在上班呀…</p>
+<h3 id="5051-有效的回旋镖">5051. 有效的回旋镖</h3>
+<p><strong>题目难度 Easy</strong></p>
+<h4 id="题目描述">题目描述</h4>
+<p>回旋镖定义为一组三个点，这些点各不相同且不在一条直线上。</p>
+<p>给出平面上三个点组成的列表，判断这些点是否可以构成回旋镖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">示例 1：</span><br><span class="line"></span><br><span class="line">输入：[[1,1],[2,3],[3,2]]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[[1,1],[2,2],[3,3]]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">points.length == 3</span><br><span class="line">points[i].length == 2</span><br><span class="line">0 &lt;= points[i][j] &lt;= 10</span><br></pre></td></tr></table></figure>
+<h4 id="解法">解法</h4>
+<p>这道题做完深刻的后悔线性代数没好好学…<br>
+我的做法很菜，就是先判断三点是否有重合，如果没有的话就判断是否有平行x轴的情况出现，因为后面的斜率计算中不能有除0。最后计算斜率和b，计算出直线的方程后进行判断。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isBoomerang</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(points[<span class="number">0</span>][<span class="number">0</span>]==points[<span class="number">1</span>][<span class="number">0</span>]&amp;&amp;points[<span class="number">0</span>][<span class="number">1</span>]==points[<span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(points[<span class="number">0</span>][<span class="number">0</span>]==points[<span class="number">2</span>][<span class="number">0</span>]&amp;&amp;points[<span class="number">0</span>][<span class="number">1</span>]==points[<span class="number">2</span>][<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(points[<span class="number">2</span>][<span class="number">0</span>]==points[<span class="number">1</span>][<span class="number">0</span>]&amp;&amp;points[<span class="number">2</span>][<span class="number">1</span>]==points[<span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(points[<span class="number">1</span>][<span class="number">0</span>]-points[<span class="number">0</span>][<span class="number">0</span>]==<span class="number">0</span>)</span><br><span class="line">             <span class="keyword">if</span>(points[<span class="number">2</span>][<span class="number">0</span>]-points[<span class="number">0</span>][<span class="number">0</span>]==<span class="number">0</span>)</span><br><span class="line">                 <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">     <span class="keyword">double</span> k = <span class="keyword">double</span>((points[<span class="number">1</span>][<span class="number">1</span>] - points[<span class="number">0</span>][<span class="number">1</span>])) / (points[<span class="number">1</span>][<span class="number">0</span>] - points[<span class="number">0</span>][<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">double</span> b=points[<span class="number">0</span>][<span class="number">1</span>]-k*points[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">fabs</span>(points[<span class="number">2</span>][<span class="number">1</span>]-points[<span class="number">2</span>][<span class="number">0</span>]*k-b)&lt;<span class="number">1e-6</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>直到发现可以直接用矩阵计算，计算三点围成的三角形是否面积为0。<br>
+<img src="https://s2.ax1x.com/2019/05/05/E0MVUA.png" alt="img"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">det</span><span class="params">(<span class="keyword">int</span> x1, <span class="keyword">int</span> y1, <span class="keyword">int</span> x2, <span class="keyword">int</span> y2, <span class="keyword">int</span> x3, <span class="keyword">int</span> y3)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x1*y2-x2*y1+x2*y3-x3*y2+x3*y1-x1*y3;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isBoomerang</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> det(p[<span class="number">0</span>][<span class="number">0</span>], p[<span class="number">0</span>][<span class="number">1</span>], p[<span class="number">1</span>][<span class="number">0</span>], p[<span class="number">1</span>][<span class="number">1</span>], p[<span class="number">2</span>][<span class="number">0</span>], p[<span class="number">2</span>][<span class="number">1</span>]) != <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="5050-从二叉搜索树到更大和树">5050. 从二叉搜索树到更大和树</h3>
+<p><strong>题目难度 Medium</strong></p>
+<h4 id="题目描述">题目描述</h4>
+<p>给出二叉搜索树的根节点，该二叉树的节点值各不相同，修改二叉树，使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。</p>
+<p>提醒一下，二叉搜索树满足下列约束条件：</p>
+<p>节点的左子树仅包含键小于节点键的节点。<br>
+节点的右子树仅包含键大于节点键的节点。<br>
+左右子树也必须是二叉搜索树。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]</span><br><span class="line">输出：[30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">树中的节点数介于 1 和 100 之间。</span><br><span class="line">每个节点的值介于 0 和 100 之间。</span><br><span class="line">给定的树为二叉搜索树。</span><br></pre></td></tr></table></figure>
+<h4 id="解法">解法</h4>
+<p>这道题想到了之前做过的类似的一个题目，也是修改树的内容。考虑到它修改的顺序是 后-中-先。直观上看没有一种遍历方式是这个顺序的，但是恰好与先序遍历的顺序相反，所以我们的做法是：</p>
+<p>先进行先序遍历，用一个数组存储所有的结点。然后在数组中从后到前依次相加，直接改变数组中的节点的值，进行改变。注意数组中存储的是指针，所以改变数组就可以改变原来的树。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">InOrderTraverse</span><span class="params">(TreeNode* T, <span class="built_in">vector</span>&lt;TreeNode*&gt; &amp;nums)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (T)&#123;</span><br><span class="line">		InOrderTraverse(T-&gt;left,nums);</span><br><span class="line">		nums.push_back(T);</span><br><span class="line">		InOrderTraverse(T-&gt;right,nums);</span><br><span class="line">	    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">TreeNode* <span class="title">bstToGst</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;TreeNode*&gt; nums;</span><br><span class="line">        InOrderTraverse(root,nums);</span><br><span class="line">        <span class="keyword">int</span> temp=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=nums.size()<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i]==<span class="literal">NULL</span>)</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            nums[i]-&gt;val+=temp;</span><br><span class="line">            temp=nums[i]-&gt;val;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>但实际上还是考虑复杂了，我们只需构建一种后-中-先遍历的方法，用一个整型的全局变量储存前面的和即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> cur;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(TreeNode* x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x-&gt;right)&#123;</span><br><span class="line">            dfs(x-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">        cur += x-&gt;val;</span><br><span class="line">        x-&gt;val = cur;</span><br><span class="line">        <span class="keyword">if</span> (x-&gt;left)&#123;</span><br><span class="line">            dfs(x-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">bstToGst</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        cur = <span class="number">0</span>;</span><br><span class="line">        dfs(root);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="5047-多边形三角剖分的最低得分">5047. 多边形三角剖分的最低得分</h3>
+<p><strong>题目难度 Medium</strong></p>
+<h4 id="题目描述">题目描述</h4>
+<p>给定 N，想象一个凸 N 边多边形，其顶点按顺时针顺序依次标记为 A[0], A[i], …, A[N-1]。</p>
+<p>假设您将多边形剖分为 N-2 个三角形。对于每个三角形，该三角形的值是顶点标记的乘积，三角剖分的分数是进行三角剖分后所有 N-2 个三角形的值之和。</p>
+<p>返回多边形进行三角剖分后可以得到的最低分。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：[1,2,3]</span><br><span class="line">输出：6</span><br><span class="line">解释：多边形已经三角化，唯一三角形的分数为 6。</span><br></pre></td></tr></table></figure>
+<p>示例 2：<br>
+<img src="https://s2.ax1x.com/2019/05/05/E0Q5lV.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：[3,7,4,5]</span><br><span class="line">输出：144</span><br><span class="line">解释：有两种三角剖分，可能得分分别为：3*7*5 + 4*5*7 = 245，或 3*4*5 + 3*4*7 = 144。最低分数为 144。</span><br></pre></td></tr></table></figure>
+<p>示例 3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：[1,3,1,4,1,5]</span><br><span class="line">输出：13</span><br><span class="line">解释：最低分数三角剖分的得分情况为 1*1*3 + 1*1*4 + 1*1*5 + 1*1*1 = 13。</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3 &lt;= A.length &lt;= 50</span><br><span class="line">1 &lt;= A[i] &lt;= 100</span><br></pre></td></tr></table></figure>
+<h4 id="解法">解法</h4>
+<p>基本的思路是动态规划。</p>
+<p>假设我们现在有一个六边形，我们用cost[i][j]存储由第i号顶点到第j号顶点所划定的三角形的值之和。如下图：<br>
+<img src="https://s2.ax1x.com/2019/05/05/E0whEq.png" alt="img"></p>
+<p>比如说我们选定cost[0][3]，他表示从0号顶点到3号顶点的所有右侧的三角形值的和（右侧是我们的顺时针方向）。这个值的和可以有两种算法，一种是蓝色的S012+S023;一种是紫色的S013+S123。我们将所有的计算的值存储在一张表中，如下图：<br>
+<img src="https://s2.ax1x.com/2019/05/05/E0wWbn.png" alt="img"></p>
+<p>将cost[i][i+1]的对角线初始化为0，意义为两个重合点无法构成三角形；cost[i][i+2]对角线初始化为由i，i+1，i+2三点构成的三角形的值。</p>
+<p>此后更新步长step，美更新一次意味着划定的区域多加入一个三角形，新的值由新的三角形面积和老的三角形面积共同决定，核心公式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cost[当前目标] = min (cost[当前目标], cost[细分后三角形A] + cost[细分后三角形B]+ A[i] * A[j] * A[k]);</span><br></pre></td></tr></table></figure>
+<p>即</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cost[i][j] = min (cost[i][j], cost[i][k] + cost[k][j]+ A[i] * A[j] * A[k]);</span><br></pre></td></tr></table></figure>
+<p>完整代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> cost[<span class="number">100</span>][<span class="number">100</span>];</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minScoreTriangulation</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = A.size();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n; ++ i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n; ++ j) &#123;</span><br><span class="line">                cost[i][j] = INT_MAX;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n - <span class="number">1</span>; ++ i) &#123;</span><br><span class="line">            cost[i][i + <span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> step = <span class="number">2</span>; step &lt; n; ++ step) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i + step &lt; n; ++ i) &#123;</span><br><span class="line">                <span class="keyword">int</span> j = i + step;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = i + <span class="number">1</span>;k &lt;= j - <span class="number">1</span>; ++ k) &#123;</span><br><span class="line">                    cost[i][j] = min (cost[i][j], cost[i][k] + cost[k][j]+ A[i] * A[j] * A[k]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cost[<span class="number">0</span>][n<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="5049-移动石子直到连续-ii">5049. 移动石子直到连续 II</h3>
+<p><strong>题目难度 Medium</strong></p>
+<h4 id="题目描述">题目描述</h4>
+<p>在一个长度无限的数轴上，第 i 颗石子的位置为 stones[i]。如果一颗石子的位置最小/最大，那么该石子被称作端点石子。</p>
+<p>每个回合，你可以将一颗端点石子拿起并移动到一个未占用的位置，使得该石子不再是一颗端点石子。</p>
+<p>值得注意的是，如果石子像 stones = [1,2,5] 这样，你将无法移动位于位置 5 的端点石子，因为无论将它移动到任何位置（例如 0 或 3），该石子都仍然会是端点石子。</p>
+<p>当你无法进行任何移动时，即，这些石子的位置连续时，游戏结束。</p>
+<p>要使游戏结束，你可以执行的最小和最大移动次数分别是多少？ 以长度为 2 的数组形式返回答案：answer = [minimum_moves, maximum_moves] 。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：[7,4,9]</span><br><span class="line">输出：[1,2]</span><br><span class="line">解释：</span><br><span class="line">我们可以移动一次，4 -&gt; 8，游戏结束。</span><br><span class="line">或者，我们可以移动两次 9 -&gt; 5，4 -&gt; 6，游戏结束。</span><br></pre></td></tr></table></figure>
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：[6,5,4,3,10]</span><br><span class="line">输出：[2,3]</span><br><span class="line">解释：</span><br><span class="line">我们可以移动 3 -&gt; 8，接着是 10 -&gt; 7，游戏结束。</span><br><span class="line">或者，我们可以移动 3 -&gt; 7, 4 -&gt; 8, 5 -&gt; 9，游戏结束。</span><br><span class="line">注意，我们无法进行 10 -&gt; 2 这样的移动来结束游戏，因为这是不合要求的移动。</span><br></pre></td></tr></table></figure>
+<p>示例 3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[100,101,104,102,103]</span><br><span class="line">输出：[0,0]</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<p>3 &lt;= stones.length &lt;= 10^4<br>
+1 &lt;= stones[i] &lt;= 10^9<br>
+stones[i] 的值各不相同。</p>
+<h4 id="解法">解法</h4>
+<p>这道题在时间内并没有做出来，感觉是一个需要点巧劲的数学问题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pattern</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; stones)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> pat = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> lp = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> rp = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> n = stones.size();</span><br><span class="line">	<span class="keyword">while</span> (rp &lt; n) &#123;</span><br><span class="line">		<span class="keyword">if</span> (stones[rp] - stones[lp] &lt; n)</span><br><span class="line">			pat = rp - lp;</span><br><span class="line">		<span class="keyword">else</span> lp++;</span><br><span class="line">		rp++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; numMovesStonesII(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; stones) &#123;</span><br><span class="line">	sort(stones.begin(), stones.end());</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; r(<span class="number">2</span>);</span><br><span class="line">	<span class="keyword">int</span> a = pattern(stones);</span><br><span class="line">	<span class="keyword">int</span> n = stones.size();</span><br><span class="line">	<span class="keyword">if</span> (n - <span class="number">1</span> - a == <span class="number">1</span> &amp;&amp; (stones[n - <span class="number">1</span>] - stones[<span class="number">1</span>] == n - <span class="number">2</span> || stones[n - <span class="number">2</span>] - stones[<span class="number">0</span>] == n - <span class="number">2</span>)) </span><br><span class="line">		r[<span class="number">0</span>] = <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		r[<span class="number">0</span>] = n - <span class="number">1</span> - a;</span><br><span class="line">	r[<span class="number">1</span>] = max(stones[n - <span class="number">1</span>] - stones[<span class="number">1</span>], stones[n - <span class="number">2</span>] - stones[<span class="number">0</span>]) - n + <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">if</span> (r[<span class="number">0</span>] &gt; r[<span class="number">1</span>]) </span><br><span class="line">		r[<span class="number">0</span>] = r[<span class="number">1</span>];</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; r[<span class="number">0</span>] &lt;&lt; <span class="string">" "</span> &lt;&lt; r[<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/操作系统结构/" data-toggle="tooltip" data-placement="top" title="操作系统-结构">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/Leetcode笔记-25.k个一组翻转链表/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-25.k个一组翻转链表">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5051-有效的回旋镖"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">5051. &#x6709;&#x6548;&#x7684;&#x56DE;&#x65CB;&#x9556;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#题目描述"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x9898;&#x76EE;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#解法"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x89E3;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5050-从二叉搜索树到更大和树"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">5050. &#x4ECE;&#x4E8C;&#x53C9;&#x641C;&#x7D22;&#x6811;&#x5230;&#x66F4;&#x5927;&#x548C;&#x6811;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#题目描述"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">&#x9898;&#x76EE;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#解法"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">&#x89E3;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5047-多边形三角剖分的最低得分"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">5047. &#x591A;&#x8FB9;&#x5F62;&#x4E09;&#x89D2;&#x5256;&#x5206;&#x7684;&#x6700;&#x4F4E;&#x5F97;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#题目描述"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">&#x9898;&#x76EE;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#解法"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">&#x89E3;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5049-移动石子直到连续-ii"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">5049. &#x79FB;&#x52A8;&#x77F3;&#x5B50;&#x76F4;&#x5230;&#x8FDE;&#x7EED; II</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#题目描述"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">&#x9898;&#x76EE;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#解法"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">&#x89E3;&#x6CD5;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Leetcode" title="Leetcode">Leetcode</a>
+                        
+                          <a class="tag" href="/tags/#深度优先搜索" title="深度优先搜索">深度优先搜索</a>
+                        
+                          <a class="tag" href="/tags/#数学" title="数学">数学</a>
+                        
+                          <a class="tag" href="/tags/#动态规划" title="动态规划">动态规划</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

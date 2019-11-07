@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Map学习笔记 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/Map介绍/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#Map" title="Map">Map</a>
+                            
+                        </div>
+                        <h1>Map学习笔记</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-09-12
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0参考">0.参考</h3>
+<p><a href="https://blog.csdn.net/ajianyingxiaoqinghan/article/details/78540736" target="_blank" rel="noopener">CSDN map学习</a></p>
+<p><a href="https://www.cnblogs.com/fnlingnzb-learner/p/5833051.html" target="_blank" rel="noopener">博客园</a></p>
+<h3 id="1map概念">1.map概念</h3>
+<p>Map是一个关联容器，它提供一对一（其中第一个可以称为关键字，每个关键字只能在map中出现一次，第二个可能称为该关键字的值）的数据 处理能力。就类似于一个电话簿，每一个人对应一个电话号码。</p>
+<p>map内部数据的组织，map内部自建一颗红黑树(一 种非严格意义上的平衡二叉树)，这颗树具有对数据自动排序的功能，所以在map内部所有的数据都是有序的。</p>
+<blockquote>
+<p>红黑树是每个节点都带有颜色属性的二叉查找树，颜色或红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求:</p>
+<p>性质1. 节点是红色或黑色。</p>
+<p>性质2. 根节点是黑色。</p>
+<p>性质3 每个叶节点（NIL节点，空节点）是黑色的。</p>
+<p>性质4 每个红色节点的两个子节点都是黑色。(从每个叶子到根的所有路径上不能有两个连续的红色节点)</p>
+<p>性质5. 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。</p>
+<p>这些约束强制了红黑树的关键性质: 从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。结果是这个树大致上是平衡的。因为操作比如插入、删除和查找某个值的最坏情况时间都要求与树的高度成比例，这个在高度上的理论上限允许红黑树在最坏情况下都是高效的，而不同于普通的二叉查找树。<br>
+要知道为什么这些特性确保了这个结果，注意到性质4导致了路径不能有两个毗连的红色节点就足够了。最短的可能路径都是黑色节点，最长的可能路径有交替的红色和黑色节点。因为根据性质5所有最长的路径都有相同数目的黑色节点，这就表明了没有路径能多于任何其他路径的两倍长。<br>
+在很多树数据结构的表示中，一个节点有可能只有一个子节点，而叶子节点不包含数据。用这种范例表示红黑树是可能的，但是这会改变一些属性并使算法复杂。为此，本文中我们使用 “nil 叶子” 或&quot;空(null)叶子&quot;，它不包含数据而只充当树在此结束的指示。这些节点在绘图中经常被省略，导致了这些树好象同上述原则相矛盾，而实际上不是这样。与此有关的结论是所有节点都有两个子节点，尽管其中的一个或两个可能是空叶子</p>
+</blockquote>
+<h3 id="2map容器的属性">2.map容器的属性</h3>
+<ul>
+<li>关联性：</li>
+</ul>
+<p>关联容器中的元素的参考地址指的是其 Key 值，而不是他们在容器中的绝对地址；</p>
+<ul>
+<li>有序性：</li>
+</ul>
+<p>容器中的元素一直按照排序方式严格排序，所有插入元素都按照该顺序排列；</p>
+<ul>
+<li>映射：</li>
+</ul>
+<p>每个元素中，一个 Key 值与一个映射值相关。Key 值是用来标识其主要内容是映射值的元素；</p>
+<ul>
+<li>唯一 Key 值：</li>
+</ul>
+<p>容器中不存在同时拥有相同 Key 值的两个元素；<br>
+分配感知 (Allocator-aware)：<br>
+map 容器使用分配器对象动态处理其存储需求。</p>
+<h3 id="3理解map的特殊性">3.理解map的特殊性</h3>
+<p>根据key值快速查找记录，查找的复杂度基本是Log(N)，如果有1000个记录，最多查找10次，1,000,000个记录，最多查找20次。<br>
+这是key-value功能提供的最大好处。方便修改和添加。<br>
+这种神奇的性质来源于它的数学模型——红黑树。红黑树在本质上是一个二叉搜索树，每一个结点都大于其左子树的任意一个结点，同时又小于其右子树的任意一个结点。这种数据结构下操作的复杂度为O(logn)。</p>
+<h3 id="4map的使用">4.map的使用</h3>
+<p>使用map得包含map类所在的头文件#include <map>。map对象是模板类，需要关键字和存储对象两个模板参数：</map></p>
+<p>std:map&lt;int,string&gt; personnel;</p>
+<p>这样就定义了一个用int作为索引,并拥有相关联的指向string的指针。<br>
+为了使用方便，可以对模板类进行一下类型定义：</p>
+<p>typedef map&lt;int,CString&gt; UDT_MAP_INT_CSTRING;</p>
+<p>UDT_MAP_INT_CSTRING enumMap;</p>
+<p>通常的构造方法为map&lt;int, string&gt; mapStudent;</p>
+<h3 id="5举例">5.举例</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">// 比较函数（用于后面的函数指针定义）</span><br><span class="line">bool fncomp(char lhs, char rhs)&#123;</span><br><span class="line">    return lhs &lt; rhs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 定义一个 Compare 对象，且内部对运算符 () 进行重载</span><br><span class="line">struct classcomp&#123;</span><br><span class="line">    bool operator() (const char&amp; lhs, const char&amp; rhs)&#123;</span><br><span class="line">        return lhs &lt; rhs;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main(int argc, char* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    //=========================</span><br><span class="line">    //  map 的多种构造函数</span><br><span class="line">    //=========================</span><br><span class="line"></span><br><span class="line">    // 1. 直接定义</span><br><span class="line">    map&lt;char,int&gt; mymap;</span><br><span class="line">    mymap[&apos;a&apos;] = 10;</span><br><span class="line">    mymap[&apos;b&apos;] = 60;</span><br><span class="line">    mymap[&apos;c&apos;] = 30;</span><br><span class="line">    mymap[&apos;d&apos;] = 90;</span><br><span class="line">    mymap[&apos;e&apos;] = 50;</span><br><span class="line"></span><br><span class="line">    // 2. 复制</span><br><span class="line">    map&lt;char, int&gt; second(mymap);</span><br><span class="line"></span><br><span class="line">    // 3. 通过迭代器</span><br><span class="line">    map&lt;char, int&gt; third(mymap.begin(),mymap.end());</span><br><span class="line"></span><br><span class="line">    // 4. 重新定义 Compare 对象，该对象内部对运算符 () 进行重载</span><br><span class="line">    map&lt;char, int, classcomp&gt; fourth;</span><br><span class="line"></span><br><span class="line">    // 5. 通过函数指针</span><br><span class="line">    bool(*fn_pt)(char, char) = fncomp;</span><br><span class="line">    map&lt;char, int, bool(*)(char, char)&gt; fifth(fn_pt);</span><br><span class="line"></span><br><span class="line">    //=========================</span><br><span class="line">    //  以最初定义的mymap 为例，讲解 map 的使用</span><br><span class="line">    //=========================</span><br><span class="line">    map&lt;char,int&gt;::key_compare key_comp;</span><br><span class="line">    map&lt;char,int&gt;::iterator it;</span><br><span class="line">    it = mymap.begin();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //=========================</span><br><span class="line">    //  1. 输出所有 Pair 元素</span><br><span class="line">    //=========================</span><br><span class="line">    // 迭代器遍历 map</span><br><span class="line">    for (it; it != mymap.end(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        // map的迭代器，可以用 first 访问std::pair的第一个成员(Type1)，second 访问第二个成员 (Type2)</span><br><span class="line">        cout&lt;&lt;it-&gt;first&lt;&lt;&quot;:&quot;&lt;&lt;it-&gt;second&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;&quot;=================================&quot;&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    //=========================</span><br><span class="line">    //  2. 修改映射值</span><br><span class="line">    //=========================</span><br><span class="line">    second.clear();</span><br><span class="line">    second[&apos;a&apos;]=1002;</span><br><span class="line">    second[&apos;b&apos;]=10023;</span><br><span class="line">    while (!second.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; second.begin()-&gt;first &lt;&lt; &quot; =&gt; &quot;;</span><br><span class="line">        cout &lt;&lt; second.begin()-&gt;second &lt;&lt; endl;</span><br><span class="line">        second.erase(second.begin());</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;&quot;=================================&quot;&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    //=========================</span><br><span class="line">    //  3. 插入</span><br><span class="line">    //=========================</span><br><span class="line">    mymap.insert(pair&lt;char,int&gt;(&apos;f&apos;,100) );</span><br><span class="line">    mymap.insert(pair&lt;char,int&gt;(&apos;g&apos;,200) );</span><br><span class="line">    cout&lt;&lt;&quot;f =&gt; &quot; &lt;&lt;mymap.find(&apos;f&apos;)-&gt;second&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;&quot;g =&gt; &quot; &lt;&lt;mymap.find(&apos;g&apos;)-&gt;second&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;&quot;=================================&quot;&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    //=========================</span><br><span class="line">    //  4. Compare 参数的使用</span><br><span class="line">    //=========================</span><br><span class="line">    key_comp = mymap.key_comp();</span><br><span class="line">    cout &lt;&lt; &quot;mymap contains:\n&quot;;</span><br><span class="line"></span><br><span class="line">    // 迭代器反向遍历的起始位置</span><br><span class="line">    char highest = mymap.rbegin()-&gt;first;     // key value of last element</span><br><span class="line">    it = mymap.begin();</span><br><span class="line">    do &#123;</span><br><span class="line">        cout &lt;&lt; (*it).first &lt;&lt; &quot; =&gt; &quot; &lt;&lt; (*it).second &lt;&lt; endl;</span><br><span class="line">    &#125; while ( key_comp((*it++).first, highest) );</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Leetcode笔记-1.twoSum/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-1.twoSum">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/sizeof()的用法总结/" data-toggle="tooltip" data-placement="top" title="sizeof()用法总结">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0参考"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x53C2;&#x8003;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1map概念"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.map&#x6982;&#x5FF5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2map容器的属性"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.map&#x5BB9;&#x5668;&#x7684;&#x5C5E;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3理解map的特殊性"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x7406;&#x89E3;map&#x7684;&#x7279;&#x6B8A;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4map的使用"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4.map&#x7684;&#x4F7F;&#x7528;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5举例"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5.&#x4E3E;&#x4F8B;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#Map" title="Map">Map</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          自己动手写一个光线追踪器 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/自己动手写一个光线追踪器/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#图形学" title="图形学">图形学</a>
+                            
+                        </div>
+                        <h1>自己动手写一个光线追踪器</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-07-31
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>fundamentals of computer graphics前四章读完之后，基本的光线追踪知识也都到位了。几天的时间自己动手写了一个光线追踪器。</p>
+<p>先上效果图<br>
+<img src="https://s2.ax1x.com/2019/07/31/etfpKe.md.png" alt="img"></p>
+<h3 id="准备工作">准备工作</h3>
+<ul>
+<li>平台<br>
+visual studio 2017.c++</li>
+<li>输出<br>
+这里直接输出到ppm格式的文件，ppm格式的好处是直接写入rgb数据就可以转换成png或者jpg格式的图像。</li>
+<li>向量Vec3.h<br>
+光线在程序中的实际表现为向量，一些运算涉及到向量的加减乘除，点乘叉乘等。因此首先来讲定义一个向量类是必要的，我们这里定义的是Vec3的类。</li>
+<li>光线ray.h<br>
+光线的定义就是文章中所说的p=a+tb,都是使用向量作为运算。</li>
+<li>图像image<br>
+显式的定义图像的大小nx，ny。这里的设定都是像素大小。</li>
+<li>添加圆<br>
+上面的操作就可以画出一个有颜色的背景了，我们这里主要使用球体作为object，添加的思想实际上是：判断光线是否和一个隐形的圆相交，如果是的话，就赋以球的颜色。判断相交实际上就是解析几何中的直线与球体相交，用求根公式计算。</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/07/31/et0k4J.png" alt="img"></p>
+<p>以上我们已经可以得到一个基础的图形了，下面就是增加光线追踪器的特性。</p>
+<h3 id="antialiasing-反锯齿">Antialiasing 反锯齿</h3>
+<p>当一个真正的相机拍照时，通常没有锯齿沿着边缘，因为边缘像素是一些前景和一些背景的混合。我们可以通过平均每个像素内的一堆样本得到相同的效果。</p>
+<p>我们对camera类进行了一些抽象，以便稍后可以制作一个更酷的camera。我们需要的是一个随机数生成器，它返回实数。c++传统上没有标准的随机数生成器，但是大多数系统都将drand48()隐藏在某个地方，这就是我在这里使用的。然而，较新的c++版本已经使用<random>头解决了这个问题(如果根据一些专家的说法不完全正确)。</random></p>
+<p>无论使用什么方法，都要找到一个函数，该函数返回一个规范随机数，按照惯例，该随机数返回范围为0 &lt;= ran &lt; 1的随机实数。小于1很重要，因为我们有时会利用它。</p>
+<p>对于给定的像素，我们在该像素中选择几个样本，并通过每个样本发送光线，在他们的颜色中取平均。</p>
+<p><img src="https://s2.ax1x.com/2019/07/31/etcwyd.png" alt="img"></p>
+<p>可以看到在边缘有点像素融入前景，有些融入了后景。</p>
+<h3 id="diffuse-materials-漫反射材质">Diffuse Materials 漫反射材质</h3>
+<p>现在我们有了对象和每个像素的多重光线，我们可以制作一些看起来很真实的材料。我们将从漫反射(哑光)材料开始。</p>
+<p>一个问题是，我们是否可以混合和匹配形状和材料(因此我们将一个球体指定为一个材料)，或者将其组合在一起，使几何和材料紧密结合(这对于将几何和材料链接在一起的过程对象可能很有用)。</p>
+<p>不发光的漫反射物体只是呈现出周围环境的颜色，但它们通过自身固有的颜色来调节周围环境的颜色。漫反射表面反射的光的方向是随机的。所以，如果我们把三束光线射入两个漫反射表面之间的缝隙，它们将会有不同的随机行为。</p>
+<p><img src="https://s2.ax1x.com/2019/07/31/et2J2D.png" alt="img"></p>
+<p>它们也可能被吸收而不是反映。表面越黑，吸收的可能性越大。任何随机方向的算法都会产生看起来粗糙的表面。其中一个最简单的方法就是对理想的漫反射面完全正确。</p>
+<p>！![ig]<a href="https://s2.ax1x.com/2019/07/31/et2G8O.png" target="_blank" rel="noopener">https://s2.ax1x.com/2019/07/31/et2G8O.png</a>)</p>
+<h3 id="metal-金属材质">Metal 金属材质</h3>
+<p>如果我们想要不同的物体有不同的材料，我们有一个设计决策。我们可以有一个通用的材料，有很多参数，不同的材料类型，只需要消去一些参数。这不是一个坏方法。或者我们可以有一个抽象的material类来封装行为。</p>
+<p>对于我们的项目，材料需要做两件事:</p>
+<ul>
+<li>产生散射光(或者说吸收入射光)</li>
+<li>如果散射，说明光线应该衰减多少</li>
+</ul>
+<p>金属材质我们往往使用lambertian反射，对于我们已经知道的朗伯坦散射(漫反射)情况，它要么总是散射并通过反射系数R衰减，要么散射时不衰减，只吸收1-R部分的光线。也可能是这些策略的组合。<br>
+<img src="https://s2.ax1x.com/2019/07/31/et2NKH.png" alt="img"></p>
+<h3 id="dielectrics-电介质">Dielectrics 电介质</h3>
+<p>像水、玻璃和钻石这样的透明材料是电介质。当一束光线击中它们时，它会分裂成反射光线和折射(透射)光线。我们将通过在反射和折射之间随机选择，每次相互作用只产生一个散射光线来处理这个问题。</p>
+<p>一个棘手的实际问题是，当光线处于折射率较高的材料中时，斯涅尔定律没有真正的解，因此不可能发生折射。在这里所有的光都被反射，因为在实践中通常是在固体内部，它被称为“全内反射”。这就是为什么当你被淹没的时候，水和空气的边界就像一面完美的镜子。因此，折射的代码比反射的代码稍微复杂一些。<br>
+<img src="https://s2.ax1x.com/2019/07/31/et2156.png" alt="img"></p>
+<h3 id="positionable-camera-相机">Positionable camera 相机</h3>
+<p>照相机和介质一样，调试起来很麻烦。所以我总是循序渐进地发展我的。首先，让我们允许一个可调的视图(fov)。这是你通过入口看到的角度。因为我们的图像不是正方形的，所以fov在水平和垂直方向上是不同的。我总是用垂直fov。我通常还在构造函数中指定度数，并将其更改为弧度——这取决于个人的喜好。</p>
+<p>为了得到一个任意的观点，让我们先命名我们关心的点。我们将调用摄像头lookfrom的位置，以及我们注视的点。(后来，如果你愿意，你可以定义一个方向来查看，而不是一个点来查看。)</p>
+<p><img src="https://s2.ax1x.com/2019/07/31/et28PK.png" alt="img"></p>
+<p>我们还需要一种方法来指定相机的滚动，或侧向倾斜;绕lookat-lookfrom轴旋转。另一种思考方法是，即使你一直盯着看，你的头仍然可以绕着鼻子转动。我们需要的是一种为摄像机指定向上矢量的方法。</p>
+<p><img src="https://s2.ax1x.com/2019/07/31/et2Yxe.png" alt="img"></p>
+<p>我们可以用任何向上的向量，把它投影到这个平面上得到相机的向上的向量。我使用命名“view up”(vup)向量的通用约定。几个叉乘，现在我们有了一个完整的标准正交基(u,v,w)来描述相机的方向。</p>
+<h3 id="defocus-blur-散焦">Defocus Blur 散焦</h3>
+<p>我们在真实的相机中进行散焦模糊的原因是因为它们需要一个大洞(而不仅仅是针孔)来收集光线。这将使所有的物体都散焦，但是如果我们把一个透镜插入孔中，就会有一定的距离使所有的物体都聚焦。物体到焦点所在平面的距离由透镜和胶片/传感器之间的距离控制。这就是为什么当你改变对焦时，你会看到镜头相对于相机移动(这也可能发生在你的手机相机上，但传感器会移动)。光圈是一个孔，用来有效地控制透镜的大小。对于一个真正的相机，如果你需要更多的光，你可以把光圈调大，这样就会得到更多的散焦模糊。对于我们的虚拟相机，我们可以有一个完美的传感器，永远不需要更多的光，所以我们只有当我们想要散焦模糊时才有一个光圈。</p>
+<p>真正的照相机有一个复杂的复合镜头。对于我们的代码，我们可以模拟顺序:传感器，然后是镜头，然后是光圈，计算出将光线发送到哪里，并在计算后翻转图像(图像被倒过来投影到胶片上)。图形人们通常使用薄透镜近似。</p>
+<h3 id="all-done">ALL Done</h3>
+<p>最后我们实现一个1920*1080的图像。<br>
+<img src="https://s2.ax1x.com/2019/07/31/et2qsJ.png" alt="img"></p>
+<p><img src="https://s2.ax1x.com/2019/07/31/etfpKe.md.png" alt="img"></p>
+<p><a href="https://github.com/CrowFea/CodeRepo/tree/master/RayTracer" target="_blank" rel="noopener">github地址</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/leetcode笔记-5176.猜字谜/" data-toggle="tooltip" data-placement="top" title="leetcode笔记-5176.猜字谜">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/RMQ问题及ST算法/" data-toggle="tooltip" data-placement="top" title="RMQ问题及ST算法">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#准备工作"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x51C6;&#x5907;&#x5DE5;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#antialiasing-反锯齿"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Antialiasing &#x53CD;&#x952F;&#x9F7F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#diffuse-materials-漫反射材质"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Diffuse Materials &#x6F2B;&#x53CD;&#x5C04;&#x6750;&#x8D28;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#metal-金属材质"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Metal &#x91D1;&#x5C5E;&#x6750;&#x8D28;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#dielectrics-电介质"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Dielectrics &#x7535;&#x4ECB;&#x8D28;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#positionable-camera-相机"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Positionable camera &#x76F8;&#x673A;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#defocus-blur-散焦"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Defocus Blur &#x6563;&#x7126;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#all-done"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">ALL Done</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#图形学" title="图形学">图形学</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——线索二叉树 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——线索二叉树/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#线索二叉树" title="线索二叉树">线索二叉树</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——线索二叉树</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-11-07
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0问题描述">0.问题描述</h3>
+<p>对二叉树进行先中后遍历分别得到一个线性序列，在该序列中每个结点都只有一个直接前驱和直接后继（除第一个和最后一个结点）。用二叉链表表示二叉树，有n+1个指针域为空，若用其存储该结点的前驱或后继结点，则称该指针域为线索。线索二叉树就是对二叉树进行了某种线索化的二叉树。</p>
+<h3 id="1数据结构">1.数据结构</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef enum &#123;</span><br><span class="line">	Link, Thread</span><br><span class="line">&#125; PointerTag;</span><br><span class="line"></span><br><span class="line">typedef struct BiThrNode &#123;</span><br><span class="line">	ElemType data;</span><br><span class="line">	BiThrNode *lchild, *rchild;</span><br><span class="line">	PointerTag ltag, rtag;</span><br><span class="line">&#125;BiThrNode, *BiThrTree;</span><br></pre></td></tr></table></figure>
+<h3 id="2先序创建线索二叉树">2.先序创建线索二叉树</h3>
+<p>先序创建线索二叉树时，每输入一个数据，就申请一个空间储存数据。并且把结点的左线索设置为Link，右线索设置为Link。之后线索化时在进行重置。由于是先序创建二叉树，先对左孩子进行递归，再对右儿子进行递归。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Status CreateBiThrTree(BiThrTree &amp;PreT) &#123;</span><br><span class="line">	ElemType ch;</span><br><span class="line">	cin &gt;&gt; ch;</span><br><span class="line">	if (ch == &apos;#&apos;) &#123;</span><br><span class="line">		PreT = NULL;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		if (!(PreT = (BiThrNode*)malloc(sizeof(BiThrNode)))) </span><br><span class="line">			exit(OVERFLOWED);</span><br><span class="line">		PreT-&gt;data = ch;</span><br><span class="line">		PreT-&gt;ltag = Link;</span><br><span class="line">		PreT-&gt;rtag = Link;</span><br><span class="line">		CreateBiThrTree(PreT-&gt;lchild);</span><br><span class="line">		CreateBiThrTree(PreT-&gt;rchild);</span><br><span class="line">	&#125;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3先序线索化">3.先序线索化</h3>
+<p>先设置一个全局变量储存前一位结点。对二叉树进行先序线索化。如果结点的左节点不存在，将该结点的左线索置为线索，将左子节点连接到上一个节点上。再对结点的前一个节点的右节点进行线索化，如果右节点不存在，将该结点的右线索置为线索，将右节点连接到该结点上。在之后，将前一个结点置为当前结点。接下来进行判断，如果该结点左线索是Link，对左节点进行线索化。对所有的左子树完成线索化后，再对右子树进行线索化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">BiThrTree pre;</span><br><span class="line">void PreThreading(BiThrTree &amp;p) &#123;</span><br><span class="line">	if (p) &#123;</span><br><span class="line">		if (!p-&gt;lchild) &#123;</span><br><span class="line">			p-&gt;LTag = Thread;</span><br><span class="line">			p-&gt;lchild = pre;</span><br><span class="line">		&#125;</span><br><span class="line">		if (!pre-&gt;rchild) &#123;</span><br><span class="line">			pre-&gt;RTag = Thread;</span><br><span class="line">			pre-&gt;rchild = p;</span><br><span class="line">		&#125;</span><br><span class="line">		pre = p;</span><br><span class="line">		if (p-&gt;LTag == Link)</span><br><span class="line">			PreThreading(p-&gt;lchild);</span><br><span class="line">		if (p-&gt;RTag == Link)</span><br><span class="line">			PreThreading(p-&gt;rchild);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4设置线索化头结点">4.设置线索化头结点</h3>
+<p>设置一个二叉树的头结点。对一棵二叉树加线索时，必须首先申请一个头结点，建立头结点与二叉树的根结点的指向关系，对二叉树线索化后，还需建立最后一个结点与头结点之间的线索。先申请一个结点，将右线索设置为Thread，右子节点连接到原来的二叉树上，左线索设置为Link。接下来对新树进行线索化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Status PreOrderThreading(BiThrTree &amp;Thrt, BiThrTree T) &#123;</span><br><span class="line"></span><br><span class="line">	if (!(Thrt = (BiThrTree)malloc(sizeof(BiThrNode))))</span><br><span class="line">		return ERROR;</span><br><span class="line"></span><br><span class="line">	Thrt-&gt;RTag = Thread;</span><br><span class="line">	Thrt-&gt;rchild = Thrt;</span><br><span class="line">	Thrt-&gt;LTag = Link;</span><br><span class="line">	if (!T) &#123;</span><br><span class="line">		Thrt-&gt;lchild = Thrt;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		Thrt-&gt;lchild = T;</span><br><span class="line">		pre = Thrt;</span><br><span class="line">		PreThreading(T);</span><br><span class="line">		pre-&gt;rchild = Thrt;</span><br><span class="line">		pre-&gt;RTag = Thread;</span><br><span class="line">		Thrt-&gt;rchild = pre;</span><br><span class="line">	&#125;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5先序线索化遍历">5.先序线索化遍历</h3>
+<p>由于线索二叉树设置为头结点，所以先定义一个树节点的变量，将该变量定为头结点的左子节点。当该结点没指向根节点时，就继续进行遍历。由于是先序遍历，所以先将根节点输出。如果左子节点为Link，说明该结点有左子节点，那么直接将该结点赋给左子节点，否则，将该结点指向右子节点。因为此时右子节点必然指向当前节点的后继。直到遍历到整个树的根节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Status PreOrderTraverse_Thr(BiThrTree T) &#123;</span><br><span class="line"></span><br><span class="line">	BiThrTree p;</span><br><span class="line">	p = T-&gt;lchild;</span><br><span class="line">	while (p != T) &#123;</span><br><span class="line">		cout &lt;&lt; p-&gt;data;</span><br><span class="line">		if (p-&gt;LTag == Link)</span><br><span class="line">			p = p-&gt;lchild;</span><br><span class="line">		else</span><br><span class="line">			p = p-&gt;rchild;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6线索二叉树的树型输出">6.线索二叉树的树型输出</h3>
+<p>线索二叉树的树型输出和原先二叉树有所不同。因为要输出左线索右线索，并且对下一个结点的获取是通过线索进行获取。所以先进行判断，如果当前结点的右线索是Link，说明该结点的右子节点存在，那么进入下一层递归。使用一个整型变量储存层值。直到该子节点的右子节点不存在，那么就输出level个五个空格，输出数据。所有的右子树完成之后，左子树再进行树的打印。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">	void TreePrint(BiThrTree T, int level)</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	if (!T) &#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	if (T-&gt;RTag == Link) &#123;</span><br><span class="line">		TreePrint(T-&gt;rchild, level + 1);</span><br><span class="line">	&#125;</span><br><span class="line">	for (i = 0; i&lt;level; i++) &#123;</span><br><span class="line">		cout &lt;&lt; &quot;     &quot;;</span><br><span class="line">	&#125; </span><br><span class="line">	cout &lt;&lt; T-&gt;data &lt;&lt; T-&gt;LTag &lt;&lt; T-&gt;RTag &lt;&lt; endl;</span><br><span class="line">	if (T-&gt;LTag == Link)</span><br><span class="line">		TreePrint(T-&gt;lchild, level + 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7">7.</h3>
+<p>中序线索化<br>
+先设置一个全局变量储存前一位结点。对二叉树进行中序线索化。由于是中序线索化，首先对左子节点进行线索化，一直到左子树的最后一个结点。如果当前节点的左子节点不存在，将左子节点的线索设置为Thread，左子节点设置为前一个结点。再次，之前的结点的右节点如果不存在，将右线索设置为Thread，将右子节点设置为当前结点。最后再对当前节点的右子树进行线索化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">	void InThreading(BiThrTree p, BiThrTree &amp;pre) &#123;</span><br><span class="line">	if (p) &#123;</span><br><span class="line">		InThreading(p-&gt;lchild, pre);</span><br><span class="line">		if (!p-&gt;lchild) &#123;</span><br><span class="line">			p-&gt;ltag = Thread;</span><br><span class="line">			p-&gt;lchild = pre;</span><br><span class="line">		&#125;</span><br><span class="line">		if (!pre-&gt;rchild) &#123;</span><br><span class="line">			pre-&gt;rtag = Thread;</span><br><span class="line">			pre-&gt;rchild = p;</span><br><span class="line">		&#125;</span><br><span class="line">		pre = p;</span><br><span class="line">		InThreading(p-&gt;rchild, pre);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8中序线索化设置头结点">8.中序线索化设置头结点</h3>
+<p>设置一个二叉树的头结点。对一棵二叉树加线索时，必须首先申请一个头结点，建立头结点与二叉树的根结点的指向关系，对二叉树线索化后，还需建立最后一个结点与头结点之间的线索。先申请一个结点，将右线索设置为Thread，右子节点连接到原来的二叉树上，左线索设置为Link。接下来对新树进行线索化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Status InOrderThreading(BiThrTree &amp;T, BiThrTree PreT) &#123;</span><br><span class="line">	BiThrTree pre;</span><br><span class="line">	if (!(T = (BiThrTree)malloc(sizeof(BiThrNode)))) </span><br><span class="line">		exit(OVERFLOWED);</span><br><span class="line">	T-&gt;ltag = Link;</span><br><span class="line">	T-&gt;rtag = Thread;</span><br><span class="line">	T-&gt;rchild = T;</span><br><span class="line">	if (!PreT)</span><br><span class="line">		T-&gt;lchild = T;</span><br><span class="line">	else &#123;</span><br><span class="line">		T-&gt;lchild = PreT;</span><br><span class="line">		pre = T;</span><br><span class="line">		InThreading(PreT, pre);</span><br><span class="line">		pre-&gt;rchild = T;</span><br><span class="line">		pre-&gt;rtag = Thread;</span><br><span class="line">		T-&gt;rchild = pre;</span><br><span class="line">	&#125;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9中序线索化遍历">9.中序线索化遍历</h3>
+<p>由于线索二叉树设置为头结点，所以先定义一个树节点的变量，将该变量定为头结点的左子节点。当该结点没指向根节点时，就继续进行遍历。由于是中序遍历，所以先将左子节点输出。如果右线索为Thread，说明该结点有左子节点，那么直接将该结点赋给右子节点。因为此时右子节点必然指向当前节点的后继。直到遍历到整个树的根节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Status InOrderTraverse_Thr(BiThrTree T) &#123;</span><br><span class="line">	BiThrTree p = T-&gt;lchild;</span><br><span class="line">	while (p != T) &#123;</span><br><span class="line">		while (p-&gt;ltag == Link)</span><br><span class="line">			p = p-&gt;lchild;</span><br><span class="line">		cout &lt;&lt; p-&gt;data;</span><br><span class="line">		while (p-&gt;rtag == Thread &amp;&amp; p-&gt;rchild != T) &#123;</span><br><span class="line">			p = p-&gt;rchild;</span><br><span class="line">			cout &lt;&lt; p-&gt;data;</span><br><span class="line">		&#125;</span><br><span class="line">		p = p-&gt;rchild;</span><br><span class="line">	&#125;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="10寻找结点的前驱和后继">10.寻找结点的前驱和后继</h3>
+<p>先设置三个bool值，判断是否找到要寻找的结点；判断前驱是否存在；判断后继是否存在。中序遍历结点，如果找到该结点，就将is_found的值定为true。接着找到该结点的前驱和后继。再设置两个结点树节点prev，succ。在遍历的时候每一次都将prev设置为当前结点的前驱结点。找到目标节点后，首先将遍历的结果输出。在进行前驱和后继结点的输出，如果某一个结点不存在，输出NULL。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">	Status InOrderFind(BiThrTree T,  char target) &#123;</span><br><span class="line">	BiThrTree p = T-&gt;lchild;</span><br><span class="line">	BiThrTree prev = T;</span><br><span class="line">	BiThrTree succ = NULL;</span><br><span class="line">	bool is_found=false,prev_exist = false, succ_exist = false;</span><br><span class="line">	while (p != T) &#123;</span><br><span class="line">		while (p-&gt;ltag == Link)</span><br><span class="line">			p = p-&gt;lchild;</span><br><span class="line">		if (prev_exist == false) &#123;</span><br><span class="line">			if (p-&gt;data == target) &#123;</span><br><span class="line">				prev_exist = true;</span><br><span class="line">				is_found = true;</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				prev = p;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			if (succ_exist == false) &#123;</span><br><span class="line">				succ = p;</span><br><span class="line">				succ_exist = true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		while (p-&gt;rtag == Thread &amp;&amp; p-&gt;rchild != T) &#123;</span><br><span class="line">			p = p-&gt;rchild;</span><br><span class="line">			if (prev_exist == false) &#123;</span><br><span class="line">				if (p-&gt;data == target) &#123;</span><br><span class="line">					prev_exist = true;</span><br><span class="line">					is_found = true;</span><br><span class="line">				&#125;</span><br><span class="line">				else &#123;</span><br><span class="line">					prev = p;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">				if (succ_exist == false) &#123;</span><br><span class="line">					succ = p;</span><br><span class="line">					succ_exist = true;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		p = p-&gt;rchild;</span><br><span class="line">	&#125;</span><br><span class="line">	if (is_found == true) &#123;</span><br><span class="line">		InOrderTraverse_Thr(T);</span><br><span class="line">		cout &lt;&lt; endl;</span><br><span class="line">		cout &lt;&lt; &quot;succ is &quot;;</span><br><span class="line">		if (succ != NULL) &#123;</span><br><span class="line">			cout &lt;&lt; succ-&gt;data &lt;&lt; succ-&gt;rtag &lt;&lt; endl;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			cout &lt;&lt; &quot;NULL&quot; &lt;&lt; endl;</span><br><span class="line">		&#125;</span><br><span class="line">		cout &lt;&lt; &quot;prev is &quot;;</span><br><span class="line">		if (prev != T) &#123;</span><br><span class="line">			cout &lt;&lt; prev-&gt;data &lt;&lt; prev-&gt;ltag &lt;&lt; endl;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			cout &lt;&lt; &quot;NULL&quot; &lt;&lt; endl;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		InOrderTraverse_Thr(T);</span><br><span class="line">		cout &lt;&lt; endl;</span><br><span class="line">		cout &lt;&lt; &quot;Not found&quot;&lt;&lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="11另外">11.另外</h3>
+<p><strong>- 线索化设置头结点</strong></p>
+<p>对一棵二叉树加线索时，必须首先申请一个头结点，建立头结点与二叉树的根结点的指向关系，对二叉树线索化后，还需建立最后一个结点与头结点之间的线索。设置头结点有诸多好处，对后续的每一个结点进行遍历，寻找前驱后继时无需对根节点进行特殊操作。</p>
+<p><strong>- 树型输出</strong></p>
+<p>树型输出的时候，要注意线索二叉树搜索下一个结点的方法是通过线索。所以不能直接去索引左右结点。必须先对左右线索进行判断，如果是Link，说明下面的结点存在，直接去索引，否则不进行输出。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/数据结构笔记——图/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——图">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/unity——Survival Shooter：Game Over，Man/" data-toggle="tooltip" data-placement="top" title="unity——Survival Shooter：Game Over,Man!">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0问题描述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x95EE;&#x9898;&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1数据结构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2先序创建线索二叉树"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.&#x5148;&#x5E8F;&#x521B;&#x5EFA;&#x7EBF;&#x7D22;&#x4E8C;&#x53C9;&#x6811;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3先序线索化"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3.&#x5148;&#x5E8F;&#x7EBF;&#x7D22;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4设置线索化头结点"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4.&#x8BBE;&#x7F6E;&#x7EBF;&#x7D22;&#x5316;&#x5934;&#x7ED3;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5先序线索化遍历"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5.&#x5148;&#x5E8F;&#x7EBF;&#x7D22;&#x5316;&#x904D;&#x5386;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6线索二叉树的树型输出"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">6.&#x7EBF;&#x7D22;&#x4E8C;&#x53C9;&#x6811;&#x7684;&#x6811;&#x578B;&#x8F93;&#x51FA;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">7.</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8中序线索化设置头结点"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">8.&#x4E2D;&#x5E8F;&#x7EBF;&#x7D22;&#x5316;&#x8BBE;&#x7F6E;&#x5934;&#x7ED3;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9中序线索化遍历"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">9.&#x4E2D;&#x5E8F;&#x7EBF;&#x7D22;&#x5316;&#x904D;&#x5386;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10寻找结点的前驱和后继"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">10.&#x5BFB;&#x627E;&#x7ED3;&#x70B9;&#x7684;&#x524D;&#x9A71;&#x548C;&#x540E;&#x7EE7;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11另外"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">11.&#x53E6;&#x5916;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#线索二叉树" title="线索二叉树">线索二叉树</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

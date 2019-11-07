@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          unity——Survival Shooter：环境&amp;角色 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/unity——Survival Shooter：环境&amp;角色/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#unity" title="unity">unity</a>
+                            
+                              <a class="tag" href="/tags/#Survival Shooter" title="Survival Shooter">Survival Shooter</a>
+                            
+                        </div>
+                        <h1>unity——Survival Shooter：环境&amp;角色</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-10-21
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0写在前面">0.写在前面</h3>
+<p>Survival Shooter是一个持续很久的项目，实际上也是正经进入untiy3d后的第一个正经的游戏，但是学习了很长时间，其中也因为各种原因断过，终于把他做出来了，撒花！那么接下来就写一下做第一个游戏的方方面面叭。</p>
+<h3 id="1环境">1.环境</h3>
+<p>首先搭载整个游戏的环境。在进入unity后，首先<s>调直座椅靠背</s>，emmm修改界面布局，当然这个也是可有可无啦，只是看着好看。</p>
+<p><img src="https://s1.ax1x.com/2018/10/23/irAOr8.md.png" alt="2by3"></p>
+<p>建立一个新的场景，命名。扔进scene的文件夹里。</p>
+<p>现在就正式开始啦：首先把prefabs里面的environment扔进Hierarchy里面，因为这个本事就是教程，的确给了很多已经做好的东西，very nice，之后可能就需要我们慢慢做了。那么实际上环境里的大部分东西都已经设置好了，唯一一点是，我们的游戏人物需要根据鼠标的位置继续转向和射击，所以要进行的操作是：在环境中添加一个3d object叫Quad。</p>
+<p>将我们想要的Quad重命名，<strong>一定要记得加入组件后先重命名</strong>！优良习惯，更名为Floor然后将Quad修改为我们想要的位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Position</span><br><span class="line">x:0 y:0 z:0</span><br><span class="line"></span><br><span class="line">Rotation</span><br><span class="line">x:90 y:0 z:0</span><br></pre></td></tr></table></figure>
+<p>此时此刻我们的Floor已经铺满了整个环境，甚至还多出来了点，但唯一的缺陷就是，Floor是可见的，这是由于它内部的组件Mesh Render带来的。</p>
+<p>接下来，去掉Mesh Render这个组件，Floor就只可见它的轮廓了。</p>
+<p>那么现在呢，我们希望摄像机发出的光只对我们的Floor有效，所以我们应该将这个Floor和别的层分离开来，所以将他放入Floor层中。</p>
+<p>最后，我们的游戏一般来说都是需要背景音乐的，我们在Environment的Inspector里添加组件Audio Source，添加Background Music。注意要去掉play on Awake，选择loop，最后可以修改一下音量，我调到了0.1大小。</p>
+<p>环境搭建就完成。</p>
+<h3 id="2角色">2.角色</h3>
+<h4 id="1角色动画-animator-controller">1.角色动画 Animator Controller</h4>
+<p>接下来在Model-Character中把我们的Player扔进Hierarchy。我们的角色自身就携带了三个动画：Move，Idle，Die。但是在游戏中我们需要一个管理员，来对何时调用三个动画进行管理，这个东西叫Animator Controller。我们在Assets底下新建一个文件夹叫Animator，注意，每一个不同的角色可能都需要用不同的AC（Animator Controller）进行管理，除非某几个角色的骨骼，动画类似（比如都是人形双足生物，艾泽拉斯的原生矮人和德拉诺的霜狼氏族）都可以用一套AC进行管理。</p>
+<p>在Animator下新建一个叫PlayerAC的Animator Controller。打开它，将Player自带的若干个动画拖进去，就像酱紫：</p>
+<p><img src="https://s1.ax1x.com/2018/10/23/irENid.md.png" alt="PlayerAC"></p>
+<p>在做左侧添加AC控制动画的Parameter，当某几个参数确定的时候改变动画。我们在这里添加一个IsWalking的布尔值，当它为true的时候由Idle转到Move，Flase的时候反过来。再添加一个Die的Trigger值，Trigger值和bool值十分类似，不同的地方在于，Trigger一旦改变了值，会立刻改变回来，是一次性一下的。因为我们想达到的效果是玩家一死就立刻重新开始，此时玩家必须是活过来的。</p>
+<p>在AC中添加Transitions，点击这些白色的线，在右侧添加parameters，特别注意的一点是，一定要把Has Exit Time的这个勾去掉，否则动画会有一定的延迟。</p>
+<p><img src="https://s1.ax1x.com/2018/10/23/irEbFJ.png" alt="image"></p>
+<p>那么将其他的Transitions添加完，保存。将PlayerAC拖到Player里的Animator Controller中去。</p>
+<h4 id="2物理属性">2.物理属性</h4>
+<p>接下来要给我们的玩家添加一下物理属性，我们希望它像一个正常的人物一样，不会穿墙，被人打得时间太长了就会死等等人民大众喜闻乐见的属性。所以我们添加RigiBody，使我们的人物拥有一般刚体的性质，我们把Drag和Angular Drag调整至无限大，并且在方向上进行约束，使我们的玩家不会倒下去。</p>
+<p>接下来添加Capsule Collider，这将会用一个胶囊（emm）包住我们的人物，同时也是给了这个模型一个物理边界，以便进行一些碰撞等动作的判断。</p>
+<p>最后还是有音效，如果Player受伤了我们希望他叫一声，所以添加Audio Source，同样的点掉Play on Awake。</p>
+<h4 id="3运动程序">3.运动程序</h4>
+<p>做完了这一切，我们要告诉程序如何进行判断。我们要进行程序段的操作。在Scripts-Player里找到PlayerMoveMent，将他直接拖进Player里，双击打开进行修改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public float speed = 6f;</span><br><span class="line">Vector3 movement;//3维的向量，存储玩家的移动信息</span><br><span class="line">Animator anim;</span><br><span class="line">Rigidbody PlayerRigibidy;</span><br><span class="line">int floorMask; </span><br><span class="line">float camRayLength = 100f;</span><br></pre></td></tr></table></figure>
+<p>先看变量声明，speed是角色移动的速度，movement是一个Vector3型的变量，表示3D的向量和点。包含位置、方向（朝向）、欧拉角的信息，也包含做些普通向量运算的函数。用来存储角色的运动信息。接下来生命控制动画的anim，和控制角色运动的playerRigibody。</p>
+<p>floorMask需要解释一下，首先需要解释的是，鼠标移动控制角色转动的原理是，我们模拟一个由玩家-鼠标两点确定的一条光线，这条光线打在我们最开始建立的Floor上，确定唯一的一个点，是我们瞄准的方向。所以设置一个floorMask变量，整型，因为所有的LayerMask的存储方式实际上都是以整型的数字进行存储的，每一层一个数字。用这个floorMask来获取我们想要投射的层。</p>
+<p>camRayLength就是发出光线的长度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void Awake()</span><br><span class="line">   &#123;</span><br><span class="line">       floorMask = LayerMask.GetMask(&quot;Floor&quot;);</span><br><span class="line">       anim = GetComponent&lt;Animator&gt;();</span><br><span class="line">       PlayerRigibidy = GetComponent&lt;Rigidbody&gt;();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>下来看Awake函数，这是unity自己调用的函数。是在一开始时进行初始化，首先获取我们要进行投射的层，存储到floorMask里。接下来将我们的变量和unity里的组件进行关联。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void FixedUpdate() //物理更新</span><br><span class="line">    &#123;</span><br><span class="line">        float h = Input.GetAxisRaw(&quot;Horizontal&quot;);//只取-1 0 1</span><br><span class="line">        float v = Input.GetAxisRaw(&quot;Vertical&quot;);</span><br><span class="line"></span><br><span class="line">        Move(h, v);</span><br><span class="line">        Turning();</span><br><span class="line">        Animating(h, v);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们使用的更新方法是FixedUpdate，在官方文档中是这么说的：</p>
+<blockquote>
+<p>This function is called every fixed framerate frame, if the MonoBehaviour is enabled.</p>
+</blockquote>
+<p>也就是固定时间频率进行更新，受游戏帧频率的影响，一般是0.02s一更新（unity本身的FPS是50HZ）。我们定义两个新的变量，一个叫h，用来获取键盘输入的移动指令。此处使用GetAxisRaw而不是GetAxis是因为，GetAxisRaw只能获得三个离散的数据（-1，0，1）。这意味着我们的人物将从静止突然到最大速度，在一个躲避敌人并干死他们的游戏中将提供更大的灵活度。Horizontal和Vertical是unity内部已经定义好的，只对某些按键有效。</p>
+<p>最后调用我们下面写的三个方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void Move(float h,float v)</span><br><span class="line">   &#123;</span><br><span class="line">       movement.Set(h, 0f, v); //设置值</span><br><span class="line">       movement = movement.normalized * speed * Time.deltaTime;</span><br><span class="line">       PlayerRigibidy.MovePosition(transform.position + movement);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>Move方法写的是玩家的移动。我们把h，v传进来，用BVector3里面自己带的Set方法进行设置值，这样我们的人物可以在x和z方向进行若干个1的移动。However，我们都学习过又高又妙的数学，如果只这么设置，我们就会在走对角线的时候，每次走1.414的距离，所以要将所有的移动归一化。使用Vector3内部的normalized方法，我们就得到了所有方向的1，再乘以一开始定义的速度。但此时，<s>克苏鲁的诅咒并没有结束</s>，如果我们就这样结束的话，每个0.02s都会更新一次，我们的人物将每秒移动50个距离，这太浮夸了，我们要设置在每个时间片区内只进行一次更新。乘上Time的DeltaTime方法。这才结束。</p>
+<p>最后，我们将新计算好的位置，和原本的位置相加，得到新的位置，用Rigibody内的MovePosition进行移动。<strong>特别强调的是，我们的移动和移动的动画是两回事，只是在同一时间发生了，但位移是suo的一下的，在这期间进行了动画。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void Turning()</span><br><span class="line">    &#123;</span><br><span class="line">        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);</span><br><span class="line"></span><br><span class="line">        RaycastHit floorHit;</span><br><span class="line"></span><br><span class="line">        if(Physics.Raycast(camRay,out floorHit, camRayLength, floorMask))</span><br><span class="line">        &#123;</span><br><span class="line">            Vector3 playerToMouse = floorHit.point - transform.position;</span><br><span class="line">            playerToMouse.y = 0f;</span><br><span class="line"></span><br><span class="line">            Quaternion newRotation = Quaternion.LookRotation(playerToMouse);</span><br><span class="line">            PlayerRigibidy.MoveRotation(newRotation);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>Turning方法是对角色进行旋转。我们之前定义了那个神奇的光线，现在就是要实现这个光线来对角色的移动进行控制。首先定义一个Ray类的变量叫camRay，里面使用Camera的main的方法来制造这一光线。然后我们需要判断，这个光线有没有射到我们想要的面上。在这里定义一个RaycastHit型的变量。如果射到了，即撞击发生了，我们把这个撞击点的位置和当前位置相减取到相对位置，同时我们不希望角色的位置有倾倒，所以我们把y方向置0。但现在我们无法将角度这个概念储存到Vector3类型的变量里去，所以要定义一个新的变量叫Quaternion。用他来存储新的角度。最后使用Rigibody方法进行旋转。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void Animating(float h, float v)</span><br><span class="line">&#123;</span><br><span class="line">    bool walking = h != 0f || v != 0f;</span><br><span class="line">    anim.SetBool(&quot;IsWalking&quot;, walking);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Animating方法用来控制PlayerAC中IsWalking参数的值。当Input没有值传进来的时候，将IsWalking变为false。</p>
+<p>最后贴一下总的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class PlayerMovement : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    public float speed = 6f;</span><br><span class="line">    Vector3 movement;//3维的向量，存储玩家的移动信息</span><br><span class="line">    Animator anim;</span><br><span class="line">    Rigidbody PlayerRigibidy;</span><br><span class="line">    int floorMask; </span><br><span class="line">    float camRayLength = 100f;</span><br><span class="line"></span><br><span class="line">    void Awake()</span><br><span class="line">    &#123;</span><br><span class="line">        floorMask = LayerMask.GetMask(&quot;Floor&quot;);</span><br><span class="line">        anim = GetComponent&lt;Animator&gt;();</span><br><span class="line">        PlayerRigibidy = GetComponent&lt;Rigidbody&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void FixedUpdate() //物理更新</span><br><span class="line">    &#123;</span><br><span class="line">        float h = Input.GetAxisRaw(&quot;Horizontal&quot;);//只取-1 0 1</span><br><span class="line">        float v = Input.GetAxisRaw(&quot;Vertical&quot;);</span><br><span class="line"></span><br><span class="line">        Move(h, v);</span><br><span class="line">        Turning();</span><br><span class="line">        Animating(h, v);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void Move(float h,float v)</span><br><span class="line">    &#123;</span><br><span class="line">        movement.Set(h, 0f, v); //设置值</span><br><span class="line">        movement = movement.normalized * speed * Time.deltaTime;</span><br><span class="line">        PlayerRigibidy.MovePosition(transform.position + movement);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void Turning()</span><br><span class="line">    &#123;</span><br><span class="line">        Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);</span><br><span class="line"></span><br><span class="line">        RaycastHit floorHit;</span><br><span class="line"></span><br><span class="line">        if(Physics.Raycast(camRay,out floorHit, camRayLength, floorMask))</span><br><span class="line">        &#123;</span><br><span class="line">            Vector3 playerToMouse = floorHit.point - transform.position;</span><br><span class="line">            playerToMouse.y = 0f;</span><br><span class="line"></span><br><span class="line">            Quaternion newRotation = Quaternion.LookRotation(playerToMouse);</span><br><span class="line">            PlayerRigibidy.MoveRotation(newRotation);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void Animating(float h, float v)</span><br><span class="line">    &#123;</span><br><span class="line">        bool walking = h != 0f || v != 0f;</span><br><span class="line">        anim.SetBool(&quot;IsWalking&quot;, walking);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到此为止，基本的角色和环境搭建就算完成。进行游戏可以有基本的移动了，但在转向还存在问题，我们将在下一篇中继续。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/unity——Survival Shooter：相机&敌人/" data-toggle="tooltip" data-placement="top" title="unity——Survival Shooter：相机&敌人">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/数据结构笔记——队列/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——队列">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0写在前面"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x5199;&#x5728;&#x524D;&#x9762;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1环境"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x73AF;&#x5883;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2角色"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2.&#x89D2;&#x8272;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1角色动画-animator-controller"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">1.&#x89D2;&#x8272;&#x52A8;&#x753B; Animator Controller</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2物理属性"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">2.&#x7269;&#x7406;&#x5C5E;&#x6027;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3运动程序"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">3.&#x8FD0;&#x52A8;&#x7A0B;&#x5E8F;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#unity" title="unity">unity</a>
+                        
+                          <a class="tag" href="/tags/#Survival Shooter" title="Survival Shooter">Survival Shooter</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

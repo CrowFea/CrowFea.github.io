@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据结构笔记——顺序表 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/数据结构笔记——顺序表/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                            
+                              <a class="tag" href="/tags/#顺序表" title="顺序表">顺序表</a>
+                            
+                        </div>
+                        <h1>数据结构笔记——顺序表</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2018-10-11
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="0描述">0.描述</h3>
+<p>顺序表是指采用顺序存储结构的线性表，它利用内存中的一片连续存储区域存放表中的所有元素。可以根据需要对表中的所有数据进行访问，元素的插入和删除可以在表中的任何位置进行。</p>
+<h3 id="1顺序表的数据结构">1.顺序表的数据结构</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">	ElemType* elem;   </span><br><span class="line">	int length;       </span><br><span class="line">	int listsize;     </span><br><span class="line">&#125;SqList;</span><br></pre></td></tr></table></figure>
+<h3 id="1顺序表的初始化">1.顺序表的初始化</h3>
+<p>分配LIST_INIT_SIZE的空间，失败返回-1，成功返回0.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Status InitList_Sq(SqList &amp;L) &#123;</span><br><span class="line">	L.elem = (ElemType *)malloc(LIST_INIT_SIZE * sizeof(ElemType));</span><br><span class="line">	if (!L.elem)exit(OVERFLOWED);</span><br><span class="line">	L.listsize = LIST_INIT_SIZE;</span><br><span class="line">	L.length = 0;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2基本的插入操作">2.基本的插入操作</h3>
+<p>输入插入元素的位置和运算的值，实现数据的插入。如果顺序表的长度大于分配的空间，就再次分配一次空间，成功返回1，失败返回-1。</p>
+<p>找到元素位置后，将该位置之后的所有元素后移，再次进行插入，表的长度增加1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Status ListInsert_Sq(SqList &amp;L, int pos, ElemType e)</span><br><span class="line">&#123;</span><br><span class="line">	ElemType *newbase;</span><br><span class="line">	if (pos &gt;= 1 &amp;&amp; pos &lt;= L.length + 1)&#123;</span><br><span class="line">		if (L.length &gt;= L.listsize)&#123;</span><br><span class="line">			newbase = (ElemType *)realloc(L.elem, (L.listsize + LISTINCREMENT) * sizeof(ElemType));</span><br><span class="line">			if (!newbase) &#123;</span><br><span class="line">				return ERROR;</span><br><span class="line">			&#125;</span><br><span class="line">			L.elem = newbase;</span><br><span class="line">			L.listsize += LISTINCREMENT;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		ElemType *p, *q;</span><br><span class="line">		p = &amp;(L.elem[pos - 1]);</span><br><span class="line">		for (q = &amp;(L.elem[L.length - 1]); q &gt;= p; --q)&#123;</span><br><span class="line">			*(q + 1) = *q;</span><br><span class="line">		&#125;</span><br><span class="line">		*p = e;</span><br><span class="line">		++L.length;</span><br><span class="line">		return OK;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		return OVERFLOWED;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3基本的删除操作">3.基本的删除操作</h3>
+<p>遍历顺序表，如果没找到该元素，返回-1。如果找到该元素，将该元素后的所有元素前移，表的长度减一。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Status ListDelete_Sq(SqList &amp;L, int pos, ElemType &amp;e)</span><br><span class="line">&#123;</span><br><span class="line">	if (pos &gt;= 1 &amp;&amp; pos &lt;= L.length)&#123;</span><br><span class="line">		ElemType *q;</span><br><span class="line">		e = L.elem[pos - 1];</span><br><span class="line">		for (q = &amp;(L.elem[pos - 1]); q &lt;= &amp;(L.elem[L.length - 1]); ++q)&#123;</span><br><span class="line">			*q = *(q + 1);</span><br><span class="line">		&#125;</span><br><span class="line">		L.length = L.length - 1;</span><br><span class="line">		return OK;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		return OVERFLOWED;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4查找指定元素位置">4.查找指定元素位置</h3>
+<p>遍历顺序表，如果找到该元素，返回位置，如果未找到，返回-1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int ListLocate_Sq(SqList L, ElemType e)</span><br><span class="line">&#123;</span><br><span class="line">	int a = -1;</span><br><span class="line">	for (int i = 0; i &lt;= L.length - 1; i++)&#123;</span><br><span class="line">		if (L.elem[i] == e)&#123;</span><br><span class="line">			a = i;</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	if (a &gt;= 0 &amp;&amp; a &lt;= L.length - 1) &#123;</span><br><span class="line">		return a + 1;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		return ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5有序表的插入">5.有序表的插入</h3>
+<p>有序表内部是有顺序的，所以可以使用二分法进行检索，以减少时间复杂度。在插入时，使用二分法确定元素的位置，找到位置后，将该位置后的所有元素后移，表的长度+1。</p>
+<p>使用两个函数。首先确定要插入的元素的位置，在进行插入。分开功能便于代码的管理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">Status ListFind_sq(Ordered_list L, int e) </span><br><span class="line">&#123;</span><br><span class="line">	int low = 0, high = L.length - 1;</span><br><span class="line">	if (L.elem[high]&lt;e) &#123;</span><br><span class="line">		return(high + 2);</span><br><span class="line">	&#125;</span><br><span class="line">	if (L.elem[high] == e) &#123;</span><br><span class="line">		return(high + 1);</span><br><span class="line">	&#125;</span><br><span class="line">	if (L.elem[low] &gt;= e) &#123;</span><br><span class="line">		return(low + 1);</span><br><span class="line">	&#125;</span><br><span class="line">	int mid = (low + high) / 2;</span><br><span class="line">	while (low != high) &#123;</span><br><span class="line">		if (L.elem[mid]&gt;e) &#123;</span><br><span class="line">			high = mid - 1;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			low = mid;</span><br><span class="line">		&#125;</span><br><span class="line">		mid = (low + high) / 2;</span><br><span class="line">		if (low == high - 1) &#123;</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	int temp = high;</span><br><span class="line">	if (L.elem[high] == e) &#123;</span><br><span class="line">		return(temp + 1);</span><br><span class="line">	&#125;</span><br><span class="line">	if (L.elem[high]&lt;e) &#123;</span><br><span class="line">		return(temp + 2);</span><br><span class="line">	&#125;</span><br><span class="line">	if (L.elem[0] == e) &#123;</span><br><span class="line">		return(1);</span><br><span class="line">	&#125;</span><br><span class="line">	while (L.elem[temp] &gt;= e) &#123;</span><br><span class="line">		temp--;</span><br><span class="line">	&#125;</span><br><span class="line">	return (temp + 2);</span><br><span class="line">&#125;</span><br><span class="line">Status ListInsert_sq(Ordered_list &amp;L, int i, int e) </span><br><span class="line">&#123;</span><br><span class="line">	if (i&lt;1 || i&gt;L.length + 1) &#123;</span><br><span class="line">		return ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">	if (L.length &gt;= L.listsize) &#123;</span><br><span class="line">		int *newbase;</span><br><span class="line">		newbase = (int*)realloc(L.elem, (L.listsize + LISTINCREMENT) * sizeof(int));</span><br><span class="line">		if (!newbase) exit(OVERFLOW);</span><br><span class="line">		L.elem = newbase;</span><br><span class="line">		L.listsize += LISTINCREMENT;</span><br><span class="line">	&#125;</span><br><span class="line">	int *q, *p;</span><br><span class="line">	q = &amp;(L.elem[i - 1]);</span><br><span class="line">	for (p = &amp;(L.elem[L.length - 1]); p &gt;= q; --p) &#123;</span><br><span class="line">		*(p + 1) = *p;</span><br><span class="line">	&#125;</span><br><span class="line">	*q = e;</span><br><span class="line">	++L.length;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6有序表的删除">6.有序表的删除</h3>
+<p>遍历找到该元素的位置，若未找到，返回-1。若找到该元素，将该元素后的每一元素前移，表的长度减一。</p>
+<p>同样使用两个函数进行编写，首先找到位置，再进行删除。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Status ListLocate_sq(Ordered_list L, int y) </span><br><span class="line">&#123;</span><br><span class="line">	int i = 1;</span><br><span class="line">	while (i &lt;= L.length&amp;&amp;L.elem[i - 1] != y) &#123;</span><br><span class="line">		i++;</span><br><span class="line">	&#125;</span><br><span class="line">	if (L.elem[i - 1] == y &amp;&amp; i - 1&lt;L.length) &#123;</span><br><span class="line">		return i;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		return -1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">Status ListDelete_sq(Ordered_list &amp;L, int i, int &amp;e)</span><br><span class="line">&#123;</span><br><span class="line">	if (i&lt;1 || i&gt;L.length) &#123;</span><br><span class="line">		return ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">	int *p, *q;</span><br><span class="line">	p = &amp;(L.elem[i - 1]);</span><br><span class="line">	e = *p;</span><br><span class="line">	q = L.elem + L.length - 1;</span><br><span class="line">	for (++p; p &lt;= q; ++p) &#123;</span><br><span class="line">		*(p - 1) = *p;</span><br><span class="line">	&#125;</span><br><span class="line">	--L.length;</span><br><span class="line">	return OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7合并有序表">7.	合并有序表</h3>
+<p>同时遍历表1和表2，每次选取一个元素作比较，将小的数加入到新的表中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Status Merge_Sq(Ordered_list &amp;L1, Ordered_list &amp;L2, Ordered_list &amp;L3)</span><br><span class="line">&#123;</span><br><span class="line">	int i=0, j=0;</span><br><span class="line">	while (i != L1.length&amp;&amp;j != L2.length) &#123;</span><br><span class="line">		if (L1.elem[i] &lt; L2.elem[j]) &#123;</span><br><span class="line">			L3.elem[i + j] = L1.elem[i];</span><br><span class="line">			L3.length++;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			L3.elem[i + j] = L2.elem[j];</span><br><span class="line">			j++;</span><br><span class="line">			L3.length++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	if (i == L1.length&amp;&amp;j == L2.length) &#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	if (i == L1.length) &#123;</span><br><span class="line">		for (; j &lt; L2.length; j++) &#123;</span><br><span class="line">			L3.elem[i + j] = L2.elem[j];</span><br><span class="line">			L3.length++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		for (; i &lt; L1.length; i++) &#123;</span><br><span class="line">			L3.elem[i + j] = L1.elem[i];</span><br><span class="line">			L3.length++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8删除元素e">8.删除元素e</h3>
+<p>使用原地删除的方式可大大缩短时间复杂度。在一次循环中就可以完成删除。每次将当前的数值与之前的数值作比较，若无相等的，则直接进行前移。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Status ListDelete_Sq(SqList &amp;L1, ElemType &amp;e)</span><br><span class="line">&#123;</span><br><span class="line">	int i = 0, j = 0;</span><br><span class="line">	for (i = 0; i &lt; L1.length; i++) &#123;</span><br><span class="line">		if (L1.elem[i] != e) &#123;</span><br><span class="line">			L1.elem[j] = L1.elem[i];</span><br><span class="line">			j++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	L1.length -= (i - j);</span><br><span class="line">	if (i == j) &#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	return 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9去重操作">9.去重操作</h3>
+<p>遍历顺序表，将当前元素与前面的所有元素进行比较，如果相等，跳过，如果不相等，将该元素原地前移。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Status ListDelete_Sq(SqList &amp;L1)</span><br><span class="line">&#123;</span><br><span class="line">	int i = 0, j = 0,k=1;</span><br><span class="line">	bool flag = true;</span><br><span class="line">	for (i = 1; i &lt; L1.length; i++) &#123;</span><br><span class="line">		flag = true;</span><br><span class="line">		for (j = 0; j &lt; k; j++) &#123;</span><br><span class="line">			if (L1.elem[i] == L1.elem[j]) &#123;</span><br><span class="line">				flag = false;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		if (flag == false) &#123;</span><br><span class="line">			continue;</span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">			L1.elem[k] = L1.elem[i];</span><br><span class="line">			k++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	L1.length -= (i - k);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="10另计">10.另计</h3>
+<p>1、	二分法减少有序表的时间复杂度<br>
+当进行有序表的操作时，可利用表内自身元素有顺序的特点，使用二分法进行检索和查找。可大大减少时间复杂度，从遍历的O(n)减少到O(logn)。</p>
+<p>2、	使用typedef增强兼容性<br>
+在定义数据结构时，可通过定义大量的类型名和数据，来增强可改动的特性，便于代码的管理。</p>
+<p>3、	在做第四题时，会遇到time limit exceed的报错。应在最开始时对线性表的内存分配进行扩容，会大大减少之后分配空间的时间。</p>
+<p>4、	将不同功能的函数尽量分开编写，便于代码的管理与debug。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/数据结构笔记——链表/" data-toggle="tooltip" data-placement="top" title="数据结构笔记——链表">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/leetcode笔记-445.两数相加Ⅱ/" data-toggle="tooltip" data-placement="top" title="leetcode笔记-445.两数相加Ⅱ">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#0描述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0.&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1顺序表的数据结构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1.&#x987A;&#x5E8F;&#x8868;&#x7684;&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1顺序表的初始化"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">1.&#x987A;&#x5E8F;&#x8868;&#x7684;&#x521D;&#x59CB;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2基本的插入操作"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">2.&#x57FA;&#x672C;&#x7684;&#x63D2;&#x5165;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3基本的删除操作"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">3.&#x57FA;&#x672C;&#x7684;&#x5220;&#x9664;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4查找指定元素位置"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">4.&#x67E5;&#x627E;&#x6307;&#x5B9A;&#x5143;&#x7D20;&#x4F4D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5有序表的插入"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">5.&#x6709;&#x5E8F;&#x8868;&#x7684;&#x63D2;&#x5165;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6有序表的删除"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">6.&#x6709;&#x5E8F;&#x8868;&#x7684;&#x5220;&#x9664;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7合并有序表"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">7.	&#x5408;&#x5E76;&#x6709;&#x5E8F;&#x8868;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8删除元素e"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">8.&#x5220;&#x9664;&#x5143;&#x7D20;e</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9去重操作"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">9.&#x53BB;&#x91CD;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10另计"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">10.&#x53E6;&#x8BA1;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                          <a class="tag" href="/tags/#顺序表" title="顺序表">顺序表</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

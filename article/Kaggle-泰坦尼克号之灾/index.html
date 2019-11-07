@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Kaggle-泰坦尼克号之灾 - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/Kaggle-泰坦尼克号之灾/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#机器学习" title="机器学习">机器学习</a>
+                            
+                              <a class="tag" href="/tags/#Kaggle" title="Kaggle">Kaggle</a>
+                            
+                        </div>
+                        <h1>Kaggle-泰坦尼克号之灾</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-04-23
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>参考文献<a href="http://blog.csdn.net/han_xiaoyang/article/details/49797143" target="_blank" rel="noopener">寒小阳</a></p>
+<h3 id="kaggle初探">Kaggle初探</h3>
+<p>最近对数据挖掘和数据分析十分感兴趣，想在kaggle上做做比赛长长见识。拿Titanic的项目进行入门的练手。</p>
+<h3 id="泰坦尼克号之灾">泰坦尼克号之灾</h3>
+<blockquote>
+<p>you jump,I jump<br>
+泰坦尼克号的沉没对于人来说是灭顶之灾，可你有没有想过，对于餐厅里的活龙虾，这不就是生命的奇迹吗？——一位匿名的郭德纲老师</p>
+</blockquote>
+<p>首先我们进入这道题的主页<br>
+<img src="https://s2.ax1x.com/2019/04/23/EEnVc6.md.png" alt="overview"></p>
+<p>泰坦尼克号问题之背景</p>
+<p>这道题的背景就是大家都听说过的但是故居都没咋看过电影的铁达尼号。Jack and 肉丝的故事。那么在船要沉没的时候，有限的救生艇如何分配给剩余的人就是一个问题。但是获救并不是随机的（比如妇女小孩优先）。以此为延伸形成的题目。</p>
+<p>训练和测试数据是一些乘客的个人信息以及存活状况，要尝试根据它生成合适的模型并预测其他人的存活状况。</p>
+<p>这里的话我们需要额外的讨论一点，这道题是一道<strong>二分类问题</strong>。</p>
+<p>什么意思呢？首先我们先看看什么是分类问题。在机器学习中，最常见的问题就是分类（classification）问题，所谓的分类问题，就比如我们用机器学习算法，将病人的检查结果分为有病和健康，是一个医学方面的<strong>二分类问题（将要区分的数据分为两个类别）</strong>。再例如在电子邮箱中，收到邮件之后，电子邮箱会将我们的邮件分为广告邮件，垃圾邮件和正常邮件，这就是一个<strong>多分类问题（将要区分的数据分为多个类别）</strong>。</p>
+<p>分类问题是机器学习中的基础，其他的很多应用都可以从分类的问题演变而来，同时很多问题都可以转化成分类的问题。</p>
+<p>接下来我们去看看怎么分析一道题。</p>
+<h3 id="入手">入手</h3>
+<p>对数据的分析思路其实是这样的：我们有一堆奇奇怪怪的数据，根据这一堆数据我们有一些有规律的结果。因此我们的目的是，如何建立数据与结果之间的联系，从而在未来可以预测出结果。</p>
+<p>因此数据分析的步骤如下：</p>
+<ul>
+<li>认识数据、清洗数据</li>
+<li>处理数据中的特殊点、离散点</li>
+<li>搭建base模型</li>
+<li>对模型进行测试并不断优化</li>
+</ul>
+<h3 id="首先来看数据">首先来看数据</h3>
+<p>从网站上下载数据：train.csv作为训练集，test.csv作为校验集。</p>
+<p><img src="https://s2.ax1x.com/2019/04/23/EEJZi8.png" alt="Data"></p>
+<p>通常我们会管我们处理的数据叫做数据集（data set）一个数据集通常来说包括三个部分，1,训练数据（training data）及其标签，2,验证数据（validation data）及其标签，3,测试数据（testing data） 。需要特别强调的是，这三部分都是各自独立的，也就是说训练数据中的数据不能再出现在验证数据以及测试数据中，验证数据最好也不要出现在测试数据中，这点在训练的时候一定要特别注意。</p>
+<p>我们首先对train.csv进行处理：<br>
+（ide采用Jupyter notebook）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment">#数据分析</span></span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series,DataFrame</span><br><span class="line"></span><br><span class="line">db = pd.read_csv(<span class="string">"titanic/train.csv"</span>)</span><br><span class="line">db</span><br></pre></td></tr></table></figure>
+<p>其中pandas是常用的python数据处理包，把csv文件读入成dataframe各式，看到db如下所示：</p>
+<p><img src="https://s2.ax1x.com/2019/04/23/EEJXOs.png" alt="train.csv"></p>
+<p>dataframe格式显示的是我们表中的数据：<br>
+从左到右依次是:</p>
+<ul>
+<li>PassengerId =&gt; 乘客ID</li>
+<li>Pclass =&gt; 乘客等级(1/2/3等舱位)</li>
+<li>Name =&gt; 乘客姓名</li>
+<li>Sex =&gt; 性别</li>
+<li>Age =&gt; 年龄</li>
+<li>SibSp =&gt; 堂兄弟/妹个数</li>
+<li>Parch =&gt; 父母与小孩个数</li>
+<li>Ticket =&gt; 船票信息</li>
+<li>Fare =&gt; 票价</li>
+<li>Cabin =&gt; 客舱</li>
+<li>Embarked =&gt; 登船港口</li>
+</ul>
+<p>pandas功能是非常强大的，我们甚至可以让他告诉我们一些特征</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.describe()</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/23/EEtubn.png" alt="mean"></p>
+<p>mean字段告诉我们，大概0.383838的人最后获救了，2/3等舱的人数比1等舱要多，平均乘客年龄大概是29.7岁(计算这个时候会略掉无记录的)等等…</p>
+<h3 id="数据可视化">数据可视化</h3>
+<p>根据以往建模的经验，我们首先要做的东西应该是找到数据的特征点。可视化可以将数据变得容易观测。</p>
+<p>我们可以使用python内部的包进行可视化。Matplotlib：基于Python的绘图库，提供完全的 2D 支持和部分 3D 图像支持。在跨平台和互动式环境中生成高质量数据时，matplotlib 会很有帮助。也可以用作制作动画。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">fig = plt.figure()</span><br><span class="line">fig.set(alpha=<span class="number">0.2</span>)  <span class="comment"># 设定图表颜色alpha参数</span></span><br><span class="line"></span><br><span class="line">plt.subplot2grid((<span class="number">2</span>,<span class="number">3</span>),(<span class="number">0</span>,<span class="number">0</span>))             <span class="comment"># 在一张大图里分列几个小图</span></span><br><span class="line">db.Survived.value_counts().plot(kind=<span class="string">'bar'</span>)<span class="comment"># 柱状图 </span></span><br><span class="line">plt.title(<span class="string">u"获救情况 (1为获救)"</span>) <span class="comment"># 标题</span></span><br><span class="line">plt.ylabel(<span class="string">u"人数"</span>)  </span><br><span class="line"></span><br><span class="line">plt.subplot2grid((<span class="number">2</span>,<span class="number">3</span>),(<span class="number">0</span>,<span class="number">1</span>))</span><br><span class="line">db.Pclass.value_counts().plot(kind=<span class="string">"bar"</span>)</span><br><span class="line">plt.ylabel(<span class="string">u"人数"</span>)</span><br><span class="line">plt.title(<span class="string">u"乘客等级分布"</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot2grid((<span class="number">2</span>,<span class="number">3</span>),(<span class="number">0</span>,<span class="number">2</span>))</span><br><span class="line">plt.scatter(db.Survived, db.Age)</span><br><span class="line">plt.ylabel(<span class="string">u"年龄"</span>)                         <span class="comment"># 设定纵坐标名称</span></span><br><span class="line">plt.grid(b=<span class="keyword">True</span>, which=<span class="string">'major'</span>, axis=<span class="string">'y'</span>) </span><br><span class="line">plt.title(<span class="string">u"按年龄看获救分布 (1为获救)"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.subplot2grid((<span class="number">2</span>,<span class="number">3</span>),(<span class="number">1</span>,<span class="number">0</span>), colspan=<span class="number">2</span>)</span><br><span class="line">db.Age[db.Pclass == <span class="number">1</span>].plot(kind=<span class="string">'kde'</span>)   </span><br><span class="line">db.Age[db.Pclass == <span class="number">2</span>].plot(kind=<span class="string">'kde'</span>)</span><br><span class="line">db.Age[db.Pclass == <span class="number">3</span>].plot(kind=<span class="string">'kde'</span>)</span><br><span class="line">plt.xlabel(<span class="string">u"年龄"</span>)<span class="comment"># plots an axis lable</span></span><br><span class="line">plt.ylabel(<span class="string">u"密度"</span>) </span><br><span class="line">plt.title(<span class="string">u"各等级的乘客年龄分布"</span>)</span><br><span class="line">plt.legend((<span class="string">u'头等舱'</span>, <span class="string">u'2等舱'</span>,<span class="string">u'3等舱'</span>),loc=<span class="string">'best'</span>) <span class="comment"># sets our legend for our graph.</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.subplot2grid((<span class="number">2</span>,<span class="number">3</span>),(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">db.Embarked.value_counts().plot(kind=<span class="string">'bar'</span>)</span><br><span class="line">plt.title(<span class="string">u"各登船口岸上船人数"</span>)</span><br><span class="line">plt.ylabel(<span class="string">u"人数"</span>)  </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/23/EENiL9.png" alt="plt"></p>
+<p>图还是比数字好看多了。所以我们在图上可以看出来，被救的人300多点，不到半数；3等舱乘客灰常多；遇难和获救的人年龄似乎跨度都很广；3个不同的舱年龄总体趋势似乎也一致，2/3等舱乘客20岁多点的人最多，1等舱40岁左右的最多登船港口人数按照S、C、Q递减，而且S远多于另外俩港口。</p>
+<p>这个时候我们可能会有一些想法了：</p>
+<ul>
+<li>不同舱位/乘客等级可能和财富/地位有关系，最后获救概率可能会不一样</li>
+<li>年龄对获救概率也一定是有影响的，毕竟『小孩和女士先走』</li>
+<li>和登船港口是不是有关系呢？也许登船港口不同，人的出身地位不同？</li>
+</ul>
+<p>接下来我们对数据预处理</p>
+<h3 id="对数据的预处理">对数据的预处理</h3>
+<p>这里不得不提到一个新的名词叫<strong>特征工程</strong>。顾名思义，特征工程其本质是一项工程活动，目的是最大限度地从原始数据中提取特征以供算法和模型使用。详细见另一篇文章<a href="https://crowfeablog.com/article/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">如何理解特征工程</a>。</p>
+<p>我们之前在处理数据的时候注意到，有些值是缺失的。对于这种缺失的值我们有自己的处理方法。</p>
+<p>通常遇到缺值的情况，我们会有几种常见的处理方式</p>
+<ul>
+<li>如果缺值的样本占总数比例极高，我们可能就直接舍弃了，作为特征加入的话，可能反倒带入noise，影响最后的结果了</li>
+<li>如果缺值的样本适中，而该属性非连续值特征属性(比如说类目属性)，那就把NaN作为一个新类别，加到类别特征中</li>
+<li>如果缺值的样本适中，而该属性为连续值特征属性，有时候我们会考虑给定一个step(比如这里的age，我们可以考虑每隔2/3岁为一个步长)，然后把它离散化，之后把NaN作为一个type加到属性类目中。</li>
+<li>有些情况下，缺失的值个数并不是特别多，那我们也可以试着根据已有的值，拟合一下数据，补充上。</li>
+</ul>
+<p>本例中我们这里用scikit-learn中的RandomForest来拟合一下缺失的年龄数据(注：RandomForest是一个用在原始数据中做不同采样，建立多颗DecisionTree，再进行average等等来降低过拟合现象，提高结果的机器学习算法，我们之后会介绍到)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line"> </span><br><span class="line"><span class="comment">### 使用 RandomForestClassifier 填补缺失的年龄属性</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_missing_ages</span><span class="params">(df)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 把已有的数值型特征取出来丢进Random Forest Regressor中</span></span><br><span class="line">    age_df = df[[<span class="string">'Age'</span>,<span class="string">'Fare'</span>, <span class="string">'Parch'</span>, <span class="string">'SibSp'</span>, <span class="string">'Pclass'</span>]]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 乘客分成已知年龄和未知年龄两部分</span></span><br><span class="line">    known_age = age_df[age_df.Age.notnull()].values</span><br><span class="line">    unknown_age = age_df[age_df.Age.isnull()].values</span><br><span class="line"></span><br><span class="line">    <span class="comment"># y即目标年龄</span></span><br><span class="line">    y = known_age[:, <span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># X即特征属性值</span></span><br><span class="line">    X = known_age[:, <span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># fit到RandomForestRegressor之中</span></span><br><span class="line">    rfr = RandomForestRegressor(random_state=<span class="number">0</span>, n_estimators=<span class="number">2000</span>, n_jobs=<span class="number">-1</span>)</span><br><span class="line">    rfr.fit(X, y)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 用得到的模型进行未知年龄结果预测</span></span><br><span class="line">    predictedAges = rfr.predict(unknown_age[:, <span class="number">1</span>::])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 用得到的预测结果填补原缺失数据</span></span><br><span class="line">    df.loc[ (df.Age.isnull()), <span class="string">'Age'</span> ] = predictedAges </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> df, rfr</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_Cabin_type</span><span class="params">(df)</span>:</span></span><br><span class="line">    df.loc[ (df.Cabin.notnull()), <span class="string">'Cabin'</span> ] = <span class="string">"Yes"</span></span><br><span class="line">    df.loc[ (df.Cabin.isnull()), <span class="string">'Cabin'</span> ] = <span class="string">"No"</span></span><br><span class="line">    <span class="keyword">return</span> df</span><br><span class="line"></span><br><span class="line">db, rfr = set_missing_ages(db)</span><br><span class="line">db = set_Cabin_type(db)</span><br></pre></td></tr></table></figure>
+<p><a href="http://xn--rcru8a280a62fv1h3qp.as" target="_blank" rel="noopener">注意到原本的.as</a> matrix方法将在未来的版本中过时，应当直接使用 .values方法。</p>
+<p>结果如下：<br>
+<img src="https://s2.ax1x.com/2019/04/23/EEryxx.png" alt="RandomForest"></p>
+<p>可见我们对年龄的数据进行了处理。</p>
+<h3 id="特征因子化">特征因子化</h3>
+<p>在逻辑回归建模时，需要输入的特征都是数值型特征，我们通常会先对类目型的特征因子化。<br>
+什么叫做因子化呢？举个例子：</p>
+<p>以Cabin为例，原本一个属性维度，因为其取值可以是[‘yes’,‘no’]，而将其平展开为’Cabin_yes’,'Cabin_no’两个属性</p>
+<p>原本Cabin取值为yes的，在此处的&quot;Cabin_yes&quot;下取值为1，在&quot;Cabin_no&quot;下取值为0<br>
+原本Cabin取值为no的，在此处的&quot;Cabin_yes&quot;下取值为0，在&quot;Cabin_no&quot;下取值为1<br>
+我们使用pandas的&quot;get_dummies&quot;来完成这个工作，并拼接在原来的&quot;data_train&quot;之上，如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">dummies_Cabin = pd.get_dummies(data_train[<span class="string">'Cabin'</span>], prefix= <span class="string">'Cabin'</span>)</span><br><span class="line"></span><br><span class="line">dummies_Embarked = pd.get_dummies(data_train[<span class="string">'Embarked'</span>], prefix= <span class="string">'Embarked'</span>)</span><br><span class="line"></span><br><span class="line">dummies_Sex = pd.get_dummies(data_train[<span class="string">'Sex'</span>], prefix= <span class="string">'Sex'</span>)</span><br><span class="line"></span><br><span class="line">dummies_Pclass = pd.get_dummies(data_train[<span class="string">'Pclass'</span>], prefix= <span class="string">'Pclass'</span>)</span><br><span class="line"></span><br><span class="line">df = pd.concat([data_train, dummies_Cabin, dummies_Embarked, dummies_Sex, dummies_Pclass], axis=<span class="number">1</span>)</span><br><span class="line">df.drop([<span class="string">'Pclass'</span>, <span class="string">'Name'</span>, <span class="string">'Sex'</span>, <span class="string">'Ticket'</span>, <span class="string">'Cabin'</span>, <span class="string">'Embarked'</span>], axis=<span class="number">1</span>, inplace=<span class="keyword">True</span>)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/23/EEsYYd.png" alt="get_dummies"></p>
+<p>这样一来，我们把这些类目属性全都转成0，1的数值属性了。看起来大功告成。但是仔细看看，Age和Fare两个属性，乘客的数值幅度变化，也太大了吧！！如果大家了解逻辑回归与梯度下降的话，会知道，各属性值之间scale差距太大，将对收敛速度造成非常大的影响，甚至有可能不收敛。</p>
+<p>C’est la vie.</p>
+<p>我们先用scikit-learn里面的preprocessing模块对这俩货做一个scaling，所谓scaling，其实就是将一些变化幅度较大的特征化到[-1,1]之内。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sklearn.preprocessing <span class="keyword">as</span> preprocessing</span><br><span class="line">scaler = preprocessing.StandardScaler()</span><br><span class="line">ar1=df.values <span class="comment">#转换为array</span></span><br><span class="line">scale_param = scaler.fit(ar1)</span><br><span class="line">ar1 = scaler.fit_transform(ar1, scale_param)</span><br><span class="line">ar1=pd.DataFrame(ar1) <span class="comment">#转换为dataframe</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#拼接</span></span><br><span class="line">df=pd.concat([df,ar1[<span class="number">2</span>],ar1[<span class="number">5</span>]],axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#修改列名</span></span><br><span class="line">df=df.rename(columns=&#123;<span class="number">2</span>:<span class="string">'Age_Scaled'</span>&#125;)</span><br><span class="line">df=df.rename(columns=&#123;<span class="number">5</span>:<span class="string">'Fare_Scaled'</span>&#125;)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+<p>这里的代码需要解释一下，由于我们想要处理的数据都是一列，而sklearn的fit函数需要二维的数组，不能直接对Series进行操作。所以我们先将pandas的dataframe数据转换为array格式的数据，即ar1。再对这个大数组进行fit，得到的结果转化为dataframe格式的数，将对应的列数拼接起来即可。</p>
+<p>值得注意的是，最后转化为的dataframe的标号均为数字，所以在声明列、拼接、修改名称的时候直接用整数，不要使用字符格式。</p>
+<p>最后效果如下：<br>
+<img src="https://s2.ax1x.com/2019/04/23/EEhM6J.png" alt="df"></p>
+<p>下一步就是建模，把需要的属性值抽出来，转成scikit-learn里面LogisticRegression可以处理的格式。</p>
+<h3 id="逻辑回归模型">逻辑回归模型</h3>
+<p>我们把需要的feature字段取出来，转成numpy格式，使用scikit-learn中的LogisticRegression建模。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> linear_model</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用正则取出我们要的属性值</span></span><br><span class="line">train_df = df.filter(regex=<span class="string">'Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*'</span>)</span><br><span class="line">train_np = train_df.as_matrix()</span><br><span class="line"></span><br><span class="line"><span class="comment"># y即Survival结果</span></span><br><span class="line">y = train_np[:, <span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># X即特征属性值</span></span><br><span class="line">X = train_np[:, <span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># fit到RandomForestRegressor之中</span></span><br><span class="line">clf = linear_model.LogisticRegression(C=<span class="number">1.0</span>, penalty=<span class="string">'l1'</span>, tol=<span class="number">1e-6</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line">    </span><br><span class="line">clf</span><br></pre></td></tr></table></figure>
+<p>我们得到了一个model<br>
+<img src="https://s2.ax1x.com/2019/04/23/EEhHhT.png" alt="model"></p>
+<p>但在把test.csv扔进model前，仍然需要进行和train.csv一样的预处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">data_test1 = pd.read_csv(<span class="string">"titanic/test.csv"</span>)</span><br><span class="line">data_test1.loc[ (data_test1.Fare.isnull()), <span class="string">'Fare'</span> ] = <span class="number">0</span></span><br><span class="line"><span class="comment"># 接着我们对test_data做和train_data中一致的特征变换</span></span><br><span class="line"><span class="comment"># 首先用同样的RandomForestRegressor模型填上丢失的年龄</span></span><br><span class="line">tmp_df = data_test1[[<span class="string">'Age'</span>,<span class="string">'Fare'</span>, <span class="string">'Parch'</span>, <span class="string">'SibSp'</span>, <span class="string">'Pclass'</span>]]</span><br><span class="line">null_age = tmp_df[data_test1.Age.isnull()].values</span><br><span class="line"><span class="comment"># 根据特征属性X预测年龄并补上</span></span><br><span class="line">X = null_age[:, <span class="number">1</span>:]</span><br><span class="line">predictedAges = rfr.predict(X)</span><br><span class="line">data_test1.loc[ (data_test1.Age.isnull()), <span class="string">'Age'</span> ] = predictedAges</span><br><span class="line"></span><br><span class="line">data_test1 = set_Cabin_type(data_test1)</span><br><span class="line">dummies_Cabin = pd.get_dummies(data_test1[<span class="string">'Cabin'</span>], prefix= <span class="string">'Cabin'</span>)</span><br><span class="line">dummies_Embarked = pd.get_dummies(data_test1[<span class="string">'Embarked'</span>], prefix= <span class="string">'Embarked'</span>)</span><br><span class="line">dummies_Sex = pd.get_dummies(data_test1[<span class="string">'Sex'</span>], prefix= <span class="string">'Sex'</span>)</span><br><span class="line">dummies_Pclass = pd.get_dummies(data_test1[<span class="string">'Pclass'</span>], prefix= <span class="string">'Pclass'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">df_test1 = pd.concat([data_test1, dummies_Cabin, dummies_Embarked, dummies_Sex, dummies_Pclass], axis=<span class="number">1</span>)</span><br><span class="line">df_test1.drop([<span class="string">'Pclass'</span>, <span class="string">'Name'</span>, <span class="string">'Sex'</span>, <span class="string">'Ticket'</span>, <span class="string">'Cabin'</span>, <span class="string">'Embarked'</span>], axis=<span class="number">1</span>, inplace=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sklearn.preprocessing <span class="keyword">as</span> preprocessing</span><br><span class="line">scaler1 = preprocessing.StandardScaler()</span><br><span class="line">ar11=df_test1.values <span class="comment">#转换为array</span></span><br><span class="line">scale_param1 = scaler1.fit(ar11)</span><br><span class="line">ar11 = scaler1.fit_transform(ar11, scale_param1)</span><br><span class="line">ar11=pd.DataFrame(ar11) <span class="comment">#转换为dataframe</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#拼接</span></span><br><span class="line">df_test1=pd.concat([df_test1,ar11[<span class="number">1</span>],ar11[<span class="number">4</span>]],axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#修改列名</span></span><br><span class="line">df_test1=df_test1.rename(columns=&#123;<span class="number">1</span>:<span class="string">'Age_Scaled'</span>&#125;)</span><br><span class="line">df_test1=df_test1.rename(columns=&#123;<span class="number">4</span>:<span class="string">'Fare_Scaled'</span>&#125;)</span><br><span class="line">df_test1</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/23/EEh7NV.png" alt="test"></p>
+<p>看起来相当不错，让我们把它放进模型吧！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test = df_test1.filter(regex=<span class="string">'Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*'</span>)</span><br><span class="line">predictions = clf.predict(test)</span><br><span class="line">result = pd.DataFrame(&#123;<span class="string">'PassengerId'</span>:data_test[<span class="string">'PassengerId'</span>].as_matrix(), <span class="string">'Survived'</span>:predictions.astype(np.int32)&#125;)</span><br><span class="line">result.to_csv(<span class="string">"titanic/logistic_regression_predictions.csv"</span>, index=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<p>得到结果如下：<br>
+<img src="https://s2.ax1x.com/2019/04/23/EE4kge.png" alt="res"></p>
+<p>提交文件到Kaggle上吧！<br>
+<img src="https://s2.ax1x.com/2019/04/23/EE4Ybn.png" alt="submission"></p>
+<p>Tada,0.7655的准确率还是不错的！但这只是第一步，是一个基本的base模型，接下来就是不断地优化。</p>
+<p>附上这次的python notebook。<br>
+<a href="https://crowfeablog.com/article/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-titanic0.76/">0.76</a></p>
+<p>以及5月2日的更新，这次的准确度为0.83。<br>
+<a href="https://crowfeablog.com/article/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-titanic0.83/">0.83</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/如何理解特征工程/" data-toggle="tooltip" data-placement="top" title="如何理解特征工程">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/leetcode笔记-55.跳跃游戏/" data-toggle="tooltip" data-placement="top" title="leetcode笔记-55.跳跃游戏">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#kaggle初探"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Kaggle&#x521D;&#x63A2;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#泰坦尼克号之灾"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x6CF0;&#x5766;&#x5C3C;&#x514B;&#x53F7;&#x4E4B;&#x707E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#入手"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x5165;&#x624B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#首先来看数据"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x9996;&#x5148;&#x6765;&#x770B;&#x6570;&#x636E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据可视化"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x6570;&#x636E;&#x53EF;&#x89C6;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#对数据的预处理"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">&#x5BF9;&#x6570;&#x636E;&#x7684;&#x9884;&#x5904;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#特征因子化"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">&#x7279;&#x5F81;&#x56E0;&#x5B50;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#逻辑回归模型"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">&#x903B;&#x8F91;&#x56DE;&#x5F52;&#x6A21;&#x578B;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#机器学习" title="机器学习">机器学习</a>
+                        
+                          <a class="tag" href="/tags/#Kaggle" title="Kaggle">Kaggle</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

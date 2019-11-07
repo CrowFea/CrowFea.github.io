@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="crowfea,刘思源，刘思源的博客，crowfeablog，同济，四元君">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          机器学习-泰坦尼克之灾0.83notebook - CrowFea | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://crowfeablog.com/article/机器学习-titanic0.83/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#机器学习" title="机器学习">机器学习</a>
+                            
+                              <a class="tag" href="/tags/#Kaggle" title="Kaggle">Kaggle</a>
+                            
+                        </div>
+                        <h1>机器学习-泰坦尼克之灾0.83notebook</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by CrowFea on
+                            2019-05-02
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">四元君</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">档案室</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="引言">引言</h3>
+<p>经过了前几天的学习，我们再对titanic进行一次建模。这次我们对数据进行一次细致的处理和特征处理。</p>
+<h3 id="引入包">引入包</h3>
+<p>这里绘图我们主要使用的时seaborn包，它可认为是matplotlib的一个扩充，我们可以用他画出更好看的图，i基本上可以满足基本的绘图需求，但要画一些复杂的图形还需要matplotlib。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">'ignore'</span>)</span><br><span class="line"></span><br><span class="line">train=pd.read_csv(<span class="string">r'titanic\train.csv'</span>)</span><br><span class="line">test=pd.read_csv(<span class="string">r'titanic\test.csv'</span>)</span><br><span class="line">PassengerId=test[<span class="string">'PassengerId'</span>]</span><br><span class="line">all_data = pd.concat([train, test], ignore_index = <span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.head()</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Ticket</th>
+      <th>Fare</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Braund, Mr. Owen Harris</td>
+      <td>male</td>
+      <td>22.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>A/5 21171</td>
+      <td>7.2500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Cumings, Mrs. John Bradley (Florence Briggs Th...</td>
+      <td>female</td>
+      <td>38.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PC 17599</td>
+      <td>71.2833</td>
+      <td>C85</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>Heikkinen, Miss. Laina</td>
+      <td>female</td>
+      <td>26.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>STON/O2. 3101282</td>
+      <td>7.9250</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Futrelle, Mrs. Jacques Heath (Lily May Peel)</td>
+      <td>female</td>
+      <td>35.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>113803</td>
+      <td>53.1000</td>
+      <td>C123</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Allen, Mr. William Henry</td>
+      <td>male</td>
+      <td>35.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>373450</td>
+      <td>8.0500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="数据处理">数据处理</h3>
+<p>这里我们还是初期看一下数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">'Survived'</span>].value_counts()</span><br></pre></td></tr></table></figure>
+<pre><code>0    549
+1    342
+Name: Survived, dtype: int64
+</code></pre>
+<h4 id="性别">性别</h4>
+<p>“让女人和小孩先走！”所以我们先想到的还是性别在求生中会起到一定的作用。先对性别的求生情况做图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.barplot(x=<span class="string">"Sex"</span>, y=<span class="string">"Survived"</span>, data=train)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x22b304cec88&gt;
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/EttJKS.png" alt="png"></p>
+<h4 id="年龄">年龄</h4>
+<p>接下来是对年龄的判断，这里我们要对年龄有一个细致的分析。因为考虑到不同的年龄段是否会对结果有影响，我们将求生的和未求生的年龄做出区域图进行比对。<strong>发现在15岁左右有明显的不同。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">facet = sns.FacetGrid(train, hue=<span class="string">"Survived"</span>,aspect=<span class="number">2</span>)</span><br><span class="line">facet.map(sns.kdeplot,<span class="string">'Age'</span>,shade= <span class="keyword">True</span>)</span><br><span class="line">facet.set(xlim=(<span class="number">0</span>, train[<span class="string">'Age'</span>].max()))</span><br><span class="line">facet.add_legend()</span><br><span class="line">plt.xlabel(<span class="string">'Age'</span>) </span><br><span class="line">plt.ylabel(<span class="string">'density'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>Text(12.359751157407416, 0.5, 'density')
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/Ett18P.png" alt="png"></p>
+<h4 id="港口">港口</h4>
+<p>同样的，在不同的港口登船对获救影响一样很大。<br>
+考虑到不同的港口可能是身份的象征。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.countplot(<span class="string">'Embarked'</span>,hue=<span class="string">'Survived'</span>,data=train)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x22b30521668&gt;
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/Ett3gf.png" alt="png"></p>
+<h4 id="头衔">头衔</h4>
+<p>接下来这个处理非常的精妙，一开始我们并不知道姓名这一栏目到底有意义，毕竟死神面前叫什么都不重要。</p>
+<blockquote>
+<p>Valar Morghulis!<br>
+但是接下来我们发现，这些姓名前面都有title！有的是Mr.,Mrs.,还有Don，sir之类炫酷的称呼。这些代表着身份的象征，是否对能不能求生有影响呢？我们首先对这个称呼进行一个分类。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">all_data[<span class="string">'Title'</span>] = all_data[<span class="string">'Name'</span>].apply(<span class="keyword">lambda</span> x:x.split(<span class="string">','</span>)[<span class="number">1</span>].split(<span class="string">'.'</span>)[<span class="number">0</span>].strip())</span><br><span class="line">Title_Dict = &#123;&#125;</span><br><span class="line">Title_Dict.update(dict.fromkeys([<span class="string">'Capt'</span>, <span class="string">'Col'</span>, <span class="string">'Major'</span>, <span class="string">'Dr'</span>, <span class="string">'Rev'</span>], <span class="string">'Officer'</span>))</span><br><span class="line">Title_Dict.update(dict.fromkeys([<span class="string">'Don'</span>, <span class="string">'Sir'</span>, <span class="string">'the Countess'</span>, <span class="string">'Dona'</span>, <span class="string">'Lady'</span>], <span class="string">'Royalty'</span>))</span><br><span class="line">Title_Dict.update(dict.fromkeys([<span class="string">'Mme'</span>, <span class="string">'Ms'</span>, <span class="string">'Mrs'</span>], <span class="string">'Mrs'</span>))</span><br><span class="line">Title_Dict.update(dict.fromkeys([<span class="string">'Mlle'</span>, <span class="string">'Miss'</span>], <span class="string">'Miss'</span>))</span><br><span class="line">Title_Dict.update(dict.fromkeys([<span class="string">'Mr'</span>], <span class="string">'Mr'</span>))</span><br><span class="line">Title_Dict.update(dict.fromkeys([<span class="string">'Master'</span>,<span class="string">'Jonkheer'</span>], <span class="string">'Master'</span>))</span><br><span class="line"></span><br><span class="line">all_data[<span class="string">'Title'</span>] = all_data[<span class="string">'Title'</span>].map(Title_Dict)</span><br><span class="line">sns.barplot(x=<span class="string">"Title"</span>, y=<span class="string">"Survived"</span>, data=all_data)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x22b305b7ba8&gt;
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/EttlCt.png" alt="png"></p>
+<h4 id="家庭大小">家庭大小</h4>
+<p>接下来我们猜测不同家庭大小的人是否更容易获救。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">all_data[<span class="string">'FamilySize'</span>]=all_data[<span class="string">'SibSp'</span>]+all_data[<span class="string">'Parch'</span>]+<span class="number">1</span></span><br><span class="line">sns.barplot(x=<span class="string">"FamilySize"</span>, y=<span class="string">"Survived"</span>, data=all_data,ci=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x22b30637da0&gt;
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/Ett8v8.png" alt="png"></p>
+<p>我们对不同家庭大小的人进行分组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Fam_label</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (s &gt;= <span class="number">2</span>) &amp; (s &lt;= <span class="number">4</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">elif</span> ((s &gt; <span class="number">4</span>) &amp; (s &lt;= <span class="number">7</span>)) | (s == <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> (s &gt; <span class="number">7</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">all_data[<span class="string">'FamilyLabel'</span>]=all_data[<span class="string">'FamilySize'</span>].apply(Fam_label)</span><br><span class="line">sns.barplot(x=<span class="string">"FamilyLabel"</span>, y=<span class="string">"Survived"</span>, data=all_data,ci=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x22b306a6dd8&gt;
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/EtttbQ.png" alt="png"></p>
+<h4 id="舱位">舱位</h4>
+<p>自然而然，我们要考虑到舱位对获救有没有影响。因为可能有些舱位很快就沉到下面去了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">all_data[<span class="string">'Cabin'</span>] = all_data[<span class="string">'Cabin'</span>].fillna(<span class="string">'Unknown'</span>)</span><br><span class="line">all_data[<span class="string">'Deck'</span>]=all_data[<span class="string">'Cabin'</span>].str.get(<span class="number">0</span>)</span><br><span class="line">sns.barplot(x=<span class="string">"Deck"</span>, y=<span class="string">"Survived"</span>, data=all_data,ci=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x22b30717fd0&gt;
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/EttYDg.png" alt="png"></p>
+<h4 id="票号">票号</h4>
+<p>接下来又是一个精妙的分析，拿着相同票号的人可能同生共死。猜想一般共同出行的人（家人、朋友）会拿着相同的票号，即一张票。那么他们的状态很有可能相似。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ticket_Count = dict(all_data[<span class="string">'Ticket'</span>].value_counts())</span><br><span class="line">all_data[<span class="string">'TicketGroup'</span>] = all_data[<span class="string">'Ticket'</span>].apply(<span class="keyword">lambda</span> x:Ticket_Count[x])</span><br><span class="line">sns.barplot(x=<span class="string">'TicketGroup'</span>, y=<span class="string">'Survived'</span>, data=all_data,ci=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x22b307a6f98&gt;
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/05/02/EttUEj.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Ticket_Label</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (s &gt;= <span class="number">2</span>) &amp; (s &lt;= <span class="number">4</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">elif</span> ((s &gt; <span class="number">4</span>) &amp; (s &lt;= <span class="number">8</span>)) | (s == <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> (s &gt; <span class="number">8</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">all_data[<span class="string">'TicketGroup'</span>] = all_data[<span class="string">'TicketGroup'</span>].apply(Ticket_Label)</span><br></pre></td></tr></table></figure>
+<h3 id="补充缺失值">补充缺失值</h3>
+<p>接下来就是我们要对缺失的值进行补充。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line">age_df = all_data[[<span class="string">'Age'</span>, <span class="string">'Pclass'</span>,<span class="string">'Sex'</span>,<span class="string">'Title'</span>]]</span><br><span class="line">age_df=pd.get_dummies(age_df)</span><br><span class="line">known_age = age_df[age_df.Age.notnull()].as_matrix()</span><br><span class="line">unknown_age = age_df[age_df.Age.isnull()].as_matrix()</span><br><span class="line">y = known_age[:, <span class="number">0</span>]</span><br><span class="line">X = known_age[:, <span class="number">1</span>:]</span><br><span class="line">rfr = RandomForestRegressor(random_state=<span class="number">0</span>, n_estimators=<span class="number">100</span>, n_jobs=<span class="number">-1</span>)</span><br><span class="line">rfr.fit(X, y)</span><br><span class="line">predictedAges = rfr.predict(unknown_age[:, <span class="number">1</span>::])</span><br><span class="line">all_data.loc[ (all_data.Age.isnull()), <span class="string">'Age'</span> ] = predictedAges</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_data[all_data[<span class="string">'Embarked'</span>].isnull()]</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+      <th>Fare</th>
+      <th>Name</th>
+      <th>Parch</th>
+      <th>PassengerId</th>
+      <th>Pclass</th>
+      <th>Sex</th>
+      <th>SibSp</th>
+      <th>Survived</th>
+      <th>Ticket</th>
+      <th>Title</th>
+      <th>FamilySize</th>
+      <th>FamilyLabel</th>
+      <th>Deck</th>
+      <th>TicketGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>61</th>
+      <td>38.0</td>
+      <td>B28</td>
+      <td>NaN</td>
+      <td>80.0</td>
+      <td>Icard, Miss. Amelie</td>
+      <td>0</td>
+      <td>62</td>
+      <td>1</td>
+      <td>female</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>113572</td>
+      <td>Miss</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>829</th>
+      <td>62.0</td>
+      <td>B28</td>
+      <td>NaN</td>
+      <td>80.0</td>
+      <td>Stone, Mrs. George Nelson (Martha Evelyn)</td>
+      <td>0</td>
+      <td>830</td>
+      <td>1</td>
+      <td>female</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>113572</td>
+      <td>Mrs</td>
+      <td>1</td>
+      <td>1</td>
+      <td>B</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_data.groupby(by=[<span class="string">"Pclass"</span>,<span class="string">"Embarked"</span>]).Fare.median()</span><br></pre></td></tr></table></figure>
+<pre><code>Pclass  Embarked
+1       C           76.7292
+        Q           90.0000
+        S           52.0000
+2       C           15.3146
+        Q           12.3500
+        S           15.3750
+3       C            7.8958
+        Q            7.7500
+        S            8.0500
+Name: Fare, dtype: float64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_data[<span class="string">'Embarked'</span>] = all_data[<span class="string">'Embarked'</span>].fillna(<span class="string">'C'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_data[all_data[<span class="string">'Fare'</span>].isnull()]</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+      <th>Fare</th>
+      <th>Name</th>
+      <th>Parch</th>
+      <th>PassengerId</th>
+      <th>Pclass</th>
+      <th>Sex</th>
+      <th>SibSp</th>
+      <th>Survived</th>
+      <th>Ticket</th>
+      <th>Title</th>
+      <th>FamilySize</th>
+      <th>FamilyLabel</th>
+      <th>Deck</th>
+      <th>TicketGroup</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1043</th>
+      <td>60.5</td>
+      <td>Unknown</td>
+      <td>S</td>
+      <td>NaN</td>
+      <td>Storey, Mr. Thomas</td>
+      <td>0</td>
+      <td>1044</td>
+      <td>3</td>
+      <td>male</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>3701</td>
+      <td>Mr</td>
+      <td>1</td>
+      <td>1</td>
+      <td>U</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fare=all_data[(all_data[<span class="string">'Embarked'</span>] == <span class="string">"S"</span>) &amp; (all_data[<span class="string">'Pclass'</span>] == <span class="number">3</span>)].Fare.median()</span><br><span class="line">all_data[<span class="string">'Fare'</span>]=all_data[<span class="string">'Fare'</span>].fillna(fare)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">all_data[<span class="string">'Surname'</span>]=all_data[<span class="string">'Name'</span>].apply(<span class="keyword">lambda</span> x:x.split(<span class="string">','</span>)[<span class="number">0</span>].strip())</span><br><span class="line">Surname_Count = dict(all_data[<span class="string">'Surname'</span>].value_counts())</span><br><span class="line">all_data[<span class="string">'FamilyGroup'</span>] = all_data[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:Surname_Count[x])</span><br><span class="line">Female_Child_Group=all_data.loc[(all_data[<span class="string">'FamilyGroup'</span>]&gt;=<span class="number">2</span>) &amp; ((all_data[<span class="string">'Age'</span>]&lt;=<span class="number">12</span>) | (all_data[<span class="string">'Sex'</span>]==<span class="string">'female'</span>))]</span><br><span class="line">Male_Adult_Group=all_data.loc[(all_data[<span class="string">'FamilyGroup'</span>]&gt;=<span class="number">2</span>) &amp; (all_data[<span class="string">'Age'</span>]&gt;<span class="number">12</span>) &amp; (all_data[<span class="string">'Sex'</span>]==<span class="string">'male'</span>)]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Female_Child=pd.DataFrame(Female_Child_Group.groupby(<span class="string">'Surname'</span>)[<span class="string">'Survived'</span>].mean().value_counts())</span><br><span class="line">Female_Child.columns=[<span class="string">'GroupCount'</span>]</span><br><span class="line">Female_Child</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GroupCount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1.000000</th>
+      <td>115</td>
+    </tr>
+    <tr>
+      <th>0.000000</th>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>0.750000</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>0.333333</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>0.142857</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Male_Adult=pd.DataFrame(Male_Adult_Group.groupby(<span class="string">'Surname'</span>)[<span class="string">'Survived'</span>].mean().value_counts())</span><br><span class="line">Male_Adult.columns=[<span class="string">'GroupCount'</span>]</span><br><span class="line">Male_Adult</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GroupCount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0.000000</th>
+      <td>122</td>
+    </tr>
+    <tr>
+      <th>1.000000</th>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>0.500000</th>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>0.333333</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>0.250000</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Female_Child_Group=Female_Child_Group.groupby(<span class="string">'Surname'</span>)[<span class="string">'Survived'</span>].mean()</span><br><span class="line">Dead_List=set(Female_Child_Group[Female_Child_Group.apply(<span class="keyword">lambda</span> x:x==<span class="number">0</span>)].index)</span><br><span class="line">print(Dead_List)</span><br><span class="line">Male_Adult_List=Male_Adult_Group.groupby(<span class="string">'Surname'</span>)[<span class="string">'Survived'</span>].mean()</span><br><span class="line">Survived_List=set(Male_Adult_List[Male_Adult_List.apply(<span class="keyword">lambda</span> x:x==<span class="number">1</span>)].index)</span><br><span class="line">print(Survived_List)</span><br></pre></td></tr></table></figure>
+<pre><code>{'Goodwin', 'Canavan', 'Palsson', 'Zabour', 'Panula', 'Caram', 'Rosblom', 'Lahtinen', 'Rice', 'Lefebre', 'Vander Planke', 'Barbara', 'Ford', 'Danbom', 'Skoog', 'Olsson', 'Attalah', 'Strom', 'Bourke', 'Ilmakangas', 'Boulos', 'Jussila', 'Cacic', 'Sage', 'Arnold-Franchi', 'Lobb', 'Oreskovic', 'Van Impe', 'Turpin', 'Johnston', 'Robins'}
+{'Bradley', 'Beckwith', 'Duff Gordon', 'Chambers', 'Cardeza', 'McCoy', 'Frauenthal', 'Beane', 'Dick', 'Frolicher-Stehli', 'Goldenberg', 'Harder', 'Jussila', 'Daly', 'Greenfield', 'Bishop', 'Nakid', 'Taylor', 'Kimball', 'Jonsson'}
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">train=all_data.loc[all_data[<span class="string">'Survived'</span>].notnull()]</span><br><span class="line">test=all_data.loc[all_data[<span class="string">'Survived'</span>].isnull()]</span><br><span class="line">test.loc[(test[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> Dead_List)),<span class="string">'Sex'</span>] = <span class="string">'male'</span></span><br><span class="line">test.loc[(test[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> Dead_List)),<span class="string">'Age'</span>] = <span class="number">60</span></span><br><span class="line">test.loc[(test[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> Dead_List)),<span class="string">'Title'</span>] = <span class="string">'Mr'</span></span><br><span class="line">test.loc[(test[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> Survived_List)),<span class="string">'Sex'</span>] = <span class="string">'female'</span></span><br><span class="line">test.loc[(test[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> Survived_List)),<span class="string">'Age'</span>] = <span class="number">5</span></span><br><span class="line">test.loc[(test[<span class="string">'Surname'</span>].apply(<span class="keyword">lambda</span> x:x <span class="keyword">in</span> Survived_List)),<span class="string">'Title'</span>] = <span class="string">'Miss'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">all_data=pd.concat([train, test])</span><br><span class="line">all_data=all_data[[<span class="string">'Survived'</span>,<span class="string">'Pclass'</span>,<span class="string">'Sex'</span>,<span class="string">'Age'</span>,<span class="string">'Fare'</span>,<span class="string">'Embarked'</span>,<span class="string">'Title'</span>,<span class="string">'FamilyLabel'</span>,<span class="string">'Deck'</span>,<span class="string">'TicketGroup'</span>]]</span><br><span class="line">all_data=pd.get_dummies(all_data)</span><br><span class="line">train=all_data[all_data[<span class="string">'Survived'</span>].notnull()]</span><br><span class="line">test=all_data[all_data[<span class="string">'Survived'</span>].isnull()].drop(<span class="string">'Survived'</span>,axis=<span class="number">1</span>)</span><br><span class="line">X = train.as_matrix()[:,<span class="number">1</span>:]</span><br><span class="line">y = train.as_matrix()[:,<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="训练模型">训练模型</h3>
+<p>万事俱备，开始训练</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest</span><br><span class="line"></span><br><span class="line">pipe=Pipeline([(<span class="string">'select'</span>,SelectKBest(k=<span class="number">20</span>)), </span><br><span class="line">               (<span class="string">'classify'</span>, RandomForestClassifier(random_state = <span class="number">10</span>, max_features = <span class="string">'sqrt'</span>))])</span><br><span class="line"></span><br><span class="line">param_test = &#123;<span class="string">'classify__n_estimators'</span>:list(range(<span class="number">20</span>,<span class="number">50</span>,<span class="number">2</span>)), </span><br><span class="line">              <span class="string">'classify__max_depth'</span>:list(range(<span class="number">3</span>,<span class="number">60</span>,<span class="number">3</span>))&#125;</span><br><span class="line">gsearch = GridSearchCV(estimator = pipe, param_grid = param_test, scoring=<span class="string">'roc_auc'</span>, cv=<span class="number">10</span>)</span><br><span class="line">gsearch.fit(X,y)</span><br><span class="line">print(gsearch.best_params_, gsearch.best_score_)</span><br></pre></td></tr></table></figure>
+<pre><code>{'classify__max_depth': 6, 'classify__n_estimators': 42} 0.8810963508395343
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_data</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Age</th>
+      <th>Fare</th>
+      <th>FamilyLabel</th>
+      <th>TicketGroup</th>
+      <th>Sex_female</th>
+      <th>Sex_male</th>
+      <th>Embarked_C</th>
+      <th>Embarked_Q</th>
+      <th>...</th>
+      <th>Title_Royalty</th>
+      <th>Deck_A</th>
+      <th>Deck_B</th>
+      <th>Deck_C</th>
+      <th>Deck_D</th>
+      <th>Deck_E</th>
+      <th>Deck_F</th>
+      <th>Deck_G</th>
+      <th>Deck_T</th>
+      <th>Deck_U</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>22.000000</td>
+      <td>7.2500</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>1</td>
+      <td>38.000000</td>
+      <td>71.2833</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.0</td>
+      <td>3</td>
+      <td>26.000000</td>
+      <td>7.9250</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>1</td>
+      <td>35.000000</td>
+      <td>53.1000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>35.000000</td>
+      <td>8.0500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>28.226256</td>
+      <td>8.4583</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.0</td>
+      <td>1</td>
+      <td>54.000000</td>
+      <td>51.8625</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>2.000000</td>
+      <td>21.0750</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.0</td>
+      <td>3</td>
+      <td>27.000000</td>
+      <td>11.1333</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1.0</td>
+      <td>2</td>
+      <td>14.000000</td>
+      <td>30.0708</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1.0</td>
+      <td>3</td>
+      <td>4.000000</td>
+      <td>16.7000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1.0</td>
+      <td>1</td>
+      <td>58.000000</td>
+      <td>26.5500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>20.000000</td>
+      <td>8.0500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>39.000000</td>
+      <td>31.2750</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>14.000000</td>
+      <td>7.8542</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1.0</td>
+      <td>2</td>
+      <td>55.000000</td>
+      <td>16.0000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>2.000000</td>
+      <td>29.1250</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1.0</td>
+      <td>2</td>
+      <td>32.535641</td>
+      <td>13.0000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>31.000000</td>
+      <td>18.0000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1.0</td>
+      <td>3</td>
+      <td>32.494343</td>
+      <td>7.2250</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0.0</td>
+      <td>2</td>
+      <td>35.000000</td>
+      <td>26.0000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>1.0</td>
+      <td>2</td>
+      <td>34.000000</td>
+      <td>13.0000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1.0</td>
+      <td>3</td>
+      <td>15.000000</td>
+      <td>8.0292</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1.0</td>
+      <td>1</td>
+      <td>28.000000</td>
+      <td>35.5000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>8.000000</td>
+      <td>21.0750</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1.0</td>
+      <td>3</td>
+      <td>38.000000</td>
+      <td>31.3875</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>28.226256</td>
+      <td>7.2250</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>0.0</td>
+      <td>1</td>
+      <td>19.000000</td>
+      <td>263.0000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1.0</td>
+      <td>3</td>
+      <td>17.333730</td>
+      <td>7.8792</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>0.0</td>
+      <td>3</td>
+      <td>28.226256</td>
+      <td>7.8958</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1279</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>60.000000</td>
+      <td>7.7500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1280</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>60.000000</td>
+      <td>21.0750</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1281</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>23.000000</td>
+      <td>93.5000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1282</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>51.000000</td>
+      <td>39.4000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1283</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>13.000000</td>
+      <td>20.2500</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1284</th>
+      <td>NaN</td>
+      <td>2</td>
+      <td>47.000000</td>
+      <td>10.5000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1285</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>29.000000</td>
+      <td>22.0250</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1286</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>18.000000</td>
+      <td>60.0000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1287</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>24.000000</td>
+      <td>7.2500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1288</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>5.000000</td>
+      <td>79.2000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1289</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>22.000000</td>
+      <td>7.7750</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1290</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>31.000000</td>
+      <td>7.7333</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1291</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>30.000000</td>
+      <td>164.8667</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1292</th>
+      <td>NaN</td>
+      <td>2</td>
+      <td>38.000000</td>
+      <td>21.0000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1293</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>22.000000</td>
+      <td>59.4000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1294</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>17.000000</td>
+      <td>47.1000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1295</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>5.000000</td>
+      <td>27.7208</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1296</th>
+      <td>NaN</td>
+      <td>2</td>
+      <td>20.000000</td>
+      <td>13.8625</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1297</th>
+      <td>NaN</td>
+      <td>2</td>
+      <td>23.000000</td>
+      <td>10.5000</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1298</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>50.000000</td>
+      <td>211.5000</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1299</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>17.333730</td>
+      <td>7.7208</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1300</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>3.000000</td>
+      <td>13.7750</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1301</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>17.333730</td>
+      <td>7.7500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1302</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>37.000000</td>
+      <td>90.0000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1303</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>28.000000</td>
+      <td>7.7750</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1304</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>28.226256</td>
+      <td>8.0500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1305</th>
+      <td>NaN</td>
+      <td>1</td>
+      <td>39.000000</td>
+      <td>108.9000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1306</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>38.500000</td>
+      <td>7.2500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1307</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>28.226256</td>
+      <td>8.0500</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1308</th>
+      <td>NaN</td>
+      <td>3</td>
+      <td>6.035599</td>
+      <td>22.3583</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>1309 rows × 26 columns</p>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> make_pipeline</span><br><span class="line">select = SelectKBest(k=<span class="number">20</span>)</span><br><span class="line">clf=RandomForestClassifier(random_state=<span class="number">10</span>,warm_start=<span class="keyword">True</span>,</span><br><span class="line">                          n_estimators=<span class="number">26</span>,</span><br><span class="line">                          max_depth=<span class="number">6</span>,</span><br><span class="line">                          max_features=<span class="string">'sqrt'</span>)</span><br><span class="line">pipeline=make_pipeline(select,clf)</span><br><span class="line">pipeline.fit(X,y)</span><br></pre></td></tr></table></figure>
+<pre><code>Pipeline(memory=None,
+     steps=[('selectkbest', SelectKBest(k=20, score_func=&lt;function f_classif at 0x0000022B30E18598&gt;)), ('randomforestclassifier', RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=6, max_features='sqrt', max_leaf_nodes=None,
+            min_impurity_decreas...imators=26, n_jobs=None,
+            oob_score=False, random_state=10, verbose=0, warm_start=True))])
+</code></pre>
+<h3 id="交叉验证">交叉验证</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> model_selection</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">cv_score = model_selection.cross_val_score(pipeline, X, y, cv= <span class="number">10</span>)</span><br><span class="line">print(<span class="string">"CV Score : Mean - %.7g | Std - %.7g "</span> % (np.mean(cv_score), np.std(cv_score)))</span><br></pre></td></tr></table></figure>
+<pre><code>CV Score : Mean - 0.8451402 | Std - 0.03276752 
+</code></pre>
+<h3 id="进行预测">进行预测</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">predictions = pipeline.predict(test)</span><br><span class="line">submission = pd.DataFrame(&#123;<span class="string">"PassengerId"</span>: PassengerId, <span class="string">"Survived"</span>: predictions.astype(np.int32)&#125;)</span><br><span class="line">submission.to_csv(<span class="string">r"titanic\res2.csv"</span>, index=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>最后结果是不错的，比上次要进步<br>
+<img src="https://s2.ax1x.com/2019/05/02/EtUSYR.png" alt="res2"></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Leetcode笔记-91.解码方法/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-91.解码方法">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/Leetcode笔记-72.编辑距离/" data-toggle="tooltip" data-placement="top" title="Leetcode笔记-72.编辑距离">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#引言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x5F15;&#x8A00;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#引入包"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x5F15;&#x5165;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据处理"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x6570;&#x636E;&#x5904;&#x7406;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#性别"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">&#x6027;&#x522B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#年龄"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">&#x5E74;&#x9F84;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#港口"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">&#x6E2F;&#x53E3;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#头衔"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">&#x5934;&#x8854;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#家庭大小"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">&#x5BB6;&#x5EAD;&#x5927;&#x5C0F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#舱位"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">&#x8231;&#x4F4D;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#票号"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">&#x7968;&#x53F7;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#补充缺失值"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x8865;&#x5145;&#x7F3A;&#x5931;&#x503C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#训练模型"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x8BAD;&#x7EC3;&#x6A21;&#x578B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#交叉验证"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">&#x4EA4;&#x53C9;&#x9A8C;&#x8BC1;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#进行预测"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">&#x8FDB;&#x884C;&#x9884;&#x6D4B;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#机器学习" title="机器学习">机器学习</a>
+                        
+                          <a class="tag" href="/tags/#Kaggle" title="Kaggle">Kaggle</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CrowFea">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; CrowFea 2019 
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://crowfeablog.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://crowfeablog.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
