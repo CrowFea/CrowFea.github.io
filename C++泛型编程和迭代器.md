@@ -3,7 +3,6 @@ title: C++泛型编程和迭代器
 date: 2019-07-19 22:26:45
 categories:
     - C++
-    - 数据结构
 tags: 
     - C++
 mp3: http://domain.com/awesome.mp3

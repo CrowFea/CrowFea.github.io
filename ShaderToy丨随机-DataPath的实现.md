@@ -4,7 +4,6 @@ date: 2019-11-13 10:26:12
 categories:
     - 图形学
 tags: 
-    - 图形学
     - shader
 mathjax: true
 ---

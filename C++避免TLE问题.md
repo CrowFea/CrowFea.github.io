@@ -3,7 +3,6 @@ title: C++避免TLE问题
 date: 2019-07-13 20:02:45
 categories:
     - C++
-    - 算法
 tags: 
     - C++
 mp3: http://domain.com/awesome.mp3

@@ -2,9 +2,9 @@
 title: C++，Java中的Hashmap与python中的dict比较
 date: 2019-04-18 14:32:45
 categories:
-    - 数据结构
+    - C++
 tags: 
-    - 数据结构
+    - C++
 mp3: http://domain.com/awesome.mp3
 cover: http://domain.com/awesome.jpg
 ---
