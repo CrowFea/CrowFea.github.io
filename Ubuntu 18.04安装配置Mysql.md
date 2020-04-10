@@ -1,5 +1,5 @@
 ---
-title: Ubuntu 18.04安装配置Mysql
+title: Ubuntu 18.04 安装配置Mysql
 date: 2020-04-05 10:26:12
 categories:
     - 安装配置
