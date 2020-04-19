@@ -1,5 +1,5 @@
 ---
-title: 快速排序
+title: Algorithm | 快速排序
 date: 2020-4-1 19:28:12
 categories:
     - 算法

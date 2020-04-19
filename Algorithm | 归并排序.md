@@ -1,5 +1,5 @@
 ---
-title: 归并排序
+title: Algorithm | 归并排序
 date: 2020-3-30 13:14:12
 categories:
     - 算法
