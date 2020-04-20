@@ -85,6 +85,90 @@ void LSDSort(vector<string> a,int len){
 }
 ```
 
+### MSD 高位优先的字符串排序
+高位优先的排序可以适用于随机的字符串。其本质是从高位对字符串使用递归的键索引计数法。 基本的代码逻辑如下所示
+```c++
+class MSD{
+private:
+    int R = 256;    //基数
+    int M = 15;     //小数组的切换阈值
+    string aux;     //数据分类的辅助数组
+
+    int charat(string s,int d){
+        if(d<s.size())  return s[d];
+        else    return -1;
+    }
+
+public:
+    void sort(string s){
+        int n=s.size();
+        aux==string(n);
+        sort(a,0,n-1,0);
+    }
+
+    //以第d个字符为键将a[low]至a[high]排序
+    void sort(string s,int low,int high,int d){
+        if(high<=low+M){
+            InsertionSort(a,low,high,d);
+            return;
+        }
+        vector<int> count(R+2);
+        for(int i=low;i<=high;i++)  //计算频率
+            count[charat(a[i],d)+2]++;
+        for(int r=0;r<R+1;r++)      //将频率转换为索引
+            count[r+1]+=count[r];
+        for(int i=low;i<=high;i++)  //数据分类
+            aux[count[charat(a[i],d)+1]++]=a[i];
+        for(int i=low;i<=high;i++)  //回写
+            a[i]=aux[i-low];
+
+        //递归的以每个字符为键进行排序
+        for(int r=0;r<R;r++)
+            sort(a,low+count[r],low+count[r+1]-1,d+1);
+        
+    }
+}
+```
+
+同样，因为MSD所使用的算法基本上是使用快速排序，因此他所面临的问题也是快速排序所面临的问题。
+
+#### 小型子数组
+对于小型子数组，可以不使用快速排序，这样会产生大量的小型数组，但事实上这样速度会慢很多。因此我们可以设定一个阈值，在该阈值之下使用插入排序。
+
+#### 等值键
+第二个陷阱是，对于大量的等值键的数组排序会变慢。高位优先字符串的最坏情况就是所有的键都相同。
+
+### 三向字符串快速排序
+我们可以根据高位优先的字符串排序改进快速排序，根据键的首字母进行三向切分，仅在中间子数组的下一个字符继续进行递归排序。
+```c++
+class Quick3string{
+	int charat(string s,int d){
+      if(d<s.size())  return s[d];
+      else    return -1;
+   }
+	void sort(string s){
+		sort(a,0,a.size()-1,0);
+	}
+	void sort(string s,int low,int high,int d){
+		if(high<=low) return;
+		int lt=low,gt=high;
+		int v=charat(a[low],d);
+		int i=low+1;
+		while(i<=gt){
+			int t=charat(a[i],d);
+			if(t<v) swap(a[lt++],a[i++]);
+			else if(t<v) swap(a[i],a[gt—]);
+			else	i++;
+		}
+		sort(a,low,lt-1,d);
+		if(v>=0)	sort(a,lt,gt,d+1);
+		sort(a,gt+1,high,d);
+	}
+}
+```
+
+
+
 
 
 
