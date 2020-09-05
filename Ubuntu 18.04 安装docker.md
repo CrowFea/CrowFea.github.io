@@ -9,7 +9,7 @@ mathjax: true
 ---
 
 环境：虚拟机Ubuntu18.04,[【Ubuntu18.04】安装Docker教程_运维_iefenghao的博客-CSDN博客](https://blog.csdn.net/iefenghao/article/details/90747642)
-
+<!--more-->
 首先更新源
 ```
 sudo apt update

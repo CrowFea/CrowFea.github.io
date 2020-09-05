@@ -23,7 +23,7 @@ cover: http://domain.com/awesome.jpg
     遍历每个像素，计算当前像素有哪些object的贡献。
 
     简单来说就是，两种方法都有一个for_each pixels的方法，object-order中这个循环在里面；image-order中这个循环在外面。
-
+<!--more-->
 两种渲染方式都可以得到结果，一般采用image-order，他在渲染时更容易出结果，也更灵活，耗时更久。
 
 **Ray tracing is an image-order algorithm for making renderings of 3D scenes**

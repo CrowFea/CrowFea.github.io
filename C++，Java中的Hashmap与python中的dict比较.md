@@ -11,7 +11,7 @@ cover: http://domain.com/awesome.jpg
 
 ### 前言
 之前在做leetcode的两数之和，用三种不同的语言进行了研究。思路都是用key-value形式的数据结构：C++、Java是Hashmap，在Python里面是字典。这篇文章我们就分析一下这几种不同语言下的数据结构。
-
+<!--more-->
 ### C++ 中的 map & unoerdered_map
 我们这里讨论的结构来源于STL标准模板库。
 

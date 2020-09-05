@@ -13,7 +13,7 @@ mathjax: true
 ![img](https://media.giphy.com/media/jmx3p9w9hMfC9zvXG2/giphy.gif)
 
 这次实现的还是关于随机的一个例子，实现一个雪花的效果。
-
+<!--more-->
 ### 思路
 对于这种生成很多点的shader，后面还有一个做了还没写到的也类似，都是先生成一个网格来放这些点
 ```c++

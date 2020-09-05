@@ -10,7 +10,7 @@ mathjax: true
 
 ### Random的设计
 random函数的设计直接影响到整个shader的观感。我们接下来说一下random函数的设计。
-
+<!--more-->
 ```c++
 float random(float val)
 {

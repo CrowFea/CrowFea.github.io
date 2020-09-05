@@ -20,7 +20,7 @@ sudo apt update
 ```
 sudo apt-get install redis-server
 ```
-
+<!--more-->
 ### 配置
 #### 设置密码
 首先打开Redis配置文件redis.conf

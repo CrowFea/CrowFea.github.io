@@ -12,7 +12,7 @@ cover: http://domain.com/awesome.jpg
 C++采用的是输入输出流的方式，但是cin，cout速度并不快，造成在一些题目中经常有TLE的情况。
 
 但实际上不是因为cin慢！！！是因为c++兼容c的方法，将cin的流绑定到scanf中，所以会变慢。
-
+<!--more-->
 可以将这两个流解绑1
 ```c++
 std::ios::sync_with_stdio(false);

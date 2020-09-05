@@ -9,7 +9,7 @@ mathjax: true
 ---
 
 环境：Ubuntu 18.04 docker 19.03.8
-
+<!--more-->
 首先新建个目录，这样将docker容器中的rabbitmq文件也映射一份到本机
 ```
 sudo mkdir /data/rabbitmq -p

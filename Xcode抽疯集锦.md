@@ -11,7 +11,7 @@ mathjax: true
 ### 通用解法
 - clean
 - 重启
-
+<!--more-->
 ### 打不了断点
 11.5版本出现。打断点时关掉变量窗口，读变量会挂。
 [加这段代码](https://developer.apple.com/forums/thread/134059)

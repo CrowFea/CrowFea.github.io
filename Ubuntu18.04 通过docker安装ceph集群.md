@@ -9,7 +9,7 @@ mathjax: true
 ---
 
 这里的是网上直接找的，亲测可以实现，但一定要注意换源！下面代码里换的是cn的源，我自己用是不行的，换成aliyun的源就可以了。这里可以看这篇文章[修改docker镜像源的方法_运维_skh2015java的博客-CSDN博客](https://blog.csdn.net/skh2015java/article/details/82631633)
-
+<!--more-->
 ```
 # 要用root用户创建，或有sudo权限
 # 注：docker镜像源(镜像加速)：https://registry.docker-cn.com
