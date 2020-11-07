@@ -11,7 +11,7 @@ mathjax: true
 先上效果图
 
 ![img](https://s2.ax1x.com/2019/07/31/etfpKe.md.png)
-
+<!--more-->
 ### 准备工作
 
 *   平台

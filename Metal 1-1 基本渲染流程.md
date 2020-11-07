@@ -20,7 +20,7 @@ MTLDevice是一套来访问GPU的接口，实际上获得的就是对某个GPU�
 ```swift
 func MTLCopyAllDevices() -> [MTLDevice]
 ```
-
+<!--more-->
 ### MTKView
 所有的metal绘制在一个特殊的view上即MTKView，当调用到view的时候，view会提供一个`MTLRenderPassDescriptor`，描述符会提供一个可供渲染的材质。描述符本身实际上就是一堆附属的属性，描述的是render出来的像素要去哪里（指的就是材质）。view管理内部的object通过`CAMetalLayer`，本质上是一个CALayer，专门用来给metal渲染。
 ```swift

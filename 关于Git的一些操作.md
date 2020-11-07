@@ -2,7 +2,7 @@
 title: 关于Git的一些操作
 date: 2020-06-02 19:28:12
 categories:
-    - ios
+    - iOS
 tags: 
     - git
 mathjax: true
@@ -13,7 +13,7 @@ mathjax: true
 首先从要提交的分支上拉取最新的代码，尽可能的避免会出现的冲突。接下来修改代码，提交到本地分支，推到远端后提出merge request，在commit里@code viewer。如果一切ok的话等到review结束就合并到主分支中。
 
 当然这中间会碰到一些问题，可以参考以下的情况。
-
+<!--more-->
 ### 暂存更改
 比如一个东西改到一半，需要先做另一个高优的事情；或者因为修改过本地的文件无法检出分支，可以先通过`git stash`将目前的更改保存，返回到上一个干净的状态。然后检出，再通过`git stash pop`将更改pop出来。
 

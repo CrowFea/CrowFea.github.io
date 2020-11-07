@@ -12,7 +12,7 @@ cover: http://domain.com/awesome.jpg
 
 ### 引言
 对想出AES的前辈大写的佩服，光是写了密钥编排我就写了一下午…这里把AES讲述一下，再把代码过程总结一下
-
+<!--more-->
 ### AES密钥扩展原理
 AES加密算法涉及4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。
 我们这里提及的是构造密钥的方法，密钥扩展，原理如下：

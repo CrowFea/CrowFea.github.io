@@ -16,7 +16,7 @@ cover: http://domain.com/awesome.jpg
 - `private` ：可以被本类的成员函数和友元类、友元函数访问
 
 这几个关键字可以出现无数次。
-
+<!--more-->
 *protected是传家宝，只可以在家族中访问；private是日记本，可以分享给自己和朋友，但不会告诉家人*
 
 #### 继承
