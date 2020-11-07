@@ -1,5 +1,5 @@
 ---
-title: 使用AVPlayer播放视频
+title: iOS丨使用AVPlayer播放视频
 date: 2020-9-8 16:21:12
 categories:
     - iOS
@@ -7,6 +7,7 @@ tags:
     - iOS
 mathjax: true
 ---
+
 ## 背景
 播放视频，一个听起来十分合理的需求。iOS提供了AVFoundation，其中的AVPlayer提供了播放视频的能力。在使用的时候我们碰到了一些问题，记录如下。
 <!--more-->
