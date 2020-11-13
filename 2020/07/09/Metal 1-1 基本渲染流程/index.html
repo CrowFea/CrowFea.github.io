@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>Metal | 基本渲染流程 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Metal | 基本渲染流程</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 9, 2020&nbsp;&nbsp;21:28:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/iOS/">iOS</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><h3 id="device"><a href="#device" class="headerlink" title="device"></a>device</h3><p>Metal的绘图是从获取device开始的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> device = <span class="type">MTLCreateSystemDefaultDevice</span>()</span><br></pre></td></tr></table></figure>
+<p>MTLDevice是一套来访问GPU的接口，实际上获得的就是对某个GPU的使用权。由device可以继续构造出后面使用的Texture、Buffer、以及Pipeline。<br>开发时可以选择自己要使用的GPU，对于iOS，GPU只有一块；对于macOS可以有多块显卡，因此可以去选择显卡。<br>可以通过以上方法来创建device，也可以通过下面的方法来获得所有的GPU。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MTLCopyAllDevices</span><span class="params">()</span></span> -&gt; [<span class="type">MTLDevice</span>]</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="MTKView"><a href="#MTKView" class="headerlink" title="MTKView"></a>MTKView</h3><p>所有的metal绘制在一个特殊的view上即MTKView，当调用到view的时候，view会提供一个<code>MTLRenderPassDescriptor</code>，描述符会提供一个可供渲染的材质。描述符本身实际上就是一堆附属的属性，描述的是render出来的像素要去哪里（指的就是材质）。view管理内部的object通过<code>CAMetalLayer</code>，本质上是一个CALayer，专门用来给metal渲染。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: <span class="number">600</span>, height: <span class="number">600</span>)</span><br><span class="line"><span class="keyword">let</span> view = <span class="type">MTKView</span>(frame: frame, device: device)</span><br><span class="line">view.clearColor = <span class="type">MTLClearColor</span>(red: <span class="number">1.0</span>, green: <span class="number">1.0</span>, blue: <span class="number">0.8</span>, alpha: <span class="number">1.0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="model"><a href="#model" class="headerlink" title="model"></a>model</h2><h3 id="MDLMesh-amp-MTKMesh"><a href="#MDLMesh-amp-MTKMesh" class="headerlink" title="MDLMesh &amp; MTKMesh"></a>MDLMesh &amp; MTKMesh</h3><p>MDLMesh是顶点数据的存储结构，MTKMesh是用来装MDLMesh的。对于初始化，MDLMesh一般是通过对MDLAsset的操作获得。后者的初始化方式同通常是通过读取一个特定的url，获取的一整个model。MDLMesh同样可以通过开发者自定义的顶点数据进行初始化。MDLMesh初始化时支持了多个基础的几何图形，包括立方体、球体、圆柱、圆锥、平面、胶囊、20面体、半球体。</p>
+<p>MDLMesh内部实际上有很多个submesh，对于一个体，创建的三维模型可能由不同的submesh组合起来。比如说一个汽车，车体和轮胎很有可能是两个不同的submesh，后者的submesh会 重复的使用四次。<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/modelio/mdlmesh">Apple Developer Documentation</a></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> allocator = <span class="type">MTKMeshBufferAllocator</span>(device: device)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mdlMesh = <span class="type">MDLMesh</span>(sphereWithExtent: [<span class="number">0.75</span>,<span class="number">0.75</span>,<span class="number">0.75</span>], segments: [<span class="number">100</span>,<span class="number">100</span>], inwardNormals: <span class="literal">false</span>, geometryType: .triangles, allocator: allocator)</span><br><span class="line"><span class="keyword">let</span> mesh = <span class="keyword">try</span> <span class="type">MTKMesh</span>(mesh: mdlMesh, device: device)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Render"><a href="#Render" class="headerlink" title="Render"></a>Render</h2><h3 id="MTLLibrary"><a href="#MTLLibrary" class="headerlink" title="MTLLibrary"></a>MTLLibrary</h3><p>创建你的lib，一个library中包含了顶点着色器、片源着色器等方法。Library可以通过多种方式创建，我们可以在运行时才进行创建，通过着色器的名称进行连接。</p>
+<p>这其中连接的就是shader的方法，shader可以单独开一个metal文件。也可以通过string的方式连接起来。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> shader = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">#include &lt;metal_stdlib&gt; using namespace metal;</span></span><br><span class="line"><span class="string">struct VertexIn &#123;</span></span><br><span class="line"><span class="string">  float4 position [[ attribute(0) ]];</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">vertex float4 vertex_main(const VertexIn vertex_in [[ stage_in ]]) &#123;</span></span><br><span class="line"><span class="string">return vertex_in.position; &#125;</span></span><br><span class="line"><span class="string">fragment float4 fragment_main() &#123;</span></span><br><span class="line"><span class="string">  return float4(1, 0, 0, 1);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> lib = <span class="keyword">try</span> device.makeLibrary(source: shader, options: <span class="literal">nil</span>)</span><br><span class="line"><span class="keyword">let</span> vertexFunction = lib.makeFunction(name: <span class="string">&quot;vertex_main&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> fragmentFunction = lib.makeFunction(name: <span class="string">&quot;fragment_main&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p>管线可以是持久的，创建管线通过descriptor。一个描述符内包含了对这个管线的大部分配置，一个最小化配置的管线至少包括以下三个部分</p>
+<ul>
+<li>顶点着色器</li>
+<li>片源着色器</li>
+<li>颜色的编码格式<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> descrioptor = <span class="type">MTLRenderPipelineDescriptor</span>()</span><br><span class="line">descrioptor.colorAttachments[<span class="number">0</span>].pixelFormat = .bgra8Unorm</span><br><span class="line">descrioptor.vertexFunction = vertexFunction</span><br><span class="line">descrioptor.fragmentFunction = fragmentFunction</span><br><span class="line">descrioptor.vertexDescriptor = <span class="type">MTKMetalVertexDescriptorFromModelIO</span>(mesh.vertexDescriptor)</span><br></pre></td></tr></table></figure>
+最后通过描述符创建一个<code>pipelinestate</code>，一个state代表了一个编译好的渲染管线。<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> pipelineState = <span class="keyword">try</span> device.makeRenderPipelineState(descriptor: descrioptor)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="Queen-amp-Buffer"><a href="#Queen-amp-Buffer" class="headerlink" title="Queen &amp; Buffer"></a>Queen &amp; Buffer</h3><p>这里其实也是设置的一部分。commandQueen是是用来管理commandBuffer的。commandBuffer是来存储提交给GPU的指令。一个buffer并不是需要持有引用，在每一帧的时候可能会创建，提交给queen，GPU处理完之后再去创建新的buffer，他的生命周期会自己结束。<br>Queen是一个持久的对象，并不需要在每一帧的时候单独的创建。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> commandQueen = device.makeCommandQueue() <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">&quot;oops&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>commandBuffer创建renderEncoder，后者来负责将渲染的状态和代码翻译成机器可以执行的指令。encoder的初始化通过<code>renderpassdescriptor</code>，这个可以直接通过MTKView来获取，接下来还要设置对应的pipelineState，顶点buffer等</p>
+<p>然后就可以开始发起draw call，再draw call结束后显示的声明draw call结束即可。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> commandBuffer = commandQueen.makeCommandBuffer(),</span><br><span class="line"><span class="keyword">let</span> descriptor = view.currentRenderPassDescriptor,</span><br><span class="line"><span class="keyword">let</span> renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) <span class="keyword">else</span> &#123; <span class="built_in">fatalError</span>() &#125;</span><br><span class="line"></span><br><span class="line">renderEncoder.setRenderPipelineState(pipelineState)</span><br><span class="line">renderEncoder.setVertexBuffer(mesh.vertexBuffers[<span class="number">0</span>].buffer, offset: <span class="number">0</span>, index: <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> submesh = mesh.submeshes.first <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">&quot;oops&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">renderEncoder.drawIndexedPrimitives(type: .triangle, indexCount: submesh.indexCount, indexType: submesh.indexType, indexBuffer: submesh.indexBuffer.buffer, indexBufferOffset: <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">renderEncoder.endEncoding()</span><br></pre></td></tr></table></figure>
+
+<h2 id="Present"><a href="#Present" class="headerlink" title="Present"></a>Present</h2><p>虽然渲染完了，但是还没有展示到屏幕上。这是只需要commandBuffer调用方法，最后commit提交给GPU即可。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> drawable = view.currentDrawable <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">commandBuffer.present(drawable)</span><br><span class="line">commandBuffer.commit()</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Metal/"># Metal</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/07/20/iOS%20%7C%20RunLoop/">iOS | RunLoop</a>
+            
+            
+            <a class="next" rel="next" href="/2020/07/09/Swift%20%7C%20%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0/">Swift | 关于函数</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

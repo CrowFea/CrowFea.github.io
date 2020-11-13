@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>iOS丨开发中的小知识点 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS丨开发中的小知识点</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">六月 14, 2020&nbsp;&nbsp;19:28:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/iOS/">iOS</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>一些零碎的知识点，并没有深入，只是记录在这里方便查漏补缺。后续会针对一些部分专门的研究写文章。</p>
+<h3 id="函数签名"><a href="#函数签名" class="headerlink" title="函数签名"></a>函数签名</h3><p>用函数签名对变量进行赋值，可以用于在更上层的模块有对应的方法，比如说一个点击的方法，当前这个模块的点击行为实际上是给到了更上层的方法中去调用，这个时候就可以在下层的模块中去定义一个函数签名。</p>
+<a id="more"></a>
+<h3 id="xcode自动补全"><a href="#xcode自动补全" class="headerlink" title="xcode自动补全"></a>xcode自动补全</h3><p>注意xcode自动补全的时候，有时候函数是重载的，如果直接自动补全的话实际上是选择了一种函数，可能和对应要使用的方法不同，这样就会报错（数据结构不同、返回值不同等）。要注意。</p>
+<h3 id="关于Delegate的理解"><a href="#关于Delegate的理解" class="headerlink" title="关于Delegate的理解"></a>关于Delegate的理解</h3><p>Delegation是常用的一种设计模式，理解为委托人——协议——代理人。delegate就是代理，首先在协议中声明所有的方法，这个部分是声明为protocol的。接下来对每种方法进行定义，全部放在delegate底下。之后全部的方法的调用全部用delegate来处理。这样实际上把具体的操作和业务的逻辑分开。最后要进行更改也会简单一点。</p>
+<p>注意代理一定使用的是弱引用，参考C++的智能指针，默认的强引用会有循环引用的问题。</p>
+<h3 id="组件化"><a href="#组件化" class="headerlink" title="组件化"></a>组件化</h3><p>尽量将组件都公有化使用，每个单个的使用场景都通过一个serviceCenter来进行处理，可以通过switch等方式去处理不同的场景。这样在后期更改需求的时候会便于处理。</p>
+<h3 id="Notification"><a href="#Notification" class="headerlink" title="Notification"></a>Notification</h3><p>通知是全局的，因此在需要接受通知的地方<code>addbserver</code>，里面的参数包含</p>
+<ul>
+<li>监听者：一般是自己也就是self</li>
+<li>selector：监听到之后所调用的方法，这个方法是要加@objc</li>
+<li>name：监听事件的名称，这个名称可以是自定义的，apple也提供了几种名称，比如view被调到前台等</li>
+</ul>
+<p>在一个类里面如果要监听多个通知，可以抽象出一个单独的方法去receiveNotification，在里面根据name的不同进行其他的操作</p>
+<p>在发出通知的地方使用post，包含的参数是一个Notifaction结构体，一般传递的参数：</p>
+<ul>
+<li>name：监听事件的名称</li>
+<li>object：当前发出通知的对象，其实一般也是self</li>
+<li>还可以传递其他的参数，事实上Notification的结构内部有很多参数可以使用，可以在UserInfo这个参数中进行传递<code>public var userInfo: [AnyHashable : Any]?</code></li>
+</ul>
+<h3 id="关于动画的问题"><a href="#关于动画的问题" class="headerlink" title="关于动画的问题"></a>关于动画的问题</h3><p>一种常用的方法是<code>UIView.animate()</code>,这种方法实际上是使用关键帧的技术。在<code>animation</code>里面去定义最后要完成的动作，在option里面定义过渡的动画曲线，定义了动画形成的过渡期动画。通过设置别的参数如<code>duration</code>,<code>usingSpringWithDamping</code>等参数来设置具体的动画类型。</p>
+<p>至于一些常见的动画，位移的动画实际上就是在animation时重新去设置view的frame位置，呈现出来就是位移的动画。渐变的动画是alpha的变化。图形放大和缩小的动画是transform的改变，矩阵的计算最终影响到图形的变化。颜色的改变和渐变是一样的。Tableview的展开实际上就是在section里面加单元。箭头之类的动画（需要旋转的动画）需要使用rotateView来进行控制，</p>
+<p>主要需要手动写的动画就是位移和渐变，缩放的动画都十分少见。稍微麻烦一点的动画都是使用lottie直接去调设计给的json文件。有些情况下需要两种方式一起使用，在<code>artist follow</code>的动画需要位移的同时播放动画。注意使用到lottie的时候，要去设置currentProgress，因为实际上执行的是一个ae文件，一个整的动画是有进度条的，因此要设置一下动画进行到哪里了。</p>
+<p>lottie在swfit中使用对性能是有损耗的（事实上在oc或者安卓都存在）。原因可能在于一是需要IO读取json，二是解析json时产生的消耗。因此对于经常会触发的动画，应倾向于使用UIView或者CoreAnimation实现；对于复杂的或者是不是很经常触发的动画可以直接lottie。</p>
+<p>UIView和CALayer是平级关系。UIView更偏向于VC，处理用户的交互；CALayer更倾向于展示图像。一个CALayer里的内容content就是一个纹理，直接可以输入片源着色器。所有的渲染是CoreAnimation做好了处理之后，draw call进行发送到GPU进行真正的渲染过程。</p>
+<h3 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h3><h4 id="frame"><a href="#frame" class="headerlink" title="frame"></a>frame</h4><p>常用的布局方式。布局的结果是绝对位置，因此在不同的机器上可能展示的不同。因此可以看到针对不同尺寸大小的机器有着判断。</p>
+<h4 id="snapkit"><a href="#snapkit" class="headerlink" title="snapkit"></a>snapkit</h4><p>snapkit实现的也是自动布局，但相比起autolayout代码要简洁很多。其思想也是相对位置，定义当前视图和父视图的相对位置来实现自动布局，也就是每一次布局要计算一次新的参数。<br>对于大的页面中的布局应当使用snapkit来写，snapkit的方式在项目中比较常见。一些小的内部的布局可以直接frame写。</p>
+<h4 id="autolayout"><a href="#autolayout" class="headerlink" title="autolayout"></a>autolayout</h4><p>写起来比较繁琐，而且存在性能问题，其中的textlayout对性能的影响较大，而且autolayout会把textlayout放在主线程。</p>
+<h3 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h3><h4 id="UINavigationController"><a href="#UINavigationController" class="headerlink" title="UINavigationController"></a>UINavigationController</h4><p>最常见的一种方式。使用栈的方式，push的时候将目标的vc push到栈顶。只有栈顶的vc才会被展示。默认的动画效果是从右到左缓慢推出,默认的无动画效果是从右到左一闪而过。</p>
+<h4 id="Segue"><a href="#Segue" class="headerlink" title="Segue"></a>Segue</h4><p>只有在storyboard里面才会使用。</p>
+<h4 id="model跳转"><a href="#model跳转" class="headerlink" title="model跳转"></a>model跳转</h4><p>使用model进行跳转的特点在于视图会从下到上出现覆盖掉当前的视图。</p>
+<h3 id="IB-or-手写"><a href="#IB-or-手写" class="headerlink" title="IB or 手写"></a>IB or 手写</h3><p>写页面两种方法：storyboard+nib或者代码。使用interface builder的好处是操作会简单的一点，当然项目里面是没有这样做的，都是用代码的方式直接去写。直接看iphone上安装好的文件的话，可以看到nib文件，这些文件实际上是这个软件的界面文件。本质上是xml格式。如果多人协作，同时使用Interface Builder去修改一个view，nib文件一定会冲突，从git的冲突信息来看，你很难（或者无法）去修正它。xcode从5.0之后开始支持简单的冲突合并，不过本质上还是会产生诸多的冲突问题。</p>
+<h3 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h3><p>swift在做多线程中主要使用的是GCD，通过集中管理线程池的方式处理并发的问题。GCD中使用的队列是FIFO，队列一共有两种类型：串行和并行。系统提供了五个全局队列：main。和四种优先级不同的全局队列，由上到下是<code>userInteractive</code>、<code>userInitiated</code>、<code>utility</code>、<code>background</code> .一般情况下queue都需要尽快处理，所以默认的qos默认是<code>userInteractive</code>。</p>
+<p>线程切换的时候，为了不阻塞主线程，可以将耗时的任务放到其他线程。等到任务结束的时候再切换到主线程操作，比如说更新一些UI。</p>
+<p>DispatchGroup用于想要等到队列里的所有任务都执行完毕的时候在执行某些操作。在开始的时候在对应的group enter，在执行成功之后在对应的地方leave。group会在执行完所有的操作之后继续其他的操作。</p>
+<p>DispatchWorkItem用于安排队列要执行的任务，使用workitem的好处在于可以取消掉一个还未执行的新的请求，比如说在用户search的时候，用户每输入一个字符就会联想搜索一次，为了避免过多的查询请求，可以使用workitem来取消掉。</p>
+<p>DispatchSemaphore用于线程同步使用的信号量。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/07/01/Xcode%E6%8A%BD%E7%96%AF%E9%9B%86%E9%94%A6/">Xcode抽疯集锦</a>
+            
+            
+            <a class="next" rel="next" href="/2020/06/02/%E5%85%B3%E4%BA%8EGit%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C/">关于Git的一些操作</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

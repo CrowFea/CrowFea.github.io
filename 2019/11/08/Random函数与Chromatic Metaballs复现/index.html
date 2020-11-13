@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>Random函数与Chromatic Metaballs复现 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Random函数与Chromatic Metaballs复现</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 8, 2019&nbsp;&nbsp;17:29:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="shdaertoy链接"><a href="#shdaertoy链接" class="headerlink" title="shdaertoy链接"></a>shdaertoy链接</h3><p><a target="_blank" rel="noopener" href="https://www.shadertoy.com/view/MdjczK">Chromatic Metaballs</a></p>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p>先上效果图<br><img src="https://s2.ax1x.com/2019/11/09/MeMDXQ.md.gif" alt="img"></p>
+<p>最近在读<a target="_blank" rel="noopener" href="https://thebookofshaders.com/">the book of shaders</a>,进度还是比较慢的。书里有很多可以学习的地方，打算慢慢的把书里提到了例子都复现一下。不过现在还在参考shaderToy上面的代码进行学习。</p>
+<p>这个shader是在看过random这一篇章之后编写的。下面大概讲一下思路和过程。</p>
+<a id="more"></a>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>首先这个图的运动并没有时间上规律的变化，因此应当有单独的random函数来提供数据。这里需要注意的是，图中的团子并不是一整块，而是多个小的小团子凑在一起。这样做的好处是，在一些“起泡”的动画里会十分好处理——直接让这一块团子出去就好了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;MAXSTEP;++i)</span><br></pre></td></tr></table></figure>
+
+<p> MAXSTEP决定了产生多少个小团子。在之后的方法中我们决定了产生团子的位置，和i的大小也有关系，所有的团子会从中心产生像边缘扩散。</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vec2 pos = random2(vec2(<span class="keyword">float</span>(i),<span class="number">0.2</span>)) * <span class="number">0.2</span>;</span><br><span class="line"><span class="keyword">float</span> angle = mix(<span class="number">0.0</span>, TPI, <span class="built_in">random</span>(<span class="keyword">float</span>(i)));</span><br><span class="line"><span class="keyword">float</span> radius = mix(<span class="number">0.01</span>, <span class="number">0.2</span>, <span class="built_in">random</span>(<span class="keyword">float</span>(i)));</span><br><span class="line"><span class="keyword">float</span> freq = <span class="number">1.0</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">random</span>(<span class="keyword">float</span>(i)) &gt; <span class="number">0.5</span>)	freq = <span class="number">-1.0</span>;</span><br><span class="line">vec2 offset = radius * vec2(<span class="built_in">sin</span>(freq*t+angle), <span class="built_in">cos</span>(freq*t + angle));</span><br></pre></td></tr></table></figure>
+<p>pos表示当前团子的位置，这里在random函数生成坐标之后乘0.2的原因在于让团子尽可能的靠近画面中心。这个参数越大，团子越分散。接下来angle和radius表示了团子的角度和半径。接下来有一个有意思的处理，我们想达到一种随机的扩散效果，比如水中的微生物这样的效果，offset的目的在于让这个团子随机的动起来，可以想到必须用iTime，但如果所有的团子都按照同样的方程进行运动，实际上整体上就都是一个方向的运动，就不是很随机。因此我们强行设定一部分的团子按照另一种方式旋转，也即是在时间t前面加上参数freq，一部分为正，一部分为负。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m_dist.r += <span class="number">1.0</span> / distance( p + vec2(<span class="number">0.00</span>,<span class="number">0.00</span>) , pos + offset);</span><br><span class="line">m_dist.g += <span class="number">1.0</span> / distance( p + vec2(<span class="number">0.01</span>,<span class="number">0.01</span>) , pos + offset);</span><br><span class="line">m_dist.b += <span class="number">1.0</span> / distance( p + vec2(<span class="number">0.05</span>,<span class="number">0.00</span>) , pos + offset);</span><br></pre></td></tr></table></figure>
+
+<p>在着色这一部分，我们想要达到的效果是，在团子的边缘有红绿蓝的散射感。因此我们计算团子中心到偏移位置的距离，距离越大，某一部分的值越大。因此在p中心的位置加上对不同颜色的偏离，这决定了不同颜色的中心位置。</p>
+<p>同时distance的好处是，在团子融合和分离的过程中，上面方程的数据变化是很平滑的，因此可以实现非常好的实现融合和分离的效果。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">col += smoothstep(<span class="number">0.49</span>,<span class="number">0.50</span>,m_dist * <span class="number">0.01</span>);</span><br></pre></td></tr></table></figure>
+<p>最后smoothstep的上下限也应该注意，这里有一个锐化的问题，如果上下限差距过大，边缘会十分模糊，差距越小分界线越明显。同时上下线取值的大小决定了色域的大小，这里我们希望图像大小大概是正中一半的感觉，0.5就比较合适。</p>
+<h3 id="Random的设计"><a href="#Random的设计" class="headerlink" title="Random的设计"></a>Random的设计</h3><p>random函数的设计直接影响到整个shader的观感。我们接下来说一下random函数的设计。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">random</span><span class="params">(<span class="keyword">float</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> fract(<span class="built_in">sin</span>(val * <span class="number">12.9898</span>) * <span class="number">43756.5453123</span> );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">random</span><span class="params">(vec2 val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> fract(<span class="built_in">sin</span>(dot(val.xy,vec2(<span class="number">12.9898</span>,<span class="number">78.233</span>))) * <span class="number">43756.5453123</span> );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">vec2 <span class="title">random2</span><span class="params">(<span class="keyword">float</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vec2 p = vec2(dot(vec2(val),vec2(<span class="number">127.1</span>,<span class="number">311.7</span>)),dot(vec2(val),vec2(<span class="number">269.5</span>,<span class="number">183.3</span>)) );</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2.0</span> * fract(<span class="built_in">sin</span>(p) * <span class="number">43758.5453123</span>) - <span class="number">1.0</span> ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">vec2 <span class="title">random2</span><span class="params">(vec2 val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vec2 p = vec2(dot(val,vec2(<span class="number">127.1</span>,<span class="number">311.7</span>)),dot(val,vec2(<span class="number">269.5</span>,<span class="number">183.3</span>)) );</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2.0</span> * fract(<span class="built_in">sin</span>(p) * <span class="number">43758.531545</span>) - <span class="number">1.0</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实这几个函数可以直接作为轮子用，在设计的时候可以看到一些思路。生成float型的随机数都是使用fract去截取，如果输入时float，就直接带入三角函数；如果是vec，进行一次点乘转换成float带入三角函数。</p>
+<p>有趣的一点是，这个三角函数我在不同的shader里都见过</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> fract(<span class="built_in">sin</span>(val * <span class="number">12.9898</span>) * <span class="number">43756.5453123</span> );</span><br></pre></td></tr></table></figure>
+<p>不由得思考这两个参数是不是有什么神奇的意义，于是发现了这一篇回答<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/12964279/whats-the-origin-of-this-glsl-rand-one-liner">What’s the origin of this GLSL rand() one-liner?</a>。其中一个回答是这么说的，在<em>On generating random numbers, with help of y= [(a+x)sin(bx)] mod 1”, W.J.J. Rey, 22nd European Meeting of Statisticians and the 7th Vilnius Conference on Probability Theory and Mathematical Statistics, August 1998</em>这篇文章里第一次提到了这个方程，虽然没有给出为什么，但是唯一一个被推荐的一个数是$\frac{\sqrt{5}-1}{2}\pi$。所以大致猜想的是后来有人看见了这篇paper，首先写出了上面的公式，因为表现良好而被一直使用（用轮子真舒服）。</p>
+<p>但是无论起源如何，43756.5453123的目的都在于实现一个简单的hash。大的数据长度保证了即使x的动量很小，在结果上的变动也十分巨大。牢记<strong>random的精髓就在于冲突率小的hash</strong>。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"># 图形学</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/11/10/ShaderToy%E4%B8%A8Random%E5%87%BD%E6%95%B0/">ShaderToy丨Random函数</a>
+            
+            
+            <a class="next" rel="next" href="/2019/11/08/ShaderToy%E4%B8%A8%E9%9A%8F%E6%9C%BA-Chromatic%20Metaballs%E5%AE%9E%E7%8E%B0/">ShaderToy丨随机-Chromatic Metaballs实现</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

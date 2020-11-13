@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>ShaderToy丨随机-DataPath的实现 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">ShaderToy丨随机-DataPath的实现</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 13, 2019&nbsp;&nbsp;10:26:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><img src="https://media.giphy.com/media/jmx3p9w9hMfC9zvXG2/giphy.gif" alt="img"></p>
+<p>这次实现的还是关于随机的一个例子，实现一个雪花的效果。</p>
+<a id="more"></a>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>对于这种生成很多点的shader，后面还有一个做了还没写到的也类似，都是先生成一个网格来放这些点</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vec2 grid = vec2(<span class="number">100.0</span>,<span class="number">50.0</span>);</span><br><span class="line">p *= grid;</span><br></pre></td></tr></table></figure>
+<p>这个网格决定了由多少个可能出现的点，我们要将每一个像素坐标映射进去。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vec2 ipos = <span class="built_in">floor</span>(p);  <span class="comment">// integer</span></span><br><span class="line">vec2 fpos = fract(p);  <span class="comment">// fraction</span></span><br></pre></td></tr></table></figure>
+<p>这个做法我在其他的shader中也都有看到，算是一种常用的方法。整数部分的ipos可以用来进行随机化的处理，fpos可以在随机化处理完成后进行一定程度的偏移，来达到一种更随机的效果。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vec2 vel = vec2(iTime*<span class="number">2.0</span>*<span class="built_in">max</span>(grid.x,grid.y)); <span class="comment">// time</span></span><br><span class="line">vel *= vec2(<span class="number">-1.0</span>,<span class="number">0.0</span>) * <span class="built_in">random</span>(<span class="number">1.0</span>+ipos.y); <span class="comment">// direction</span></span><br></pre></td></tr></table></figure>
+<p>接下来要定义一下雪花块运动的速度，包含速率和方向。我们把基础速率定义成一个和时间有关的数.但是如果只有iTime就显得太慢，因此我们把它扩大一点。接下来就是确定vel的方向，-1向右，+1向左，最后我们希望不同的行会按照不同的速率运动，因此这里对ipos.y做一个随机。值得注意的是，因为random函数中使用的是sin函数，如果是最低的一行，输入就是0。这个就相当于没有随机，因此要给所有的y加上一个正数保证足够大。<br><img src="https://media.giphy.com/media/ZG0YwSFS35sR2jSh1A/giphy.gif" alt="gif"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vec2 offset = vec2(<span class="number">0.1</span>,<span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line">vec3 col = vec3(<span class="number">0.0</span>);</span><br><span class="line">col.r = pattern(p+offset,vel,<span class="number">0.5</span>);</span><br><span class="line">col.g = pattern(p,vel,<span class="number">0.5</span>);</span><br><span class="line">col.b = pattern(p-offset,vel,<span class="number">0.5</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/11/13/M8IUpt.png" alt="img"></p>
+<p>接下来就是正式的画图，首先定义一个offset量，我们仔细看这个图，发现其实在一些边缘是有不同的色块的，这个就是通过偏移量实现。对颜色我们做这样的处理：传入三个参数，一个是当前坐标+/-offset，一个是当前的速率，一个是标准量。pattern函数中对坐标+速率进行一个随机处理，如果处理后的数大于标准量，就返回1；否则返回0。这里的标准量建议都一样，这样才会出现各种各样的颜色，如果某一个颜色不同，比如变成0.4，0.5，0.5就会都变成红色。</p>
+<p>接下来我们仔细看一下pattern函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">pattern</span><span class="params">(vec2 st, vec2 v, <span class="keyword">float</span> t)</span> </span>&#123;</span><br><span class="line">    vec2 p = <span class="built_in">floor</span>(st+v);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">step</span>(t, <span class="built_in">random</span>(<span class="number">100.0</span>+p*<span class="number">0.000001</span>)+<span class="built_in">random</span>(p.x)*<span class="number">0.5</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先是进行了一个floor操作，这在生成随机的时候其实相当有必要。因为往往我们放进随机函数中的数据是坐标，这个数据是十分小并且每一个都有差别。因此当我们把这个数直接放进random时就会产生十分随机的随机数。虽然这在数学上可能是好的，但是在shader中，我们要实现的不是真正的随机，而是冲突率小的hash。因此如果数据太过随机，最后生成出来的数就会十分恐怖，比如下面这样<br><img src="https://media.giphy.com/media/ZG0YwSFS35sR2jSh1A/giphy.gif" alt="gif"></p>
+<p>因此要将一部分的随机数变成一个数，这样生成的图像才会连续。接下来对p进行随机化处理。这里random函数可以参考之前的一篇博客，最后生成的数为0-1的随机数。0和1的结果会随机的生成。</p>
+<p><img src="https://media.giphy.com/media/ZG0YwSFS35sR2jSh1A/giphy.gif" alt="gif"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/shader/"># shader</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/11/15/ShaderToy%E4%B8%A8%E9%9A%8F%E6%9C%BA-Virus%E7%9A%84%E5%AE%9E%E7%8E%B0/">ShaderToy丨着色与时间-Virus的实现</a>
+            
+            
+            <a class="next" rel="next" href="/2019/11/10/ShaderToy%E4%B8%A8Random%E5%87%BD%E6%95%B0/">ShaderToy丨Random函数</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

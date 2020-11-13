@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>卡通风格渲染 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">卡通风格渲染</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 5, 2019&nbsp;&nbsp;18:25:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>最近尝试做了些卡通风格渲染的shader，还是比较有趣的，将其中一个过程和心得分享在下面。</p>
+<a id="more"></a>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><img src="https://s2.ax1x.com/2019/12/05/Q8x9s0.png" alt="img"></p>
+<h3 id="怎样卡通"><a href="#怎样卡通" class="headerlink" title="怎样卡通"></a>怎样卡通</h3><p>卡通风格渲染实际上是有一定的规律。在实现上面这个shader的时候，使用的方法实际上还是之前用过的Phong-Blion光照模型，但是展现出来的效果就完全不同。卡通风格有几个明显的特点：</p>
+<ul>
+<li><p>低色阶</p>
+<p>  这点在日式的风格中十分明显，基本是大块大块的色域，并不像现实物体那样有着渐变的颜色，颜色之间的转折十分尖锐。</p>
+</li>
+<li><p>描边</p>
+<p>  这点或多或少都会有，描边有着多种方法，其生成的边也不尽相同，这里可以看这篇<a target="_blank" rel="noopener" href="https://blog.uwa4d.com/archives/usparkle_cartoonshading.html">文章</a><br>  <img src="https://s2.ax1x.com/2019/12/05/Q8YHJO.jpg" alt="img"><br>  <em>无主之地3的描边非常明显</em></p>
+</li>
+<li><p>高光聚焦</p>
+<p>  这一点是我自己总结的（大概率不对），在卡通渲染中高光并不像现实那样，是一片由亮到暗，而是很明显的一条或者一个点。<br>  <img src="https://s2.ax1x.com/2019/12/05/Q8NQEt.jpg" alt="img"><br>  <em>好想玩塞尔达</em></p>
+<p>  可以看到林克的头发上，很明显的一块高光，身上被照亮的地方也是，不存在一个渐变的情况。</p>
+</li>
+</ul>
+<p>我们在接下来看一下如何实际操作这两项。</p>
+<h3 id="降低色阶"><a href="#降低色阶" class="headerlink" title="降低色阶"></a>降低色阶</h3><p>既然是冯氏着色，就是有典型的三种光：环境、高光、物体光。我们以环境光为例。（在此例中我们使用的只有一个光源，使用多个光源会更复杂，比如塞尔达荒野之息使用了两个光源）</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> NdotL = dot(_WorldSpaceLightPos0, normal);</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> lightIntensity = smoothstep(<span class="number">0</span>, <span class="number">0.01</span>, NdotL);<span class="comment">// * shadow);	</span></span><br><span class="line">float4 light = lightIntensity * _LightColor0;</span><br></pre></td></tr></table></figure>
+<p>点乘的目的是为了求环境光和顶点法线的cos，这个是冯氏光照的内容。接下来一行值得注意：我们为了让色阶降低，很容易想到的方法是，减少颜色的渐变。为此，我们使用smoothstep，限制cos的大小，实际上就是限制法线和光线的角度。当这个角度大于一个值时强行设定为1，我们故意将这个值设定的极小，（在这里我们设置的是0.01）。对于下限也一样。也就是说，在本例中，只有夹角的cos值在0-0.01间，他才有可能根据不同的角度，显现出“自己”反射的颜色。这样一来就有效的减少了渐变。</p>
+<p>同时，使用smoothstep还有一个原因，就是当他的定义域在一定范围内的的时候，值域的变化很小。我们可以看一下smoothstep用的函数：</p>
+<p><img src="https://s2.ax1x.com/2019/12/05/Q8aO4P.png" alt="img"></p>
+<p>可见在0-1内的小区间内。值域的变化很小。这样即使颜色落在了设定的上下限之间，他根据自己定义域的变化实际上也不大。我们可以将smoothstep变成clamp观察一下，就会发现使用clamp函数会有更强的真实感，这也是我们不希望产生的。</p>
+<p>降低色阶还有一种方法是采用幂运算，将一个数不断的进行小数次幂的运算也能有效降低变化。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> specularIntensity = pow(NdotH * lightIntensity, _Glossiness * _Glossiness);</span><br></pre></td></tr></table></figure>
+<p>我们通过这种方法处理了高光，因为高光本身就需要一个pow运算。同样对于高光聚焦的问题，也是通过这样的方式解决。无论如何，应当发现，<strong>降低色阶的主要手段就是减少任何因素对颜色的影响。一般来说是当前顶点和光线的角度，通过高阶运算的方式，将定义域的改变对值域的影响减小，这就是降低色阶的方法。</strong></p>
+<h3 id="描边"><a href="#描边" class="headerlink" title="描边"></a>描边</h3><p>在本例中我们对描边讨论的并不是很深，实现的是一个边缘的高亮效果。</p>
+<p>值得一提的是，确定边缘的方法有很多，我们在后续会讨论。本例中采用的方法是基于视角的，通过计算视线和顶点法线的夹角cos，如果为0，那么为相切，这个地方就是边缘。为了方便计算，往往会用1去减，获得一个正相关的数。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> rimDot = <span class="number">1</span> - dot(viewDir, normal);</span><br><span class="line"><span class="keyword">float</span> rimIntensity = rimDot * pow(NdotL, _RimThreshold);</span><br><span class="line">rimIntensity = smoothstep(_RimAmount - <span class="number">0.01</span>, _RimAmount + <span class="number">0.01</span>, rimIntensity);</span><br><span class="line">float4 rim = rimIntensity * _RimColor;</span><br></pre></td></tr></table></figure>
+<p>边缘的高亮效果可以理解为只在边缘的高光，只不过视角的影响是通过rimDot体现的，而非在幂函数内部。同样的，通过smoothstep方法，我们可以设定边沿的大小，也可以将这个转折变得尖锐。</p>
+<p>唯一的问题是，由于最后我们将颜色整合的方式是全部加起来，这样就没有办法画出黑色的描边（因为黑色是0），后续会想办法解决这个问题。</p>
+<h3 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h3><p>最后一点是阴影，一开始在做完后我们的物体没有办法投射阴影，在这个地方踩了一些坑花了很久。</p>
+<p>阴影可以直接在最后调用Legacy Shader中的Pass来解决。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UsePass <span class="string">&quot;Legacy Shaders/VertexLit/SHADOWCASTER&quot;</span></span><br></pre></td></tr></table></figure>
+<p>这个Pass可以投射阴影，同时在前面的若干地方要添加几项宏定义：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Files below include macros and functions to assist</span></span><br><span class="line"><span class="comment">// with lighting and shadows.</span></span><br><span class="line"><span class="meta">#include &quot;Lighting.cginc&quot;</span></span><br><span class="line"><span class="meta">#include &quot;AutoLight.cginc&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//------in struct v2f</span></span><br><span class="line"><span class="comment">// Macro found in Autolight.cginc. Declares a vector4</span></span><br><span class="line"><span class="comment">// into the TEXCOORD2 semantic with varying precision </span></span><br><span class="line"><span class="comment">// depending on platform target.</span></span><br><span class="line">SHADOW_COORDS(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//------in vertex </span></span><br><span class="line"><span class="comment">// Defined in Autolight.cginc. Assigns the above shadow coordinate</span></span><br><span class="line"><span class="comment">// by transforming the vertex from world space to shadow-map space.</span></span><br><span class="line">TRANSFER_SHADOW(o)</span><br><span class="line"></span><br><span class="line"><span class="comment">//------in frag</span></span><br><span class="line"><span class="comment">// Samples the shadow map, returning a value in the 0...1 range,</span></span><br><span class="line"><span class="comment">// where 0 is in the shadow, and 1 is not.</span></span><br><span class="line"><span class="keyword">float</span> shadow = SHADOW_ATTENUATION(i);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>注释已经编写在内，不再赘述。最后需要额外注意的一点是，有可能这些都齐活了也看不到阴影，这可能有两个情况：</p>
+<ul>
+<li>Inspector中没有开cast shadow</li>
+<li>物体太大，摄像机太远</li>
+</ul>
+<p>对于我而言就是第二个问题，将物体scale缩小，摄像机移近后就都可以看见了。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"># 图形学</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/01/29/C++%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/">C++知识点总结</a>
+            
+            
+            <a class="next" rel="next" href="/2019/12/05/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB%E7%9A%84%E7%AE%97%E6%B3%95%E5%B0%8F%E6%8A%80%E5%B7%A7/">杂七杂八的算法小技巧</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>Algorithm | 归并排序 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Algorithm | 归并排序</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">三月 30, 2020&nbsp;&nbsp;13:14:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>首先来说，归并排序是一种递归的排序。它的优点在于时间复杂度在<code>NlogN</code>，而缺点在于其所需的额外空间与<code>N</code>成正比。</p>
+<a id="more"></a>
+<h3 id="关于时间复杂度"><a href="#关于时间复杂度" class="headerlink" title="关于时间复杂度"></a>关于时间复杂度</h3><p>曾经十分困扰我的一点是，为什么归并排序的时间复杂度在NlogN级别，明明对所有的数都进行了计算。这里要首先说明一下。对于一种归并的算法，我们可以画出一个对应的递归树：</p>
+<p><img src="https://s1.ax1x.com/2020/03/30/Gml77j.png" alt="img"></p>
+<p>对于每一层来说，总体进行计算的次数还是N，由于采用二分的方式进行，可以得到树的深度在logN+1。这样就可以得到总的时间在<code>N*(logN+1)</code>，由于复杂度我们求的是近似，因此最终的复杂度在<code>NlogN</code>。在引申一点说，比方说我们有两个串行的循环</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for(;;)&#123;&#125;</span><br><span class="line">for(;;)&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个算法的复杂度依旧是<code>O(N)</code>的复杂度，如果要计算指令的运行次数，那么就是<code>2N</code>，这个取高阶无穷小就是<code>N</code>。再我们理解递归发生的压栈的问题时也可以这样想，对于N大小的数组的确发生了两次N/2的计算，但这两次是“串行”的。</p>
+<p>同样值得说明的一点，为什么二分算指令的次数要按log算，我们可以去看这两个函数的图像，发现其实在小数据量时差异不算大，但是当讨论到时间复杂度时一定是在相当大的数据量前面进行讨论，因此在宏观上要用树的方式考虑，而不是简单的N/2。</p>
+<p><img src="https://s1.ax1x.com/2020/03/30/GmlqNn.png" alt="img"></p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>无论采用何种方式的归并排序，其过程大致是相似的。将数组分割为两个小的数组，排序后进行合并。因此合并是不可避免的过程，这个阶段对应的是<code>Merge</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Merge(int &amp;a[],int low,int,mid,int high)&#123;</span><br><span class="line">	res[]&#x3D;a[];&#x2F;&#x2F;res[]由上层传入</span><br><span class="line">	int i&#x3D;low,j&#x3D;mid+1;</span><br><span class="line">	for(int k&#x3D;0;k&lt;a.size();++k)&#123;</span><br><span class="line">		if(i&gt;mid)	a[k]&#x3D;res[j++];</span><br><span class="line">		else if(j&gt;high)	a[k]&#x3D;res[i++];</span><br><span class="line">		else if(less(res[i],res[j])	a[k]&#x3D;res[i++];</span><br><span class="line">		else	a[k]&#x3D;res[j++];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么可以看到<code>O(N)</code>的复杂度是从哪里来的了。在实际使用中，我们有两个思路去进行归并，一种是自上而下的方法，在实现上是明显的递归，我们通常采用这种思路。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MergeSort(int a[],int low,int high)&#123;</span><br><span class="line">	if(low&gt;&#x3D;high)	return;</span><br><span class="line">	mid&#x3D;low+(high-low)&#x2F;2;</span><br><span class="line">	MergeSort(a,low,mid);</span><br><span class="line">	MergeSort(a,mid+1,high);</span><br><span class="line">	Merge(a,low,mid,high);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外一种是自下而上的思路，即手动的去找每一个小的区间。这样在实现上通常是迭代的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MergeSort(int a[],int n)&#123;</span><br><span class="line">	res&#x3D;new a[N];</span><br><span class="line">	for(int sz&#x3D;1;sz&lt;n;sz*&#x3D;2)</span><br><span class="line">		for(int low&#x3D;0;low&lt;N-sz;low+&#x3D;sz*2)</span><br><span class="line">			Merge(a,low,low+sz-1,min(low+sz*2-1,n-1));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当数组的大小为2的幂时，两种方式的比较次数和数组访问顺序恰好相同，在其他情况下访问的顺序会有所不同。自下而上比较适合于链表这类的数据结构，其不需要反复的去界定二分的范围。</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>我们可以给出一个命题</p>
+<blockquote>
+<p>对于长度为N的数组，归并排序访问数组的次数最多为<code>6NlogN</code>次<br>其中2N用于复制、2N用于将结果复制回去，而比较次数最多为2N。减少复杂度的根本是减少访问和比较的次数，我们可以通过几种方式实现。</p>
+</blockquote>
+<h4 id="对小规模数组使用插入排序"><a href="#对小规模数组使用插入排序" class="headerlink" title="对小规模数组使用插入排序"></a>对小规模数组使用插入排序</h4><p>这样我们再回头去看log和x/2的函数，就会发现实际上在小数据量时，归并的速度并没有普通方法快速。因此在数组已经归并的相对小的时候，采用一种普通排序去处理它，比如说插入排序（或选择排序）。</p>
+<p>事实上插入排序会更优，当我们分析这两种算法时就发现，即使都是平方级别的算法，插入排序不会移动比当前值小的元素，而选择排序会对每一个没处理的元素都进行比较。因此插入排序要进行的比较数目通常是选择排序的一半。</p>
+<h4 id="判断数组是否已经有序"><a href="#判断数组是否已经有序" class="headerlink" title="判断数组是否已经有序"></a>判断数组是否已经有序</h4><p>当然，剪枝是一个很容易想到的策略。归并的优势在于传入数组的前后两个部分都是有序的，因此我们要比较小数组的最大值是否小于大数组的最小值。即<code>a[mid]&lt;a[mid+1]</code>。</p>
+<h4 id="不将元素复制到辅助数组"><a href="#不将元素复制到辅助数组" class="headerlink" title="不将元素复制到辅助数组"></a>不将元素复制到辅助数组</h4><p>我们可以直接将原数组排序到辅助数组，当然这样做需要在函数中不断调换原数组和辅助数组这两个对象。</p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><blockquote>
+<p>归并排序是一种渐进最优的基于比较排序的方法<br>这句话的意思是说，在面对最坏情况和任意比较函数时，归并排序的比较次数稳定趋近于<code>NlogN</code>。总结下来就是说：</p>
+</blockquote>
+<ul>
+<li>归并排序的时间复杂度稳定在<code>O(NlogN)</code></li>
+<li>空间复杂度为<code>O(N)</code>，并不是最优</li>
+<li>除了比较算法之外，一些实际数据的操作也会影响算法（比如数组的创建）</li>
+</ul>
+<h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><p>最好进行判断有序的剪枝，这样在输入数据有序或者多个重复有序时，复杂度可以达到线性或者线性对数。</p>
+<p>Merge中的res数组，最好从上层中创建，传入方法。这样避免了每一次Merge都要定义数组的开销，往往这个开销会变的巨大。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%AE%97%E6%B3%95/"># 算法</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/04/01/Algorithm%20%7C%20%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">Algorithm | 快速排序</a>
+            
+            
+            <a class="next" rel="next" href="/2020/02/06/%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">强制类型转换</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

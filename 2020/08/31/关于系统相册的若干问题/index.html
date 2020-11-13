@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>iOS丨关于系统相册的若干问题 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS丨关于系统相册的若干问题</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">八月 31, 2020&nbsp;&nbsp;16:21:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/iOS/">iOS</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>需求是要读取用户的相册，通过一定的策略进行展示，并且允许用户去多选照片进行后续的操作，具体的几项要求是</p>
+<ul>
+<li>优先读取截图文件夹，没有的话读取recent</li>
+<li>展示顺序是时间由新到旧</li>
+<li>用户对相册的改变实时更新到屏幕</li>
+</ul>
+<p>在实际开发中遇到了以下这些问题</p>
+<ul>
+<li>无法获取正确的图片顺序</li>
+<li>监听系统相册带来的问题</li>
+<li>大量图片如何加载</li>
+<li>异步加载图片导致错乱<a id="more"></a>
+<h2 id="关于相册的常用方法和类"><a href="#关于相册的常用方法和类" class="headerlink" title="关于相册的常用方法和类"></a>关于相册的常用方法和类</h2>关于图片的方法都集中在<code>Photos</code>这个系统库中，几个常用的方法和类如下</li>
+</ul>
+<h3 id="PHPhotoLibrary"><a href="#PHPhotoLibrary" class="headerlink" title="PHPhotoLibrary"></a>PHPhotoLibrary</h3><p>PHPhotoLibrary是获取图片的接口，类似Metal的MTLDevice。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取图片的接口</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">PHPhotoLibrary</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">shared</span>() -&gt; <span class="title">PHPhotoLibrary</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">//返回当前的授权状态</span></span><br><span class="line"><span class="class">    @<span class="title">available</span>(<span class="title">iOS</span> 8, *)</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">class</span> <span class="title">func</span> <span class="title">authorizationStatus</span>() -&gt; <span class="title">PHAuthorizationStatus</span></span></span><br><span class="line"><span class="class">		//申请权限</span></span><br><span class="line"><span class="class">    @<span class="title">available</span>(<span class="title">iOS</span> 8, *)</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">class</span> <span class="title">func</span> <span class="title">requestAuthorization</span>(<span class="title">_</span> <span class="title">handler</span>: @<span class="title">escaping</span> (<span class="title">PHAuthorizationStatus</span>) -&gt; <span class="title">Void</span>)</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">//存储<span class="title">app</span>内对照片的修改</span></span><br><span class="line"><span class="class">    // <span class="title">handlers</span> <span class="title">are</span> <span class="title">invoked</span> <span class="title">on</span> <span class="title">an</span> <span class="title">arbitrary</span> <span class="title">serial</span> <span class="title">queue</span></span></span><br><span class="line"><span class="class">    // <span class="title">Nesting</span> <span class="title">change</span> <span class="title">requests</span> <span class="title">will</span> <span class="title">throw</span> <span class="title">an</span> <span class="title">exception</span></span></span><br><span class="line"><span class="class">    @<span class="title">available</span>(<span class="title">iOS</span> 8, *)</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">func</span> <span class="title">performChanges</span>(<span class="title">_</span> <span class="title">changeBlock</span>: @<span class="title">escaping</span> () -&gt; <span class="title">Void</span>, <span class="title">completionHandler</span>: ((<span class="title">Bool</span>, <span class="title">Error</span>?) -&gt; <span class="title">Void</span>)? = <span class="title">nil</span>)</span></span><br><span class="line"><span class="class">    </span></span><br><span class="line"><span class="class">//监听系统相册的改变</span></span><br><span class="line"><span class="class">    @<span class="title">available</span>(<span class="title">iOS</span> 8, *)</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">func</span> <span class="title">register</span>(<span class="title">_</span> <span class="title">observer</span>: <span class="title">PHPhotoLibraryChangeObserver</span>)</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    @<span class="title">available</span>(<span class="title">iOS</span> 8, *)</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">func</span> <span class="title">unregisterChangeObserver</span>(<span class="title">_</span> <span class="title">observer</span>: <span class="title">PHPhotoLibraryChangeObserver</span>)</span></span><br><span class="line"><span class="class">&#125;</span></span><br><span class="line"><span class="class"></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PHAssetCollection"><a href="#PHAssetCollection" class="headerlink" title="PHAssetCollection"></a>PHAssetCollection</h3><p>PHAssetCollection继承自PHCollection。后者是高级的抽象对象。我们并不使用PHCollection，而是使用其两个继承的子类，一个是PHAssetCollection，表示照片asset资源的集合，可以是一个特殊的相册等。另一类是 PHCollectionList，他是collection的集合。</p>
+<p>我们可以通过PHAssetCollection的subtype属性来获取特定的相册类型。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//包含三个枚举：album、smartAlbum、moment</span></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> assetCollectionType: <span class="type">PHAssetCollectionType</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="comment">//包含多个不同类型的文件夹</span></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> assetCollectionSubtype: <span class="type">PHAssetCollectionSubtype</span> &#123; <span class="keyword">get</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>关于album和smartAlbum的区别，网上的回答是：</p>
+<blockquote>
+<p>The difference is how they are populated with photos.<br>An Album is populated by you - you select the pics that go into the Album.<br>A Smart Album is the result of a search: “find me all the photos with keyword ‘x’” or taken between dates x and y<br>在<code>assetCollectionSubtype </code>中包含了多种多样的照片分类类型，直接去代码中看吧，总能找到你想要使用的。</p>
+</blockquote>
+<h3 id="PHAsset"><a href="#PHAsset" class="headerlink" title="PHAsset"></a>PHAsset</h3><p>相册中资源的类，基本的属性如下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//包含unknown、image、video、audio</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> mediaType: <span class="type">PHAssetMediaType</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> mediaSubtypes: <span class="type">PHAssetMediaSubtype</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> pixelWidth: <span class="type">Int</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> pixelHeight: <span class="type">Int</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> creationDate: <span class="type">Date?</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> modificationDate: <span class="type">Date?</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> location: <span class="type">CLLocation?</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> duration: <span class="type">TimeInterval</span> &#123; <span class="keyword">get</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取图片方法"><a href="#获取图片方法" class="headerlink" title="获取图片方法"></a>获取图片方法</h3><p>获取图片的方法可以通过下面两个方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取某个特定collection</span></span><br><span class="line">    <span class="comment">// Fetch asset collections of a single type and subtype provided (use PHAssetCollectionSubtypeAny to match all subtypes)</span></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">8</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">fetchAssetCollections</span>(<span class="title">with</span> <span class="title">type</span>: <span class="title">PHAssetCollectionType</span>, <span class="title">subtype</span>: <span class="title">PHAssetCollectionSubtype</span>, <span class="title">options</span>: <span class="title">PHFetchOptions</span>?) -&gt; <span class="title">PHFetchResult</span>&lt;<span class="title">PHAssetCollection</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">//获取某个特定<span class="title">collection</span>的图片</span></span><br><span class="line"><span class="class">    @<span class="title">available</span>(<span class="title">iOS</span> 8, *)</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">class</span> <span class="title">func</span> <span class="title">fetchAssets</span>(<span class="title">in</span> <span class="title">assetCollection</span>: <span class="title">PHAssetCollection</span>, <span class="title">options</span>: <span class="title">PHFetchOptions</span>?) -&gt; <span class="title">PHFetchResult</span>&lt;<span class="title">PHAsset</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="无法获取正确的图片顺序"><a href="#无法获取正确的图片顺序" class="headerlink" title="无法获取正确的图片顺序"></a>无法获取正确的图片顺序</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在获取到图片的时候，其展示的顺序和系统相册内展示的顺序是不同的，尤其是recent文件夹。</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>如果我们将图片一次性全部取出来，顺序是对的，就是系统相册的顺序。但是在代码上我们做了一个优化：分为两个回调去取图片，第一次取前50张返回，先交给服务进行加载，这样保证页面上会有5-6屏的图片进行展示；第二次再把所有的图片取回来。</p>
+<p>这样就必须保证，第一次取回来的50张是最后的50张图片，也就是在取图片的时候进行一个排序。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetchOptions.sortDescriptors = [<span class="type">NSSortDescriptor</span>(key: <span class="string">&quot;modificationDate&quot;</span>, ascending: <span class="literal">false</span>)]</span><br></pre></td></tr></table></figure>
+<p>可以看到我们使用修改时间来进行取图，顺序是从后到前（ascending: false）。但是这样会产生问题：当用户对一张图片进行修改，比如裁剪、调色、删除后恢复等，就会更新修改时间。在程序的顺序就会提前，但是在系统相册中顺序还是不变。</p>
+<p>接下来考虑将排序的key设置为<code>creationDate</code>。一切都很好，但会有一个特殊情况：<strong>当别的设备上发送一张很久之前的图片到本设备，在recent相册中，这张图片会展示在最新的位置；在这张图片隶属的相簿中，会根据他原本的creationDate进行排序；在程序中也会根据原本的creationDate进行排序。</strong></p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>猜测原因是，recent文件夹内的排序可能有着不同的策略。不是仅根据creationDate来进行排序的。</p>
+<p>但无论如何，我们无法通过聪明的办法去获得一部分后面顺序的图片。最后的做法就是一次性获取全部的图片，在reload的时进行逆序。</p>
+<p>这样也并不是非常聪明的办法，当用户手机性能比较差而图片资源数量比较多的时候，可能就会卡。我们并没有复现出这样的情况，但理论上存在可能，可以考虑再优化。</p>
+<h2 id="监听系统相册带来的问题"><a href="#监听系统相册带来的问题" class="headerlink" title="监听系统相册带来的问题"></a>监听系统相册带来的问题</h2><h3 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h3><p>在没有一行代码申请权限的情况下，程序自己申请了相册权限。但需求要求用户点击button后再去申请。</p>
+<h3 id="原因-1"><a href="#原因-1" class="headerlink" title="原因"></a>原因</h3><p>需求要求当相册更新时，即使程序在前台，也要实时更新内容。这一点可以通过监听library的change完成，获得通知后再去reload一次。但它会默认的去检查权限，如果没有就会申请。</p>
+<h3 id="解决-1"><a href="#解决-1" class="headerlink" title="解决"></a>解决</h3><p>将注册监听的步骤放在手动获取权限后。</p>
+<h2 id="大量图片加载优化"><a href="#大量图片加载优化" class="headerlink" title="大量图片加载优化"></a>大量图片加载优化</h2><h3 id="问题-2"><a href="#问题-2" class="headerlink" title="问题"></a>问题</h3><p>如题，怎么加载性能最优</p>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>因为【无法获取正确的图片顺序】这个问题，我们必须一次获取全部的图片。这个过程可能涉及到大量的图片，最终呈现上就会卡。</p>
+<p>卡的原因有两方面：首先是进行了大量IO操作，但实际上iOS的IO操作并不慢；第二点是因为，在生成对应的model时，需要对图片资源进行解析，解析成对应的UIImage，这个过程是异步的，并且会比较耗时，事实上，也正是因为这一点造成了阻塞，他还会引起另一个问题，我们会放到后面去讲。</p>
+<p>但在这里，采取的一个措施是，既然IO造成的压力并不是很大（事实上在这个地方也没有其他更聪明的办法）。我们依旧是一次拿到全部的照片，但依旧分两个回调返回，第一个回调返回前50个（此时已经经过排序），第二个回调返回后面的图片。</p>
+<p>另外值得一提的是，在有些非常大的数据的情况下，加载图片也是慢的。本需求最终也是设计提出做一个l类似于loading的兜底状态。有些时候，技术上的优化成本较高时，要学会用设计或者产品的方法去解决问题。</p>
+<h2 id="异步加载图片导致错乱"><a href="#异步加载图片导致错乱" class="headerlink" title="异步加载图片导致错乱"></a>异步加载图片导致错乱</h2><h3 id="问题-3"><a href="#问题-3" class="headerlink" title="问题"></a>问题</h3><p>在reload图片的时候，最明显的是低端机第一次进入图片页面的时候，有些图片会显示错乱，比如第三张图显示在第一张图的位置。在左右滑动，重新的viewWillAppear之后就会正常。</p>
+<h3 id="原因-2"><a href="#原因-2" class="headerlink" title="原因"></a>原因</h3><p>之前提到在生成对应的model时，model会持有其对应的asset。在viewWillAppear时会根据对应的asset进行解析，得到UIImage展示。</p>
+<p>出现这个问题是以下因素造成的：</p>
+<ul>
+<li>解析asset获取UIImage的方法本身是异步的，返回的时间不固定，可能后一个的image先返回，就错误的赋给了前一个cell</li>
+<li>获取图片方法也是异步的，因此考虑后续的操作在回调中做。同时要做没有截图文件夹就读取recent文件夹的兜底。在最初的设计中，就变成了以下的代码<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">PhotoLibrary</span>.fetchScreenshotsAssets(mediaType: .image) &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] (fetchResult, <span class="number">_</span>, <span class="number">_</span>) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> fetchResult.<span class="built_in">count</span> &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>?.reloadAssets(fetchResult)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="type">PhotoLibrary</span>.fetchRecentAlbumAssets(mediaType: .image) &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] (fetchResult, <span class="number">_</span>, <span class="number">_</span>) <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">self</span>?.reloadAssets(fetchResult)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这样带来的问题就是，如果没有截图文件夹，那么recent里面的reload方法实际上会reload四次。</li>
+</ul>
+<p>上面两点最终造成了这个问题，因为要reload多次，每一次的异步图片解析加载都耗时较长，最终体现是，有可能前面的reload是成功的，但是最后一次会失败，就会造成图片的错乱。</p>
+<h3 id="解决-2"><a href="#解决-2" class="headerlink" title="解决"></a>解决</h3><p>解决方案同样是一波三折。一个解决思路是，既然在viewWillAppear中解析会造成错乱，那是否可以把整个解析的过程提前。在生成model的时候直接得到对应的UIImage，直接赋给model。</p>
+<p>想法很美好，但这个过程耗时很长，并且占内存。一旦用户图片量变大，进入这个页面就会卡顿，最后OOM。</p>
+<p>我们这里只能做出判断，如果保持原来的逻辑，当图片willAppear的时候，才调用解析方法。那么实际上在用户滑动的时候才会调用这个耗时的方法，在这个场景中一屏显示3张图片，带来的压力较小。并且在第一次加载之后，系统会做一层缓存，并且如果系统没有做，我们也可以在model中附加一个img属性来存储对应的img，之后也就不需要解析。</p>
+<p>保持此处逻辑不动，就必须在reload次数上面做减少。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">fetchAssets</span><span class="params">(mediaType: BNImagePickerMediaType,</span></span></span><br><span class="line"><span class="function"><span class="params">                        collectionType: BNImagePickerFromCollectionType,</span></span></span><br><span class="line"><span class="function"><span class="params">                        completion: @escaping <span class="params">(<span class="number">_</span> assets: PHFetchResult&lt;PHAsset&gt;, <span class="number">_</span> collectionName: String)</span></span></span> -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="type">PHPhotoLibrary</span>.authorizationStatus() == .authorized <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">DispatchQueue</span>.global().async &#123;</span><br><span class="line">        <span class="keyword">var</span> assets = <span class="type">PHFetchResult</span>&lt;<span class="type">PHAsset</span>&gt;()</span><br><span class="line">        <span class="keyword">var</span> collectionName: <span class="type">String</span> = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">let</span> fetchOptions = <span class="type">PHFetchOptions</span>()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> collectionType &#123;</span><br><span class="line">        <span class="keyword">case</span> .screenshots:</span><br><span class="line">            <span class="keyword">let</span> screenshotsCollection = <span class="type">PHAssetCollection</span>.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumScreenshots, options: <span class="literal">nil</span>)</span><br><span class="line">            <span class="keyword">guard</span> <span class="keyword">let</span> collection = screenshotsCollection.firstObject <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">            collectionName = collection.localizedTitle ?? <span class="string">&quot;&quot;</span></span><br><span class="line">            fetchOptions.predicate = <span class="type">NSPredicate</span>(format: <span class="string">&quot;mediaType == %d OR mediaType == %d&quot;</span>,</span><br><span class="line">                                                 <span class="type">PHAssetMediaType</span>.image.rawValue,</span><br><span class="line">                                                 <span class="type">PHAssetMediaType</span>.video.rawValue)</span><br><span class="line">            assets = <span class="type">PHAsset</span>.fetchAssets(<span class="keyword">in</span>: collection, options: fetchOptions)</span><br><span class="line">        <span class="keyword">case</span> .recent:</span><br><span class="line">            <span class="keyword">let</span> smartAlbums = <span class="type">PHAssetCollection</span>.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: <span class="literal">nil</span>)</span><br><span class="line">            <span class="keyword">guard</span> <span class="keyword">let</span> collection = smartAlbums.firstObject <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">            collectionName = collection.localizedTitle ?? <span class="string">&quot;&quot;</span></span><br><span class="line">            fetchOptions.predicate = <span class="type">NSPredicate</span>(format: <span class="string">&quot;mediaType == %d OR mediaType == %d&quot;</span>,</span><br><span class="line">                                                 <span class="type">PHAssetMediaType</span>.image.rawValue,</span><br><span class="line">                                                 <span class="type">PHAssetMediaType</span>.video.rawValue)</span><br><span class="line">            assets = <span class="type">PHAsset</span>.fetchAssets(<span class="keyword">in</span>: collection, options: fetchOptions)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">            completion(assets, collectionName)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题得到了解决，虽然从逻辑上想，异步加载的问题并没有解决，但是上述的现象也无法复现了。只能归结于，因为reload次数减少，异步加载图片的次数减少，在这有限次的次数中，机器有足够的性能去handle。</p>
+<h2 id="Learning"><a href="#Learning" class="headerlink" title="Learning"></a>Learning</h2><ul>
+<li>涉及到IO操作的API多半会是异步的操作</li>
+<li>涉及到异步操作就要考虑时序问题，错乱、拿不到数据、丢失，往往可能是异步的锅。通过回调去处理这些异步操作之后要干的事情。</li>
+<li>多线程一定要注意线程安全问题。保证其中的每一个类和数据结构都是线程安全的。多线程虽然好用，但是要小心。</li>
+<li>如果一行代码没有用，当然一定要确保没用。就删掉它。谁知道哪块云上有雨。</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/09/07/%E6%89%A9%E5%A4%A7%E7%82%B9%E5%87%BB%E5%8C%BA%E5%9F%9F/">iOS丨扩大点击区域</a>
+            
+            
+            <a class="next" rel="next" href="/2020/07/20/iOS%20%7C%20RunLoop/">iOS | RunLoop</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

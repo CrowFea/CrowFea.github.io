@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>Swift | 关于Array &amp; Dictionary | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Swift | 关于Array &amp; Dictionary</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 8, 2020&nbsp;&nbsp;20:28:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/iOS/">iOS</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="传值还是传引用"><a href="#传值还是传引用" class="headerlink" title="传值还是传引用"></a>传值还是传引用</h2><p>在swift中，类的实例 &amp; 函数本身都是引用类型。除了这两个之外，其他都是值类型。这里的其他主要指的是结构体 &amp; 枚举，数组和字符串都是结构体类型的数据。</p>
+<p>通常，我们说值类型的传递更安全，其安全的本质其实就是通过copy。这样一想的话就很昂贵，但是swift有两点保证了这不会发生</p>
+<ul>
+<li>let &amp; var 一旦let了，这个值不会变，自然也不用再重复一遍</li>
+<li>copy on write 只有在使用时才会<a id="more"></a>
+<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><h3 id="底层"><a href="#底层" class="headerlink" title="底层"></a>底层</h3>Array底层是类似于vector的数据结构。主要体现在内存的扩展上，成2倍的扩展。在数据量减小的时候并不会减少分配的空间。<br>Array可以转换为NSArray，这两者有些许不同。Array本身是结构体类型，NSArray是类类型。一个是引用、一个是值，但是OC内部通过<code>_ObjectiveCBridgeable</code>有一个桥接的功能，Array转换为NSArray。</li>
+</ul>
+<h3 id="map之类的方法"><a href="#map之类的方法" class="headerlink" title="map之类的方法"></a>map之类的方法</h3><p>函数式编程，在C++中不常用的一种方式。在swift中非常常见。这里大致列举下可能使用的方法。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="comment">//map</span></span><br><span class="line"><span class="keyword">let</span> a = array.<span class="built_in">map</span> &#123; (num) <span class="keyword">in</span></span><br><span class="line">    num * num</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//filter</span></span><br><span class="line"><span class="keyword">let</span> b = array.<span class="built_in">filter</span> &#123; (num) <span class="keyword">in</span></span><br><span class="line">    num%<span class="number">2</span> == <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//allSatisf</span></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">c</span> = array.allSatisfy &#123; (num) <span class="keyword">in</span></span><br><span class="line">    num%<span class="number">2</span>==<span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//reduce</span></span><br><span class="line"><span class="keyword">let</span> d = array.<span class="built_in">reduce</span>(<span class="number">0</span>,+)</span><br><span class="line"><span class="keyword">let</span> d1 = array.<span class="built_in">reduce</span>(into: <span class="number">0</span>)&#123;(total,num) <span class="keyword">in</span></span><br><span class="line">    total = total + num</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//forEach</span></span><br><span class="line">array.forEach &#123; (num) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(num)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这类方法背后的思想在于，将一些模版化的东西抽出来，开发者只需要去关注真正实现功能的代码即可。比方说一个map操作，自己写的话至少先要一个循环、然后是局部变量的声明等，map解除了这些东西的束缚，开发者只要去对这些数据做处理即可。</p>
+<p>这也是一个编程思路，swift提供了对原生API的扩展，当要使用复杂的、重复的代码的时候，考虑能不能对原生的数据结构进行扩展，让代码更加优雅。</p>
+<p>但是要注意的是，map filter这些方法是产生一个新的数组，因此在大数组的时候，除非明确的知道要使用所有的元素，再使用这些方法，否则的话看一看是否有别的操作方式。</p>
+<p>还要多讨论的一个方法是<code>forEach</code>，他和for循环没有本质上的区别，有些情况下使用<code>forEach</code>会更加方便。要注意的是，如果循环中要加入return语句，forEach并不会真正的return，而仅仅是退出闭包，因此往往一个循环还是会走完。</p>
+<h3 id="数组切片"><a href="#数组切片" class="headerlink" title="数组切片"></a>数组切片</h3><p>ArraySlice和Array满足的是同一个协议，因此实现的方法基本是相同的。产生数组切片也十分简单</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="keyword">let</span> slice = array[<span class="number">1</span>...]</span><br></pre></td></tr></table></figure>
+<p>slice和原数组指向的内存是同一块，操作的时候尽量还是把slice传给新的Array进行处理。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>尽管Array是支持索引操作的，但是swift仿佛在暗示我们尽量不要这样去做。使用索引的场景往往会意味着循环，我们可以通过别的方式去处理，比如<code>dropFirst(k: Int)</code> <code>dropLast(k: Int)</code>，或者map + filter来进行一定的过滤。除非你真的确认索引不会出错，进行不要使用这种方式。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/swift/"># swift</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/07/09/Swift%20%7C%20%E5%85%B3%E4%BA%8EOptional/">Swift | 关于Optional</a>
+            
+            
+            <a class="next" rel="next" href="/2020/07/01/Xcode%E6%8A%BD%E7%96%AF%E9%9B%86%E9%94%A6/">Xcode抽疯集锦</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

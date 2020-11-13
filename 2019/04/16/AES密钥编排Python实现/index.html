@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>AES密钥编排Python实现 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">AES密钥编排Python实现</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 16, 2019&nbsp;&nbsp;18:38:45</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>对想出AES的前辈大写的佩服，光是写了密钥编排我就写了一下午…这里把AES讲述一下，再把代码过程总结一下</p>
+<a id="more"></a>
+<h3 id="AES密钥扩展原理"><a href="#AES密钥扩展原理" class="headerlink" title="AES密钥扩展原理"></a>AES密钥扩展原理</h3><p>AES加密算法涉及4种操作：字节替代（SubBytes）、行移位（ShiftRows）、列混淆（MixColumns）和轮密钥加（AddRoundKey）。<br>我们这里提及的是构造密钥的方法，密钥扩展，原理如下：<br><img src="https://s2.ax1x.com/2019/04/26/EnZj1A.png"></p>
+<h3 id="代码构造"><a href="#代码构造" class="headerlink" title="代码构造"></a>代码构造</h3><p>首先我们构造RotWord的函数，他的目的在于增加扩散性。这里实际上我们要干的事情就是完成一个置换，做的方式是一个字符串的拼接。注意python内部不能使用word[2:4]之类的方法，只能是word[2:]表示从第2个往后。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RotWord</span>(<span class="params">word</span>):</span></span><br><span class="line">    <span class="keyword">return</span> word[<span class="number">2</span>:]+word[:<span class="number">2</span>]</span><br><span class="line">``</span><br><span class="line">接下来构造SubBytes方法。这个方法实现的就是S盒。我们这里的方法是输入字符串，转换为相应的十六进制的字符。Python里不能使用switch方法，只能用字典进行搜索。</span><br><span class="line">对于字典来说，我们可以用key来搜索value。如果没搜索到就默认为<span class="literal">None</span>。</span><br><span class="line">```python</span><br><span class="line">numbers = &#123;</span><br><span class="line">         <span class="string">&#x27;0&#x27;</span> : <span class="string">&#x27;0000&#x27;</span>,<span class="string">&#x27;1&#x27;</span> : <span class="string">&#x27;0001&#x27;</span>,<span class="string">&#x27;2&#x27;</span> : <span class="string">&#x27;0010&#x27;</span>,<span class="string">&#x27;3&#x27;</span> : <span class="string">&#x27;0011&#x27;</span>,<span class="string">&#x27;4&#x27;</span> : <span class="string">&#x27;0100&#x27;</span>,<span class="string">&#x27;5&#x27;</span> : <span class="string">&#x27;0101&#x27;</span>,<span class="string">&#x27;6&#x27;</span> : <span class="string">&#x27;0110&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;7&#x27;</span> : <span class="string">&#x27;0111&#x27;</span>,<span class="string">&#x27;8&#x27;</span> : <span class="string">&#x27;1000&#x27;</span>,<span class="string">&#x27;9&#x27;</span> : <span class="string">&#x27;1001&#x27;</span>,<span class="string">&#x27;A&#x27;</span> : <span class="string">&#x27;1010&#x27;</span>,<span class="string">&#x27;B&#x27;</span> : <span class="string">&#x27;1011&#x27;</span>,<span class="string">&#x27;C&#x27;</span> : <span class="string">&#x27;1100&#x27;</span>,<span class="string">&#x27;D&#x27;</span> : <span class="string">&#x27;1101&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;E&#x27;</span> : <span class="string">&#x27;1110&#x27;</span>,<span class="string">&#x27;F&#x27;</span> : <span class="string">&#x27;1111&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hex2Bin</span>(<span class="params">key</span>):</span></span><br><span class="line">    <span class="keyword">return</span> numbers.get(key[<span class="number">0</span>], <span class="literal">None</span>)+numbers.get(key[<span class="number">1</span>], <span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>当然我们这里还需要的方法，要从value来搜索key，要自定义一个get_key方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_key</span> (<span class="params">dict, value</span>):</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> dict.items():</span><br><span class="line">        <span class="keyword">if</span> v == value:</span><br><span class="line">            <span class="keyword">return</span> k</span><br></pre></td></tr></table></figure>
+<p>接下来实现SubBytes方法，注意原方法中，要先求key在域中的乘法逆，在进行计算。但是计算机内的0指的是第一个元素，所以不必求逆。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubBytes</span>(<span class="params">key</span>):</span></span><br><span class="line">    <span class="comment">#print(key)</span></span><br><span class="line">    key=hex2Bin(key)</span><br><span class="line">    c=<span class="string">&#x27;11000110&#x27;</span></span><br><span class="line">    b=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        temp=(int(key[i])+int(key[(i+<span class="number">4</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">5</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">6</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">7</span>)%<span class="number">8</span>])+int(c[i]))%<span class="number">2</span></span><br><span class="line">       <span class="comment"># print(temp)</span></span><br><span class="line">        temp=str(temp)</span><br><span class="line">        b+=temp</span><br><span class="line">    b=b[::<span class="number">-1</span>]</span><br><span class="line">    <span class="comment">#print(b)</span></span><br><span class="line">    <span class="keyword">return</span> get_key(numbers,b[:<span class="number">4</span>])+get_key(numbers,b[<span class="number">4</span>:])</span><br></pre></td></tr></table></figure>
+<p>再者进行构造SubWord方法，这个方法的目的在于混淆。使用S盒对原序列进行S置换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubWord</span>(<span class="params">word</span>):</span></span><br><span class="line">    temp=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i&lt;len(word):</span><br><span class="line">        temp+=SubBytes(word[i]+word[i+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> temp</span><br></pre></td></tr></table></figure>
+<p>最后我们来实现KeyExpansion方法。这里注意在循环中，temp是一个字符串，binnum是一个二进制数。注意不能将二者混用，因为不是每一次temp的值是更新的，在实践中就会出现问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">KeyExpansion</span>(<span class="params">m</span>):</span></span><br><span class="line">    RCon=[<span class="string">&#x27;01000000&#x27;</span>,<span class="string">&#x27;02000000&#x27;</span>,<span class="string">&#x27;04000000&#x27;</span>,<span class="string">&#x27;08000000&#x27;</span>,<span class="string">&#x27;10000000&#x27;</span>,<span class="string">&#x27;20000000&#x27;</span>,<span class="string">&#x27;40000000&#x27;</span>,<span class="string">&#x27;80000000&#x27;</span>,<span class="string">&#x27;1B000000&#x27;</span>,<span class="string">&#x27;36000000&#x27;</span>]</span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    key=[]</span><br><span class="line">    <span class="keyword">while</span> i&lt;<span class="number">16</span>:</span><br><span class="line">        key.append(m[i*<span class="number">2</span>]+m[i*<span class="number">2</span>+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line">    w=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">4</span>):</span><br><span class="line">        w.append(key[<span class="number">4</span>*i]+key[<span class="number">4</span>*i+<span class="number">1</span>]+key[<span class="number">4</span>*i+<span class="number">2</span>]+key[<span class="number">4</span>*i+<span class="number">3</span>])</span><br><span class="line">        <span class="comment">#print(w[i])</span></span><br><span class="line">    <span class="comment">#temp=SubWord(RotWord(w[0]))</span></span><br><span class="line">    <span class="comment">#temp=hex2Bin(temp)</span></span><br><span class="line">    <span class="comment">#temp=w[0]</span></span><br><span class="line">    <span class="comment">#temp=int(hex2Bin8(SubWord(RotWord(temp))),2)|int(hex2Bin8(RCon[i//4-1]),2)</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>,<span class="number">44</span>):</span><br><span class="line">        temp=w[i<span class="number">-1</span>]</span><br><span class="line">        </span><br><span class="line">        binnum=int(hex2Bin8(temp),<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">4</span>==<span class="number">0</span>):</span><br><span class="line">            binnum=int(hex2Bin8(SubWord(RotWord(temp))),<span class="number">2</span>)^int(hex2Bin8(RCon[i//<span class="number">4</span><span class="number">-1</span>]),<span class="number">2</span>)</span><br><span class="line">        wapp=hex((int(hex2Bin8(w[i<span class="number">-4</span>]),<span class="number">2</span>)^binnum))</span><br><span class="line">        wapp=wapp[<span class="number">2</span>:].upper()</span><br><span class="line">        zernum=<span class="number">8</span>-len(wapp)</span><br><span class="line">        <span class="keyword">while</span> zernum:</span><br><span class="line">            wapp=<span class="string">&#x27;0&#x27;</span>+wapp</span><br><span class="line">            zernum-=<span class="number">1</span></span><br><span class="line">        w.append(wapp)</span><br><span class="line">    <span class="keyword">return</span> w</span><br></pre></td></tr></table></figure>
+<p>最后我们将全部的代码放在下面：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RotWord</span>(<span class="params">word</span>):</span></span><br><span class="line">    <span class="keyword">return</span> word[<span class="number">2</span>:]+word[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">numbers = &#123;</span><br><span class="line">         <span class="string">&#x27;0&#x27;</span> : <span class="string">&#x27;0000&#x27;</span>,<span class="string">&#x27;1&#x27;</span> : <span class="string">&#x27;0001&#x27;</span>,<span class="string">&#x27;2&#x27;</span> : <span class="string">&#x27;0010&#x27;</span>,<span class="string">&#x27;3&#x27;</span> : <span class="string">&#x27;0011&#x27;</span>,<span class="string">&#x27;4&#x27;</span> : <span class="string">&#x27;0100&#x27;</span>,<span class="string">&#x27;5&#x27;</span> : <span class="string">&#x27;0101&#x27;</span>,<span class="string">&#x27;6&#x27;</span> : <span class="string">&#x27;0110&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;7&#x27;</span> : <span class="string">&#x27;0111&#x27;</span>,<span class="string">&#x27;8&#x27;</span> : <span class="string">&#x27;1000&#x27;</span>,<span class="string">&#x27;9&#x27;</span> : <span class="string">&#x27;1001&#x27;</span>,<span class="string">&#x27;A&#x27;</span> : <span class="string">&#x27;1010&#x27;</span>,<span class="string">&#x27;B&#x27;</span> : <span class="string">&#x27;1011&#x27;</span>,<span class="string">&#x27;C&#x27;</span> : <span class="string">&#x27;1100&#x27;</span>,<span class="string">&#x27;D&#x27;</span> : <span class="string">&#x27;1101&#x27;</span>,</span><br><span class="line">         <span class="string">&#x27;E&#x27;</span> : <span class="string">&#x27;1110&#x27;</span>,<span class="string">&#x27;F&#x27;</span> : <span class="string">&#x27;1111&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_key</span> (<span class="params">dict, value</span>):</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> dict.items():</span><br><span class="line">        <span class="keyword">if</span> v == value:</span><br><span class="line">            <span class="keyword">return</span> k</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hex2Bin</span>(<span class="params">key</span>):</span></span><br><span class="line">    <span class="keyword">return</span> numbers.get(key[<span class="number">0</span>], <span class="literal">None</span>)+numbers.get(key[<span class="number">1</span>], <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hex2Bin8</span>(<span class="params">key</span>):</span></span><br><span class="line">    str=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    zernum=<span class="number">8</span>-len(key)</span><br><span class="line">    <span class="keyword">while</span> zernum:</span><br><span class="line">        key=<span class="string">&#x27;0&#x27;</span>+key</span><br><span class="line">        zernum-=<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        str+=numbers.get(key[i], <span class="literal">None</span>)</span><br><span class="line">    <span class="comment">#print(str)</span></span><br><span class="line">    <span class="keyword">return</span> str</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubBytes</span>(<span class="params">key</span>):</span></span><br><span class="line">    <span class="comment">#print(key)</span></span><br><span class="line">    key=hex2Bin(key)</span><br><span class="line">    c=<span class="string">&#x27;11000110&#x27;</span></span><br><span class="line">    b=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        temp=(int(key[i])+int(key[(i+<span class="number">4</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">5</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">6</span>)%<span class="number">8</span>])+int(key[(i+<span class="number">7</span>)%<span class="number">8</span>])+int(c[i]))%<span class="number">2</span></span><br><span class="line">       <span class="comment"># print(temp)</span></span><br><span class="line">        temp=str(temp)</span><br><span class="line">        b+=temp</span><br><span class="line">    b=b[::<span class="number">-1</span>]</span><br><span class="line">    <span class="comment">#print(b)</span></span><br><span class="line">    <span class="keyword">return</span> get_key(numbers,b[:<span class="number">4</span>])+get_key(numbers,b[<span class="number">4</span>:])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SubWord</span>(<span class="params">word</span>):</span></span><br><span class="line">    temp=<span class="string">&#x27;&#x27;</span></span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> i&lt;len(word):</span><br><span class="line">        temp+=SubBytes(word[i]+word[i+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> temp</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">KeyExpansion</span>(<span class="params">m</span>):</span></span><br><span class="line">    RCon=[<span class="string">&#x27;01000000&#x27;</span>,<span class="string">&#x27;02000000&#x27;</span>,<span class="string">&#x27;04000000&#x27;</span>,<span class="string">&#x27;08000000&#x27;</span>,<span class="string">&#x27;10000000&#x27;</span>,<span class="string">&#x27;20000000&#x27;</span>,<span class="string">&#x27;40000000&#x27;</span>,<span class="string">&#x27;80000000&#x27;</span>,<span class="string">&#x27;1B000000&#x27;</span>,<span class="string">&#x27;36000000&#x27;</span>]</span><br><span class="line">    i=<span class="number">0</span></span><br><span class="line">    key=[]</span><br><span class="line">    <span class="keyword">while</span> i&lt;<span class="number">16</span>:</span><br><span class="line">        key.append(m[i*<span class="number">2</span>]+m[i*<span class="number">2</span>+<span class="number">1</span>])</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line">    w=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">4</span>):</span><br><span class="line">        w.append(key[<span class="number">4</span>*i]+key[<span class="number">4</span>*i+<span class="number">1</span>]+key[<span class="number">4</span>*i+<span class="number">2</span>]+key[<span class="number">4</span>*i+<span class="number">3</span>])</span><br><span class="line">        <span class="comment">#print(w[i])</span></span><br><span class="line">    <span class="comment">#temp=SubWord(RotWord(w[0]))</span></span><br><span class="line">    <span class="comment">#temp=hex2Bin(temp)</span></span><br><span class="line">    <span class="comment">#temp=w[0]</span></span><br><span class="line">    <span class="comment">#temp=int(hex2Bin8(SubWord(RotWord(temp))),2)|int(hex2Bin8(RCon[i//4-1]),2)</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>,<span class="number">44</span>):</span><br><span class="line">        temp=w[i<span class="number">-1</span>]</span><br><span class="line">        </span><br><span class="line">        binnum=int(hex2Bin8(temp),<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">4</span>==<span class="number">0</span>):</span><br><span class="line">            binnum=int(hex2Bin8(SubWord(RotWord(temp))),<span class="number">2</span>)^int(hex2Bin8(RCon[i//<span class="number">4</span><span class="number">-1</span>]),<span class="number">2</span>)</span><br><span class="line">        wapp=hex((int(hex2Bin8(w[i<span class="number">-4</span>]),<span class="number">2</span>)^binnum))</span><br><span class="line">        wapp=wapp[<span class="number">2</span>:].upper()</span><br><span class="line">        zernum=<span class="number">8</span>-len(wapp)</span><br><span class="line">        <span class="keyword">while</span> zernum:</span><br><span class="line">            wapp=<span class="string">&#x27;0&#x27;</span>+wapp</span><br><span class="line">            zernum-=<span class="number">1</span></span><br><span class="line">        w.append(wapp)</span><br><span class="line">    <span class="keyword">return</span> w</span><br><span class="line">m=<span class="string">&#x27;2B7E151628AED2A6ABF7158809CF4F3C&#x27;</span></span><br><span class="line">key=KeyExpansion(m)</span><br><span class="line">key</span><br></pre></td></tr></table></figure>
+<p>最后的结果如下：</p>
+<p><img src="https://s2.ax1x.com/2019/04/26/EnZ7TO.png"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"># 密码学</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/18/C++%EF%BC%8CJava%E4%B8%AD%E7%9A%84Hashmap%E4%B8%8Epython%E4%B8%AD%E7%9A%84dict%E6%AF%94%E8%BE%83/">C++，Java中的Hashmap与python中的dict比较</a>
+            
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

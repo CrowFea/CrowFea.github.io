@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>C++知识点总结 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">C++知识点总结</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">一月 29, 2020&nbsp;&nbsp;22:26:45</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/C/">C++</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><h4 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h4><p>将客观事物封装成抽象的类，类可以将自己的数据和方法只让可信的类或者对象操作，对不可信的信息进行隐藏。默认为private。</p>
+<ul>
+<li><code>public</code> ：可以被任意实体访问</li>
+<li><code>protected</code> ：可以被子类及本类的成员函数访问</li>
+<li><code>private</code> ：可以被本类的成员函数和友元类、友元函数访问</li>
+</ul>
+<p>这几个关键字可以出现无数次。</p>
+<a id="more"></a>
+<p><em>protected是传家宝，只可以在家族中访问；private是日记本，可以分享给自己和朋友，但不会告诉家人</em></p>
+<h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><p>基类/父类 —— 派生类/子类</p>
+<h4 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h4><p>多态，即多种状态（形态）。简单来说，我们可以将多态定义为消息以多种形式显示的能力。多态是以封装和继承为基础的。</p>
+<p>C++的多态有四种形式。编译期的多态为静态多态、运行期的多态为动态多态。</p>
+<ul>
+<li>重载（编译器）：函数重载、运算符重载</li>
+<li>参数多态（编译期）：类模板、函数模板</li>
+<li>子类型多态（运行期）：虚函数</li>
+<li>强制多态（编译期/运行期）：基本类型转换、自定义类型转换</li>
+</ul>
+<p>多态相关有几个问题：</p>
+<ul>
+<li><p>重载的规则</p>
+<ul>
+<li>函数名称必须相同</li>
+<li>参数列表必须不同（个数、类型、排列顺序）</li>
+<li>函数的返回类型可以相同也可以不同</li>
+<li>仅仅返回类型不同不构成重载</li>
+</ul>
+</li>
+<li><p>C语言为什么不支持多态</p>
+<p>  编译器在编译.c文件的时候，只会给函数进行简单的命名（在函数名前面加_)，因此无法区分重载函数。</p>
+<p>  C++在处理重载的时候，其编译器在符号表中的名称不同。如 <code>?Add@@YAHHH@Z</code> ：<code>?</code>表示名称开始，后面接函数名，<code>@@YA</code>表示参数表开始，后面三个表示返回值类型、参数类型，<code>@Z</code>表示名称结束。</p>
+</li>
+<li><p>虚函数的机制<br>  <img src="https://s2.ax1x.com/2020/01/29/1MzAdU.png" alt="img"></p>
+</li>
+<li><p>虚函数的规则</p>
+<ul>
+<li>非类成员函数不能是虚函数</li>
+<li>静态函数不能是虚函数</li>
+<li>构造函数不能是虚函数</li>
+<li>内联函数不能是表现多态性时的虚函数</li>
+</ul>
+</li>
+<li><p>虚函数和纯虚函数<br>  纯虚函数是一种特殊的虚函数，在基类中不能对虚函数给出有意义的实现，而把它声明为纯虚函数，它的实现留给该基类的派生类去做。</p>
+  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">A</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>类里如果声明了虚函数，这个函数是实现的，哪怕是空实现，它的作用就是为了能让这个函数在它的子类里面可以被覆盖（override），这样的话，编译器就可以使用后期绑定来达到多态了。纯虚函数只是一个接口，是个函数的声明而已，它要留到子类里去实现。 </li>
+<li>虚函数在子类里面可以不重写；但纯虚函数必须在子类实现才可以实例化子类。</li>
+<li>虚函数的类用于 “实作继承”，继承接口的同时也继承了父类的实现。纯虚函数关注的是接口的统一性，实现由子类完成。 </li>
+<li>带纯虚函数的类叫抽象类，这种类不能直接生成对象，而只有被继承，并重写其虚函数后，才能使用。抽象类被继承后，子类可以继续是抽象类，也可以是普通类。</li>
+<li>虚基类是虚继承中的基类。</li>
+</ul>
+</li>
+</ul>
+<h4 id="几种特殊的类"><a href="#几种特殊的类" class="headerlink" title="几种特殊的类"></a>几种特殊的类</h4><ul>
+<li>抽象类：含有纯虚函数的类</li>
+<li>接口类：仅含有纯虚函数的抽象类</li>
+<li>聚合类：用户可以直接访问其成员，并且具有特殊的初始化语法形式。满足如下特点：<ul>
+<li>所有成员都是 public</li>
+<li>没有定义任何构造函数</li>
+<li>没有类内初始化</li>
+<li>没有基类，也没有 virtual 函数</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存分配及管理"><a href="#内存分配及管理" class="headerlink" title="内存分配及管理"></a>内存分配及管理</h3><ul>
+<li>malloc：分配指定字节数的内存，初始值不确定</li>
+<li>calloc：为指定长度的对象分配能容纳其个数的内存。每一位初始化为0</li>
+<li>realloc：更改以前分配的内存长度，初始值不确定</li>
+<li>alloca：在栈中发申请内存，出栈时自动释放内存，不具有移植性。</li>
+</ul>
+<h4 id="new和delete"><a href="#new和delete" class="headerlink" title="new和delete"></a>new和delete</h4><p>相比而言，new和delete实际上都干了两件事：首先调用malloc/free分别申请/释放了内存；接下来调用构造/析构函数。</p>
+<p>定位<code>new（placement new）</code>允许我们向new传递额外的地址参数，从而在预先指定的内存区域创建对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> (place_address) type</span><br><span class="line"><span class="keyword">new</span> (place_address) type (initializers)</span><br><span class="line"><span class="keyword">new</span> (place_address) type [<span class="built_in">size</span>]</span><br><span class="line"><span class="keyword">new</span> (place_address) type [<span class="built_in">size</span>] &#123; braced initializer <span class="built_in">list</span> &#125;</span><br></pre></td></tr></table></figure>
+<p><code>place_address</code> 是个指针；<code>initializers</code> 提供一个（可能为空的）以逗号分隔的初始值列表。</p>
+<h4 id="delete-this"><a href="#delete-this" class="headerlink" title="delete this"></a>delete this</h4><p>合法，但：</p>
+<ul>
+<li>必须保证 this 对象是通过 new（不是 new[]、不是 placement new、不是栈上、不是全局、不是其他对象成员）分配的</li>
+<li>必须保证调用 delete this 的成员函数是最后一个调用 this 的成员函数</li>
+<li>必须保证成员函数的 delete this 后面没有调用 this 了</li>
+<li>必须保证 delete this 后没有人使用了</li>
+</ul>
+<h4 id="如何定义一个只能在堆上（栈上）生成对象的类"><a href="#如何定义一个只能在堆上（栈上）生成对象的类" class="headerlink" title="如何定义一个只能在堆上（栈上）生成对象的类?"></a>如何定义一个只能在堆上（栈上）生成对象的类?</h4><ul>
+<li><p>只能在堆上：将析构函数设置为私有</p>
+<p>  原因：C++ 是静态绑定语言，编译器管理栈上对象的生命周期，编译器在为类对象分配栈空间时，会先检查类的析构函数的访问性。若析构函数不可访问，则不能在栈上创建对象。</p>
+</li>
+<li><p>只能在栈上：将 new 和 delete 重载为私有</p>
+<p>  原因：在堆上生成对象，使用 new 关键词操作，其过程分为两阶段：第一阶段，使用 new 在堆上寻找可用内存，分配给对象；第二阶段，调用构造函数生成对象。将 new 操作设置为私有，那么第一阶段就无法完成，就不能够在堆上生成对象。</p>
+</li>
+</ul>
+<h4 id="分配位置"><a href="#分配位置" class="headerlink" title="分配位置"></a>分配位置</h4><p>malloc和new分配都在堆上；函数内的局部变量、形参都是在栈中，自动释放的。</p>
+<h3 id="sizeof"><a href="#sizeof" class="headerlink" title="sizeof()"></a>sizeof()</h3><p>返回对象的字节数</p>
+<ul>
+<li>char：1</li>
+<li>bool：1</li>
+<li>short：2</li>
+<li>int：4</li>
+<li>long：4</li>
+<li>float：4</li>
+<li>double：8</li>
+<li>指针：32位为4，64位为8</li>
+<li>结构体：空结构体为1，其余注意对齐</li>
+<li>类：空类为1，多个虚函数按一个指针对待，继承类要加上父类的大小</li>
+<li>union：每个成员的最大值</li>
+<li>字符串：加上’/0’</li>
+<li>数组：基本数据类型×数量；为形参时，按指针处理</li>
+<li>函数：<ul>
+<li>结果为函数返回值类型的大小，函数不会被调用</li>
+<li>不可以对返回值类型为空的函数求值</li>
+<li>不可以对函数名求值（写括号）</li>
+<li>对有参数的函数，需要写上实参表</li>
+</ul>
+</li>
+<li>pragma pack(n):按n对齐处理</li>
+</ul>
+<h3 id="算符优先级"><a href="#算符优先级" class="headerlink" title="算符优先级"></a>算符优先级</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1.     ()    []     .     -&gt;</span><br><span class="line">2.     !     ~     ++     --     +     -     *     &amp;    (type)    sizeof</span><br><span class="line">3.     *     &#x2F;     %</span><br><span class="line">4.     +     -</span><br><span class="line">5.     &gt;&gt;    &lt;&lt;</span><br><span class="line">6.     &gt;     &gt;&#x3D;     &lt;     &lt;&#x3D; </span><br><span class="line">7.     &#x3D;&#x3D;    !&#x3D;</span><br><span class="line">8.     &amp;</span><br><span class="line">9.     ^</span><br><span class="line">10.    |</span><br><span class="line">11.    &amp;&amp;</span><br><span class="line">12.    ||</span><br><span class="line">13.    ? :</span><br><span class="line">14.    &#x3D;     *&#x3D;     &#x2F;&#x3D;     %&#x3D;     +&#x3D;     -&#x3D;     &gt;&gt;&#x3D;     &lt;&lt;&#x3D;     &amp;&#x3D;     ^&#x3D;     |&#x3D; </span><br><span class="line">15.    ，</span><br></pre></td></tr></table></figure>
+
+<h3 id="大端小端"><a href="#大端小端" class="headerlink" title="大端小端"></a>大端小端</h3><p>大端存储：低地址位存储高位；小端存储：高地址位存储高位</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/C/"># C++</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/02/01/%E7%BC%96%E8%AF%91%E4%B8%8E%E5%BA%95%E5%B1%82/">编译与底层</a>
+            
+            
+            <a class="next" rel="next" href="/2019/12/05/%E5%8D%A1%E9%80%9A%E9%A3%8E%E6%A0%BC%E6%B8%B2%E6%9F%93Toon%20Shader/">卡通风格渲染</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

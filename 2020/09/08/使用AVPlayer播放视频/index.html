@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>iOS丨使用AVPlayer播放视频 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS丨使用AVPlayer播放视频</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 8, 2020&nbsp;&nbsp;16:21:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/iOS/">iOS</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>播放视频，一个听起来十分合理的需求。iOS提供了AVFoundation，其中的AVPlayer提供了播放视频的能力。在使用的时候我们碰到了一些问题，记录如下。</p>
+<a id="more"></a>
+<h2 id="属性和方法"><a href="#属性和方法" class="headerlink" title="属性和方法"></a>属性和方法</h2><h3 id="AVPlayer"><a href="#AVPlayer" class="headerlink" title="AVPlayer"></a>AVPlayer</h3><p>AVPlayer是AVassets生命周期的控制器。它可以通过两个方式来创建：通过url、或是通过AVPlayerItem。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">init</span>(url <span class="type">URL</span>: <span class="type">URL</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">init</span>(playerItem item: <span class="type">AVPlayerItem?</span>)</span><br></pre></td></tr></table></figure>
+<p>前者可以立刻获得一个对应资源的AVplayer的实例，一般用于生成一个新的PlayItem。后者可以通过一个已经存在的PlayItem来进行创建。</p>
+<h3 id="AVPlayItem"><a href="#AVPlayItem" class="headerlink" title="AVPlayItem"></a>AVPlayItem</h3><p>对一个AV资源的管理类。内部包含了一些方便的方法和属性。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> asset: <span class="type">AVAsset</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.3</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> duration: <span class="type">CMTime</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> presentationSize: <span class="type">CGSize</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">currentTime</span><span class="params">()</span></span> -&gt; <span class="type">CMTime</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> forwardPlaybackEndTime: <span class="type">CMTime</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> reversePlaybackEndTime: <span class="type">CMTime</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> seekableTimeRanges: [<span class="type">NSValue</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">seek</span><span class="params">(to time: CMTime, completionHandler: <span class="params">(<span class="params">(Bool)</span></span></span></span> -&gt; <span class="type">Void</span>)? = <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+<p><code>seek</code>方法可以注意下，我们可以使用这个方法来修改视频的进度，其原理和文件的seek是一致的。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>首先生成一个AVPlayItem的实例，我们可以直接在包体内直接索引。找到对应文件的url。在生成一个AVPlayItem。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> url = <span class="type">Bundle</span>.main.url(forResource: <span class="string">&quot;key&quot;</span>, withExtension: <span class="string">&quot;mp4&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在播放视频之前，一个比较好的做法是先生成一张静态的图片作为兜底。这张图片可以是视频的第一帧，这样一旦视频的view出现了什么问题，屏幕上还是展示视频相关的内容。</p>
+<p>这个时候可以使用<code>AVAssetImageGenerator</code>，本质上是一个<code>NSObject</code>，英语提供生成缩略图或者预览图。通过调用</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateCGImagesAsynchronously</span><span class="params">(forTimes requestedTimes:  [NSValue], </span></span></span><br><span class="line"><span class="function"><span class="params">                  completionHandler handler: @escaping  [AVAssetImageGeneratorCompletionHandler</span></span></span><br></pre></td></tr></table></figure>
+<p>给定一段时间，通过这段时间来生成对应的image。一般来说使用前面的第一帧就足够了。</p>
+<p>同时可以这个类和方法可以提前返回一个小视频。比如说我们想要播放一个帧数比较高的视频，同时这个视频可能比较大，在加载的时候就会较长的黑屏状态。这显然是不太好的，我们可以通过上面的方法，将视频分段的抽帧，组合成一个帧数较少的小视频。当然这个视频的表现可能没有原先的视频表现好，但是可以先保证有视频展示在屏幕上。</p>
+<p>接下来整个视频需要在一个UIView里面进行播放，注意生成这个View，添加进去<code>imageView</code>即可。这里需要设置一下<code>imageView</code>的<code>contentMode</code>，不然可能导致图片和视频显示的区域大小不同。</p>
+<p>展示视频的是一个View，但是真正播放视频的是一个CALayer。因为它并不处理交互，而仅仅是展示。我们通过AVPlayer创建一个AVPlayerLayer，设置它的frame，注意这里也要设置它的videoGravity。这个属性的意义是调整视频的contentMode。最后将这个layer添加到playview上面去。</p>
+<p>这里一定要注意的一点是：<strong>AVPlayer的View会盖住别的同层级的view</strong>，并且是整屏的覆盖。不管是设置了多大的frame，都会进行覆盖。因此要将这个playview添加到所有想要可见的view之后，在添加的这个层级上，将这个playview放置在后面。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>?.view?.addSubview(playerView)</span><br><span class="line"><span class="keyword">self</span>?.view?.sendSubviewToBack(playerView)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/10/31/%E9%A2%91%E6%8E%A7%E9%97%AE%E9%A2%98/">iOS丨频控问题</a>
+            
+            
+            <a class="next" rel="next" href="/2020/09/07/%E6%89%A9%E5%A4%A7%E7%82%B9%E5%87%BB%E5%8C%BA%E5%9F%9F/">iOS丨扩大点击区域</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>如何理解特征工程 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">如何理解特征工程</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 24, 2019&nbsp;&nbsp;17:29:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>书接上回，从<a target="_blank" rel="noopener" href="https://crowfeablog.com/article/Kaggle-%E6%B3%B0%E5%9D%A6%E5%B0%BC%E5%85%8B%E5%8F%B7%E4%B9%8B%E7%81%BE/">Kaggle-泰坦尼克号之灾</a>中我们提到了特征工程。</p>
+<blockquote>
+<p>数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。</p>
+</blockquote>
+<p>上面是江湖上流传的一句话，哪位大神说的亦不可考。但可见特征工程在机器学习中占有相当重要的地位。在实际应用当中，可以说特征工程是机器学习成功的关键。我们也参加过建模等比赛，每个竞赛的好成绩其实并没有用到很高深的算法，大多数都是在特征工程这个环节做出了出色的工作，然后使用一些常见的算法，比如LR，就能得到出色的性能。</p>
+<a id="more"></a>
+<p>理解特征工程应当从以下几个角度出发：</p>
+<ul>
+<li>特征工程是什么？</li>
+<li>为什么要做特征工程？</li>
+<li>应该如何做特征工程？</li>
+</ul>
+<p>接下类我们详细论述一下。</p>
+<h3 id="什么是特征工程"><a href="#什么是特征工程" class="headerlink" title="什么是特征工程"></a>什么是特征工程</h3><p>当我们对数据建立模型分析的时候，首先要干的事情是对数据进行处理和分析。没有数据就没有办法进行模型的建立，那么拿到什么数据就显得至关重要。很显然，怎么对原始数据进行处理，就是非常重要的一步。</p>
+<p>特征工程干的，就是这一步的工作。简而言之，特征工程就是一个把原始数据转变成特征的过程，这些特征可以很好的描述这些数据，并且利用它们建立的模型在未知数据上的表现性能可以达到最优（或者接近最佳性能）。从数学的角度来看，特征工程就是人工地去设计输入变量X。</p>
+<p>简而言之，特征工程的目的，在于<strong>获得更容易表现数据性质的训练集</strong>。</p>
+<h3 id="为什么要做特征工程"><a href="#为什么要做特征工程" class="headerlink" title="为什么要做特征工程"></a>为什么要做特征工程</h3><p>OK！知道了特征工程是什么，那么我们必须要来了解下特征工程的重要性，为什么在实际工作中都要有特征工程这个过程，下面不同的角度来分析一下。</p>
+<p>首先，我们大家都知道，数据特征会直接影响我们模型的预测性能。你可以这么说：“选择的特征越好，最终得到的性能也就越好”。这句话说得没错，但也会给我们造成误解。事实上，你得到的实验结果取决于你选择的模型、获取的数据以及使用的特征，甚至你问题的形式和你用来评估精度的客观方法也扮演了一部分。此外，你的实验结果还受到许多相互依赖的属性的影响，你需要的是能够很好地描述你数据内部结构的好特征。</p>
+<ul>
+<li>特征越好，灵活性越强</li>
+</ul>
+<p>只要特征选得好，即使是一般的模型（或算法）也能获得很好的性能，因为大多数模型（或算法）在好的数据特征下表现的性能都还不错。好特征的灵活性在于它允许你选择不复杂的模型，同时运行速度也更快，也更容易理解和维护。</p>
+<ul>
+<li>特征越好，构建的模型越简单</li>
+</ul>
+<p>有了好的特征，即便你的参数不是最优的，你的模型性能也能仍然会表现的很好，所以你就不需要花太多的时间去寻找最优参数，这大大的降低了模型的复杂度，使模型趋于简单。</p>
+<ul>
+<li>特征越好，模型的性能越出色</li>
+</ul>
+<p>显然，这一点是毫无争议的，我们进行特征工程的最终目的就是提升模型的性能。</p>
+<h3 id="如何做特征工程"><a href="#如何做特征工程" class="headerlink" title="如何做特征工程"></a>如何做特征工程</h3><blockquote>
+<p>Feature engineering is a super-set of activities which include feature extraction, feature construction and feature selection. Each of the three are important steps and none should be ignored. We could make a generalization of the importance though, from my experience the relative importance of the steps would be feature construction &gt; feature extraction &gt; feature selection.——Quora</p>
+<p>特征工程是一个超集，它包括特征提取、特征构建和特征选择这三个子模块。在实践当中，每一个子模块都非常重要，忽略不得。根据答主的经验，他将这三个子模块的重要性进行了一个排名，即：特征构建&gt;特征提取&gt;特征选择。</p>
+</blockquote>
+<p>特征工程并非是一个问题。他的操作步骤主要包括：Feature Selection（特征选择）、Feature Extraction（特征提取）和Feature construction（特征构造）。</p>
+<ul>
+<li>特征选择：它的目的是从特征集合中挑选一组最具统计意义的特征子集，从而达到降维的效果。</li>
+<li>特征提取：对象是原始数据（raw data），它的目的是自动地构建新的特征，将原始特征转换为一组具有明显物理意义（Gabor、几何特征[角点、不变量]、纹理[LBP HOG]）或者统计意义或核的特征。</li>
+<li>特征构建：指的是从原始数据中人工的构建新的特征。</li>
+</ul>
+<p>对于一个实际的的机器学习过程来说，一般有如下几个阶段：</p>
+<p>1.（Task before here）</p>
+<p>2.选择数据(Select Data): 整合数据，将数据规范化成一个数据集，收集起来.</p>
+<p>3.数据预处理（Preprocess Data）: 数据格式化，数据清理，采样等.</p>
+<p>4.数据转换（Transform Data）: 这个阶段做特征工程.</p>
+<p>5.数据建模（Model Data）: 建立模型，评估模型并逐步优化.</p>
+<p>(Tasks after here…)</p>
+<p>我们发现，特征工程和数据转换其实是等价的。事实上，特征工程是一个迭代过程，我们需要不断的设计特征、选择特征、建立模型、评估模型，然后才能得到最终的model。</p>
+<p>我们接下来主要讲一下特征处理。</p>
+<h3 id="特征处理"><a href="#特征处理" class="headerlink" title="特征处理"></a>特征处理</h3><p>特征处理是一个比较复杂的工作，包括清洗数据、预处理、降维、选择。是上述的特征工程三部贯通的一些方法和思路。对于不同类型的数据，会有不一样的处理。</p>
+<ul>
+<li>数据清洗</li>
+</ul>
+<p>数据清洗的意思为<strong>消除异常数据</strong>。现实生活中会出现很多意想不到的情况，在统计意义上来说可忽略，我们希望数据尽可能地表现出统计的特征，所以要清除掉一些异常的数据。</p>
+<p>我们将在另一篇文章中详细的介绍数据清洗的方法。</p>
+<p><a target="_blank" rel="noopener" href="https://crowfeablog.com/article/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E6%96%B9%E6%B3%95%E8%AE%BA/">机器学习-数据清洗方法论</a></p>
+<ul>
+<li>数据预处理</li>
+</ul>
+<p>即使清洗完了数据，我们的数据仍可能是非常不规范的。并且各种格式的都有，接下来要干的事情就是数据的预处理。在处理的过程中，我们会面对各种类型的数据，比如数值型（、类别型（比如某个品牌的口红可能有十八种色号，比如衣服大小L XL XLL，比如星期几）、时间类、文本型、统计型、组合特征等等。</p>
+<p>如果我们对于模型有基本的想法，那么对于不同的模型所要求的数据也是不一样的。比如LR会喜欢离散的数据，所以在建模之前要将数据离散化；通过梯度下降法求解的模型一般都是需要归一化的，也是要进行处理。</p>
+<p>同样，介绍数据预处理也会有一篇文章（真的挖了好多坑）。</p>
+<ul>
+<li>特征选择</li>
+</ul>
+<p>在实际项目中，并不是特征维数越高越好。</p>
+<p>特征维数越高，模型越容易过拟合，此时更复杂的模型就不好用。相互独立的特征维数越高，在模型不变的情况下，在测试集上达到相同的效果表现所需要的训练样本的数目就越大。</p>
+<p>特征数量增加带来的训练、测试以及存储的开销都会增大。</p>
+<p><img src="https://s2.ax1x.com/2019/04/24/EZGeDs.jpg" alt="维度灾难"></p>
+<p>在某些模型中，例如基于距离计算的模型KMeans，KNN等模型，在进行距离计算时，维度过高会影响精度和性能。5.可视化分析的需要。在低维的情况下，例如二维，三维，我们可以把数据绘制出来，可视化地看到数据。当维度增高时，就难以绘制出来了。</p>
+<p>如何选择特征请看（坑）</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这篇文章对特征工程有一个总览，对于其中详细的方法会在另外三篇文章中进行阐述。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"># 数据处理</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91-%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96%E4%B8%89%E8%BF%9E/">小程序开发-用户信息获取三连</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/24/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">数据预处理方法</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>iOS丨响应链 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS丨响应链</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 7, 2020&nbsp;&nbsp;15:21:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/iOS/">iOS</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近接连几个需求都碰到了在响应链上的问题。有的是因为点击事件透传到superview，有的是因为子View将事件过早的拦截。针对一些具体的情况，我们对响应链相关的知识总结一下。</p>
+<h2 id="响应链"><a href="#响应链" class="headerlink" title="响应链"></a>响应链</h2><p>关于响应链具体是什么，有很多文章都写到了，这里不再赘述。附上Google搜索出来排名很高的两篇文章，基本上把知识点都囊括了。<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4155c9ffe1a8">iOS响应链(Responder Chain) - 简书</a><br><a target="_blank" rel="noopener" href="https://gsl201600.github.io/2019/12/25/iOS%E4%B8%AD%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%93%8D%E5%BA%94%E9%93%BE%E5%92%8C%E4%BC%A0%E9%80%92%E9%93%BE/">iOS 中事件的响应链和传递链 | Gsl’s Library</a>。</p>
+<p>简单描述一下，基本上是以下的过程：</p>
+<ol>
+<li>点击屏幕产生触摸事件，系统将这个事件加入到一个由UIApplication管理的事件队列中，UIApplication会从队列里取事件分发下去，首先传给UIWindow</li>
+<li>在UIWindow中就会调用<code>hitTest:withEvent:</code>方法去返回一个最终响应的视图</li>
+<li>在<code>hitTest:withEvent:</code>方法中就会去调用<code>pointInside: withEvent:</code>去判断当前点击的point是否在UIWindow范围内，如果是的话，就会去遍历它的子视图来查找最终响应的子视图</li>
+<li>遍历的方式是使用倒序的方式来遍历子视图，也就是说最后添加的子视图会最先遍历，在每一个视图中都回去调用它的<code>hitTest:withEvent:</code>方法，可以理解为是一个递归调用</li>
+<li>最终会返回一个响应视图，如果返回视图有值，那么这个视图就作为最终响应视图，结束整个事件传递；如果没有值，那么就会将UIWindow作为响应者</li>
+</ol>
+<p>这里有几点要注意的。首先是所有的交互事件是放在一个队列中管理的。为什么是队列？先发生的交互应当先被处理，这符合预期。这其实也能理解为什么有时候会觉得卡顿。当响应这些交互事件的时间要高于我们的反应时间时，就会觉得卡顿。当这个时间要高于我们两次交互的时间时，就会有卡死的感觉。其次，响应链对于view的遍历顺序，应当是一个树的深度遍历方式。这也就解释了为什么是最高层的UIApplication发起的遍历，但是会是最后添加的子view率先响应的问题。同样这也是符合预期的，当我们对页面发起交互事件的时候，点击的对象自然是“离我们最近的”子view。</p>
+<p>原理看起来比较简单，我们碰到的主要问题是，响应链什么时候传了下去，什么时候又被拦截掉了。接下来看两个具体的例子。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="scrollView无法滑动"><a href="#scrollView无法滑动" class="headerlink" title="scrollView无法滑动"></a>scrollView无法滑动</h3><p>我们设置了三层view。底层的父view是一个scrollView，在其上有一个headerView，在headerView上有一个自定义的View作为button。这三个View都是UIView。在headerView中我们可能展示一些图片之类的资源。想要的效果是：在headerView中依然可以滑动，同时headerView中的按钮是可以点击的。</p>
+<p>在整个需求做完之后首先碰到的问题是，headerView并不能滑动。这是因为UIView并不处理滑动手势。并且滑动的手势并不会回传给superView。这是因为响应链和手势识别并不是一套系统。</p>
+<blockquote>
+<p>A window delays the delivery of touch objects to the view so that the gesture recognizer can analyze the touch first. During the delay, if the gesture recognizer recognizes a touch gesture, then the window never delivers the touch object to the view, and also cancels any touch objects it previously sent to the view that were part of that recognized sequence.<br>开发者文档里面说明了，当一个交互事件发生的时候，手势识别器首先获得识别触摸的机会。在一定的时间内（150ms），如果发生了手势操作，那么手势识别器将进行接下来的识别操作。如果没有，这个事件将传递给响应链，进行tap等事件的判断。因此要是直接交互的view里面没有响应手势识别的控制器，那就没了。</p>
+</blockquote>
+<p>一种修改方法为，将headerView的<code>isUserInteractionEnabled</code>设置为false。直接取消掉交互能力，这个手势就会被传递给父view，也就是scrollView。但是这样带来的问题就是，headerView上面的button就会被禁用掉。</p>
+<p>可用的解就是覆盖<code>point(inside point: CGPoint, with event: UIEvent?) -&gt; Bool</code>方法。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">point</span><span class="params">(inside point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> subviews &#123;</span><br><span class="line">        <span class="keyword">if</span> v == buttonView, v.frame.<span class="built_in">contains</span>(point) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.point(inside: point, with: event)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当触摸事件发生在button的bound内部的时候，返回super的event。否则返回false。注意这里的顺序，因为是深度优先遍历，因此这里的super并不是view的superView。而是在调用栈上的super关系，也就是该view的子view。返回false的原因在于，如果点击到了button之外的headerView，那么就视为没有点击到headerView，直接返回给上一层。手势就可以被scrollView拿到。</p>
+<h3 id="两个响应事件"><a href="#两个响应事件" class="headerlink" title="两个响应事件"></a>两个响应事件</h3><p>第二个问题是，一个父级的View上有一个子View。这两个都是UIView。两个view都有自己的点击事件。点击事件本质是关联对象，将tap的交互动作和一个action的函数关联在一起。在点击事件发生的时候，取到对应的方法进行触发。</p>
+<p>在这个情况下，对于子View的点击事件，被子View响应之后，依然传递给了父View，父View依然作出响应。一个简单的做法是，直接将子View的父类作为UIControl。UIControl不会将触摸事件传递给父View。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/10/31/%E9%A2%91%E6%8E%A7%E9%97%AE%E9%A2%98/">iOS丨频控问题</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>C++，Java中的Hashmap与python中的dict比较 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">C++，Java中的Hashmap与python中的dict比较</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 18, 2019&nbsp;&nbsp;14:32:45</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/C/">C++</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>之前在做leetcode的两数之和，用三种不同的语言进行了研究。思路都是用key-value形式的数据结构：C++、Java是Hashmap，在Python里面是字典。这篇文章我们就分析一下这几种不同语言下的数据结构。</p>
+<a id="more"></a>
+<h3 id="C-中的-map-amp-unoerdered-map"><a href="#C-中的-map-amp-unoerdered-map" class="headerlink" title="C++ 中的 map &amp; unoerdered_map"></a>C++ 中的 map &amp; unoerdered_map</h3><p>我们这里讨论的结构来源于STL标准模板库。</p>
+<p>先说STL：它是于1994年正式成为ANSI/ISO C++的一部份，STL不是面向对象编程，而是一种不同的编程模式——泛式编程。这使得STL在功能和方法方面都很有趣。我们简单的将它的作用理解如下：</p>
+<p>STL 将“<strong>在数据上执行的操作”</strong>与“要执行操作的数据分开”，分别以如下概念指代：</p>
+<ul>
+<li>容器：包含、放置数据的地方。</li>
+<li>迭代器：在容器中指出一个位置、或成对使用以划定一个区域，用来限定操作所涉及到的数据范围。</li>
+<li>算法：要执行的操作。</li>
+</ul>
+<blockquote>
+<p>1994年1月6日，Koenig寄封電子郵件給Stepanov，表示如果Stepanov願意將标准模板库的說明文件撰寫齊全，在1月25日前提出，便可能成為標準C++的一部份。Stepanov回信道：“Andy, are you crazy?” 。 Koenig便說：“Well, yes I am crazy,but why not try it?”。</p>
+</blockquote>
+<p>在STL的容器内部有11种通用容器，其中包括7种序列容器和4种关联容器。关联容器全部是key-value形式的数据结构：map、set、multimap、multiset。</p>
+<ul>
+<li>set：值和键类型相同，且只能有唯一的值 [1,2,3]</li>
+<li>multiset:值和键类型相同，值可以存在相同的 [1,1,2,2,3]</li>
+<li>map:值和键类型可以不同，值只能与唯一的键关联 [[1,2],[2,3],[3,4]]</li>
+<li>multimap:值和键类型可以不同，值可与多个键关联 [[1,2],[1,3],[3,4]]</li>
+</ul>
+<p>set, multiset, map, multimap内部采用的就是一种非常高效的平衡检索二叉树：红黑树(Red-Black Tree，也称AVL树)。RB树的统计性能要好于一般的平衡二叉树。使用红黑树操作的复杂度在O(logN),但搜索的过程是保持动态且有序的。这就意味着使用红黑树的数据结构可以在顺序上进行更多的操作，并且计算的复杂度随key值的变化波动不大，可以稳定在O(logN)。</p>
+<p>在c++ 11中添加了一个新的序列容器：unordered_map。使用的是散列进行哈希，时间复杂度为O(1)。但取而代之的是空间消耗更大，同时不能提供一个稳定的输出，随着key值算法的时间波动较大。关于两者的性能看到了这篇文章写的很好 [Sam-Cen的博客]<a target="_blank" rel="noopener" href="https://blog.csdn.net/blues1021/article/details/45054159%E3%80%82">https://blog.csdn.net/blues1021/article/details/45054159。</a></p>
+<p>unordered_map 查找效率快五倍，插入更快，节省一定内存。如果没有必要排序的话，尽量使用 hash_map(unordered_map 就是 boost 里面的 hash_map 实现)。</p>
+<h3 id="Java中的HashMap-amp-TreeMap"><a href="#Java中的HashMap-amp-TreeMap" class="headerlink" title="Java中的HashMap &amp; TreeMap"></a>Java中的HashMap &amp; TreeMap</h3><p>java里面的HashMap是根据map接口的一个实现，我们直接从JDK里来看HashMap的构造：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">(<span class="keyword">int</span> initialCapacity, <span class="keyword">float</span> loadFactor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;Illegal initial capacity: &quot;</span> +</span><br><span class="line">                                               initialCapacity);</span><br><span class="line">        <span class="keyword">if</span> (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line">            initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line">        <span class="keyword">if</span> (loadFactor &lt;= <span class="number">0</span> || Float.isNaN(loadFactor))</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;Illegal load factor: &quot;</span> +</span><br><span class="line">                                               loadFactor);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Find a power of 2 &gt;= initialCapacity</span></span><br><span class="line">        <span class="keyword">int</span> capacity = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (capacity &lt; initialCapacity)</span><br><span class="line">            capacity &lt;&lt;= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.loadFactor = loadFactor;</span><br><span class="line">        threshold = (<span class="keyword">int</span>)Math.min(capacity * loadFactor, MAXIMUM_CAPACITY + <span class="number">1</span>);</span><br><span class="line">        table = <span class="keyword">new</span> Entry[capacity];</span><br><span class="line">        useAltHashing = sun.misc.VM.isBooted() &amp;&amp;</span><br><span class="line">                (capacity &gt;= Holder.ALTERNATIVE_HASHING_THRESHOLD);</span><br><span class="line">        init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中table就是我们得到的散列表，在第 18 行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table = <span class="keyword">new</span> Entry[capacity];</span><br></pre></td></tr></table></figure>
+<p>在构造函数中，创建了一个 Entry 的数组，其大小为 capacity。再让我们看一下Entry的结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> K key;</span><br><span class="line">    V value;</span><br><span class="line">    Entry&lt;K,V&gt; next;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Entry 是一个 static class，其中包含了 key 和 value，也就是键值对，另外还包含了一个 next 的 Entry 指针。也就是说，在java内部散列的过程，采用的是链地址法：在哈希表每个单元中设置链表。某个数据项的关键值仍然映射到哈希表的单元中，而数据项本身插入这个单元的链表中其他同样映射到这个位置的数据项只需要加入到链表中。时间复杂度平均能达到O(1)。</p>
+<p>同样的，Java中也存在以红黑树为原型的key-value数据结构，称为TreeMap。其原理与特性与C++中的map类似，我们略去不表。只是将Java的两种数据结构的调用方法陈列如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化</span></span><br><span class="line">HashMap&lt;String,Integer&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="comment">//添加。如果key不存在，则返回null</span></span><br><span class="line">hashMap.put(<span class="string">&quot;key&quot;</span>,value);</span><br><span class="line"><span class="comment">//添加。若有则不添加。</span></span><br><span class="line">hashMap.putIfAbsent(<span class="string">&quot;key&quot;</span>,value);</span><br><span class="line"><span class="comment">//删除元素</span></span><br><span class="line">hashMap.remove(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">hashMap.remove(<span class="string">&quot;key&quot;</span>,value);</span><br><span class="line"><span class="comment">//获取元素</span></span><br><span class="line">hashMap.get(<span class="string">&quot;key&quot;</span>)</span><br><span class="line"><span class="comment">//元素遍历</span></span><br><span class="line">Iterator iterator = hashMap.keySet().iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">   String key = (String)iterator.next();</span><br><span class="line">   System.out.println(key+<span class="string">&quot;=&quot;</span>+hashMap.get(key));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//或者：</span></span><br><span class="line">Iterator iterator1 = hashMap.entrySet().iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator1.hasNext())&#123;</span><br><span class="line">    Map.Entry entry = (Map.Entry) iterator1.next();</span><br><span class="line">    String key = (String) entry.getKey();</span><br><span class="line">    Integer value = (Integer) entry.getValue();</span><br><span class="line">    System.out.println(key+<span class="string">&quot;=&quot;</span>+value);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//判断key或value是否存在</span></span><br><span class="line">hashMap.containsKey(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">hashMap.containsValue(value);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Python中的字典"><a href="#Python中的字典" class="headerlink" title="Python中的字典"></a>Python中的字典</h3><p>对于Python来说，字典就是数组形式的哈希表，数据结构为数组，采用了哈希的散列，解决冲突的办法为开放寻址法。</p>
+<p>神奇的一点是，python在散列的过程中，会根据当前表的疏松程度进行空间的再申请。当使用量超过总槽数的2/3，就会申请不少于当前活动槽数4倍的新空间。统计的来说，最后得到的表所利用的空间达不到一开始的1/3。这在空间上的损耗是巨大的，但是以空间换时间，在时间上的复杂度为O(1)。</p>
+<p>Python里面的字典方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">info = dict()</span><br><span class="line"><span class="comment"># 添加</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info[<span class="string">&#x27;name&#x27;</span>] = <span class="string">&#x27;cold&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info[<span class="string">&#x27;blog&#x27;</span>] = <span class="string">&#x27;linuxzen.com&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info</span><br><span class="line">&#123;<span class="string">&#x27;blog&#x27;</span>: <span class="string">&#x27;linuxzen.com&#x27;</span>, <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;cold&#x27;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info</span><br><span class="line">&#123;<span class="string">&#x27;blog&#x27;</span>: <span class="string">&#x27;linuxzen.com&#x27;</span>, <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;cold night&#x27;</span>&#125;</span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line"><span class="keyword">del</span> info[<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line"><span class="comment"># 遍历</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>info = dict(name=<span class="string">&#x27;cold&#x27;</span>, blog=<span class="string">&#x27;linuxzen.com&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> key, value <span class="keyword">in</span> info.items():</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">print</span> key, <span class="string">&#x27;:&#x27;</span>,  value</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总结看下来，基本上key-value形式的数据结构分为两类：</p>
+<ul>
+<li>以红黑树为基础的数据结构：map、set、TreeMap</li>
+<li>基于散列哈希的数据结构：HashMap、dictionary</li>
+</ul>
+<p>前者的优势在于有序，能提供较为稳定的复杂度算法，并且可以在顺序上做文章。但后者更快，在大数据的情况下更实用。</p>
+<p>最后值得注意的是，红黑树为基础的数据结构内部重载了小于的操作（因为红黑树的插入本身要先排序）；而哈希重载了等于的操作（哈希通过判断相等来确定要不要处理冲突）。在自定义时记得自己声明重载。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/C/"># C++</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/24/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">数据预处理方法</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/16/AES%E5%AF%86%E9%92%A5%E7%BC%96%E6%8E%92Python%E5%AE%9E%E7%8E%B0/">AES密钥编排Python实现</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

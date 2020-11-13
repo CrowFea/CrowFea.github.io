@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>Algorithm | 字符串排序 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Algorithm | 字符串排序</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 18, 2020&nbsp;&nbsp;19:28:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>字符串排序在实际的使用中通常会对应以下的几种情况：搜索系统，对于繁多的搜索结果需要进行一定的排序；通信系统，无论何种信息，都是一堆字符从一端传递到另一端；基因工程，出人意料的是，在生物学中有着十分重要的作用，比如碱基的配对。</p>
+<a id="more"></a>
+<h3 id="键索引计数法"><a href="#键索引计数法" class="headerlink" title="键索引计数法"></a>键索引计数法</h3><p>在引入字符串排序的方法之前，我们先考察一种叫键索引计数法的方法。比如说有一群分别属于不同组的学生，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name	no</span><br><span class="line">Anderw	1</span><br><span class="line">Jack	2</span><br><span class="line">Peter	1</span><br><span class="line">Jane	3</span><br><span class="line">Janie	2</span><br><span class="line">...		...</span><br></pre></td></tr></table></figure>
+
+<p>我们的目的在于将学生按照组别进行排序。采用的方法可以采用以下几个步骤：</p>
+<h4 id="频率统计"><a href="#频率统计" class="headerlink" title="频率统计"></a>频率统计</h4><p>首先遍历一遍整个字符串，使用一个额外的统计数组来记录每个组别开始的位置，这里有一个小技巧，如果组别有5组，那么这个统计数组的大小设置为6。我们将这个统计数组命名为count。组别为r的记录将在r+1位置的count进行加1。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)</span><br><span class="line">	count[a[i].key()+<span class="number">1</span>]++;</span><br></pre></td></tr></table></figure>
+
+<h4 id="将频率转换为索引"><a href="#将频率转换为索引" class="headerlink" title="将频率转换为索引"></a>将频率转换为索引</h4><p>接下来就是将上述的频率转换为排序结果中的索引位置。这样的话，上述的count数组的巧妙地小技巧就十分有用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> r=<span class="number">0</span>;r&lt;N;++r)&#123;</span><br><span class="line">	count[r+<span class="number">1</span>]+=count[r]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据分类"><a href="#数据分类" class="headerlink" title="数据分类"></a>数据分类</h4><p>在确定了每一组的起始索引之后，我们需要做的就是对数组进行一个分类。这里会使用到一个额外的数组空间，分类的过程可以理解为多指针的过程。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">	aux[count[a[i].key()]++]=a[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="LSD-低位优先的字符串排序"><a href="#LSD-低位优先的字符串排序" class="headerlink" title="LSD 低位优先的字符串排序"></a>LSD 低位优先的字符串排序</h3><p>LSD由字面意思可得，是从字符串的低位开始。LSD的局限在于，他排序的字符串必须是等长的。这种情况实际上是很常见的，比如排序车牌、ip地址等。</p>
+<p>LSD的具体步骤是，从右至左开始，对每一位实施键索引计数法。如果这个字符串长度为W，那么实际上就是实施W次键索引计数法。并且这种排序方法是稳定的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LSDSort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; a,<span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> N=a.<span class="built_in">size</span>();</span><br><span class="line">	<span class="keyword">int</span> R=<span class="number">256</span>;</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="title">aux</span><span class="params">(N)</span></span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> d=W<span class="number">-1</span>;d&gt;=<span class="number">0</span>;--d)&#123;</span><br><span class="line">		<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">count</span><span class="params">(R+<span class="number">1</span>)</span></span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)	<span class="comment">//计算出现的频率</span></span><br><span class="line">			count[a[i][d]+<span class="number">1</span>]++;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;R;i++)	<span class="comment">//将频率转换为索引</span></span><br><span class="line">			count[i+<span class="number">1</span>]+=count[i];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)	<span class="comment">//分类元素</span></span><br><span class="line">			aux[count[a[i][d]]++]=a[i];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)	<span class="comment">//回写</span></span><br><span class="line">			a[i]=aux[i];</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="MSD-高位优先的字符串排序"><a href="#MSD-高位优先的字符串排序" class="headerlink" title="MSD 高位优先的字符串排序"></a>MSD 高位优先的字符串排序</h3><p>高位优先的排序可以适用于随机的字符串。其本质是从高位对字符串使用递归的键索引计数法。 基本的代码逻辑如下所示</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MSD</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> R = <span class="number">256</span>;    <span class="comment">//基数</span></span><br><span class="line">    <span class="keyword">int</span> M = <span class="number">15</span>;     <span class="comment">//小数组的切换阈值</span></span><br><span class="line">    <span class="built_in">string</span> aux;     <span class="comment">//数据分类的辅助数组</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">charat</span><span class="params">(<span class="built_in">string</span> s,<span class="keyword">int</span> d)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(d&lt;s.<span class="built_in">size</span>())  <span class="keyword">return</span> s[d];</span><br><span class="line">        <span class="keyword">else</span>    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="built_in">string</span> s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n=s.<span class="built_in">size</span>();</span><br><span class="line">        aux==<span class="built_in">string</span>(n);</span><br><span class="line">        sort(a,<span class="number">0</span>,n<span class="number">-1</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//以第d个字符为键将a[low]至a[high]排序</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="built_in">string</span> s,<span class="keyword">int</span> low,<span class="keyword">int</span> high,<span class="keyword">int</span> d)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(high&lt;=low+M)&#123;</span><br><span class="line">            InsertionSort(a,low,high,d);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">count</span><span class="params">(R+<span class="number">2</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=low;i&lt;=high;i++)  <span class="comment">//计算频率</span></span><br><span class="line">            count[charat(a[i],d)+<span class="number">2</span>]++;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> r=<span class="number">0</span>;r&lt;R+<span class="number">1</span>;r++)      <span class="comment">//将频率转换为索引</span></span><br><span class="line">            count[r+<span class="number">1</span>]+=count[r];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=low;i&lt;=high;i++)  <span class="comment">//数据分类</span></span><br><span class="line">            aux[count[charat(a[i],d)+<span class="number">1</span>]++]=a[i];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=low;i&lt;=high;i++)  <span class="comment">//回写</span></span><br><span class="line">            a[i]=aux[i-low];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//递归的以每个字符为键进行排序</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> r=<span class="number">0</span>;r&lt;R;r++)</span><br><span class="line">            sort(a,low+count[r],low+count[r+<span class="number">1</span>]<span class="number">-1</span>,d+<span class="number">1</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样，因为MSD所使用的算法基本上是使用快速排序，因此他所面临的问题也是快速排序所面临的问题。</p>
+<h4 id="小型子数组"><a href="#小型子数组" class="headerlink" title="小型子数组"></a>小型子数组</h4><p>对于小型子数组，可以不使用快速排序，这样会产生大量的小型数组，但事实上这样速度会慢很多。因此我们可以设定一个阈值，在该阈值之下使用插入排序。</p>
+<h4 id="等值键"><a href="#等值键" class="headerlink" title="等值键"></a>等值键</h4><p>第二个陷阱是，对于大量的等值键的数组排序会变慢。高位优先字符串的最坏情况就是所有的键都相同。</p>
+<h3 id="三向字符串快速排序"><a href="#三向字符串快速排序" class="headerlink" title="三向字符串快速排序"></a>三向字符串快速排序</h3><p>我们可以根据高位优先的字符串排序改进快速排序，根据键的首字母进行三向切分，仅在中间子数组的下一个字符继续进行递归排序。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quick3string</span>&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">charat</span><span class="params">(<span class="built_in">string</span> s,<span class="keyword">int</span> d)</span></span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(d&lt;s.<span class="built_in">size</span>())  <span class="keyword">return</span> s[d];</span><br><span class="line">      <span class="keyword">else</span>    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">   &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="built_in">string</span> s)</span></span>&#123;</span><br><span class="line">		sort(a,<span class="number">0</span>,a.<span class="built_in">size</span>()<span class="number">-1</span>,<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="built_in">string</span> s,<span class="keyword">int</span> low,<span class="keyword">int</span> high,<span class="keyword">int</span> d)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(high&lt;=low) <span class="keyword">return</span>;</span><br><span class="line">		<span class="keyword">int</span> lt=low,gt=high;</span><br><span class="line">		<span class="keyword">int</span> v=charat(a[low],d);</span><br><span class="line">		<span class="keyword">int</span> i=low+<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span>(i&lt;=gt)&#123;</span><br><span class="line">			<span class="keyword">int</span> t=charat(a[i],d);</span><br><span class="line">			<span class="keyword">if</span>(t&lt;v) swap(a[lt++],a[i++]);</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(t&lt;v) swap(a[i],a[gt—]);</span><br><span class="line">			<span class="keyword">else</span>	i++;</span><br><span class="line">		&#125;</span><br><span class="line">		sort(a,low,lt<span class="number">-1</span>,d);</span><br><span class="line">		<span class="keyword">if</span>(v&gt;=<span class="number">0</span>)	sort(a,lt,gt,d+<span class="number">1</span>);</span><br><span class="line">		sort(a,gt+<span class="number">1</span>,high,d);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%AE%97%E6%B3%95/"># 算法</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/04/19/APUE%E7%AC%94%E8%AE%B0%20%7C%20%E6%96%87%E4%BB%B6%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/">APUE笔记 | 文件和文件描述符</a>
+            
+            
+            <a class="next" rel="next" href="/2020/04/08/Ubuntu%2018.04%20%E5%AE%89%E8%A3%85docker/">Ubuntu 18.04 安装docker</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

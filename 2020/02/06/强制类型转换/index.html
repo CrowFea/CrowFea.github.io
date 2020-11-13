@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>强制类型转换 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">强制类型转换</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">二月 6, 2020&nbsp;&nbsp;16:21:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/C/">C++</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>在C++语言中新增了四个关键字<strong>static_cast、const_cast、reinterpret_cast和dynamic_cast</strong>。新类型的<strong>强制转换</strong>可以提供更好的控制强制转换过程。</p>
+<a id="more"></a>
+<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>static_cast用于将一种数据类型强制转换为另一种数据类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int a &#x3D; 7;</span><br><span class="line">int b &#x3D; 3;</span><br><span class="line">double result &#x3D; static_cast&lt;double&gt;(a) &#x2F; static_cast&lt;double&gt;(b);</span><br></pre></td></tr></table></figure>
+<p>可以使用static_cast找回存在于void*指针中的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">double a &#x3D; 7;</span><br><span class="line">void* p &#x3D; &amp;a;</span><br><span class="line">double* dp &#x3D; static_cast&lt;double*&gt;(p);</span><br></pre></td></tr></table></figure>
+
+<p><strong>它主要有如下几种用法：</strong></p>
+<ul>
+<li><p>用于类层次结构中基类和派生类之间指针或引用的转换</p>
+<p>  进行上行转换（把派生类的指针或引用转换成基类表示）是安全的</p>
+<p>  进行下行转换（把基类的指针或引用转换为派生类表示），由于没有动态类型检查，所以是不安全的</p>
+</li>
+<li><p>用于基本数据类型之间的转换，如把int转换成char。这种转换的安全也要开发人员来保证</p>
+</li>
+<li><p>把空指针转换成目标类型的空指针</p>
+</li>
+<li><p>把任何类型的表达式转换为void类型</p>
+<blockquote>
+<p>注意：static_cast不能转换掉expression的const、volitale或者__unaligned属性。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p>const_cast用于强制去掉不能被修改的常数特性，但需要特别注意的是const_cast不是用于去除变量的常量性，而是<strong>去除指向常数对象的指针或引用的常量性</strong>，其去除常量性的对象必须为指针或引用。</p>
+<p><strong>用法：const_cast<type_id> (expression)</strong><br>该运算符用来修改类型的const或volatile属性。除了const 或volatile修饰之外， type_id和expression的类型是一样的。</p>
+<p>常量指针被转化成非常量指针，并且仍然指向原来的对象；</p>
+<p>常量引用被转换成非常量引用，并且仍然指向原来的对象；常量对象被转换成非常量对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const double a &#x3D; 7;</span><br><span class="line">const double* p &#x3D; &amp;a;</span><br><span class="line">double* q &#x3D; const_cast&lt;double*&gt;(p);</span><br><span class="line">*q &#x3D; 20; &#x2F;&#x2F;通过q写值是未定义的行为</span><br></pre></td></tr></table></figure>
+
+<h3 id="reinterpret-cast"><a href="#reinterpret-cast" class="headerlink" title="reinterpret_cast"></a>reinterpret_cast</h3><p>在C++语言中，reinterpret_cast主要有三种强制转换用途：<strong>改变指针或引用的类型、将指针或引用转换为一个足够长度的整形、将整型转换为指针或引用类型</strong>。<br><strong>用法：reinterpret_cast<type_id> (expression)</strong><br>type-id必须是一个指针、引用、算术类型、函数指针或者成员指针。<br>它可以把一个指针转换成一个整数，也可以把一个整数转换成一个指针（先把一个指针转换成一个整数，在把该整数转换成原类型的指针，还可以得到原先的指针值）。<br><strong>在使用reinterpret_cast强制转换过程仅仅只是比特位的拷贝，因此在使用过程中需要特别谨慎！</strong></p>
+<h3 id="dynamic-cast"><a href="#dynamic-cast" class="headerlink" title="dynamic_cast"></a>dynamic_cast</h3><p><strong>用法：dynamic_cast<type_id> (expression)</strong></p>
+<ul>
+<li><p>其他三种都是编译时完成的，dynamic_cast是运行时处理的，运行时要进行类型检查。</p>
+</li>
+<li><p>不能用于内置的基本数据类型的强制转换。</p>
+</li>
+<li><p>dynamic_cast转换如果成功的话返回的是指向类的指针或引用，转换失败的话则会返回NULL。</p>
+</li>
+<li><p>使用dynamic_cast进行转换的，基类中一定要有虚函数，否则编译不通过。</p>
+<p>  基类中需要检测有虚函数的原因：类中存在虚函数，就说明它有想要让基类指针或引用指向派生类对象的情况，此时转换才有意义。</p>
+<p>  这是由于运行时类型检查需要运行时类型信息，而这个信息存储在类的虚函数表（关于  的概念，详细可见&lt;Inside c++ object model&gt;）中，*虚函数表只有定义了虚函数的类才有虚函数表。</p>
+</li>
+<li><p>在类的转换时，在类层次间进行上行转换时，dynamic_cast和  的效果是一样的。在进行下行转换时，dynamic_cast具有类型检查的功能，比static_cast更安全。</p>
+<p>  <strong>向上转换，即为子类指针指向父类指针（一般不会出问题）；向下转换，即将父类指针转化子类指针。</strong></p>
+<p>  <strong>向下转换的成功与否还与将要转换的类型有关，即要转换的指针指向的对象的实际类型与转换以后的对象类型一定要相同，否则转换失败。</strong></p>
+<p>  <strong>在C++中，编译期的类型转换有可能会在运行时出现错误，特别是涉及到类对象的指针或引用操作时，更容易产生错误。Dynamic_cast操作符则可以在运行期对可能产生问题的类型转换进行测试。</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">class Base&#123;</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    Base() :str(nullptr)&#123;&#125;</span><br><span class="line">    Base(string s) :str(s)&#123;&#125;</span><br><span class="line">    virtual void print()</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; str &lt;&lt; &quot;  &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    string str;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class Derived:public Base</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    Derived()&#123;&#125;</span><br><span class="line">    Derived(string s,int i) :Base(s),ival(i)&#123;&#125;</span><br><span class="line">    void print()</span><br><span class="line">    &#123;</span><br><span class="line">        Base::print();</span><br><span class="line">        cout &lt;&lt; ival &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    void print_ival()</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; &quot;仅输出ival的值：&quot; &lt;&lt; ival &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    int ival;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Base base(&quot;aaa&quot;);</span><br><span class="line">    Derived de(&quot;xxx&quot;, 111);</span><br><span class="line">    &#x2F;&#x2F;指针dynamic_cast</span><br><span class="line">    Base* pb &#x3D; &amp;de;</span><br><span class="line">    if (Derived* pd &#x3D; dynamic_cast&lt;Derived*&gt;(pb))</span><br><span class="line">    &#123;</span><br><span class="line">        pd-&gt;print_ival();</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;转换失败返回空指针</span><br><span class="line">        cout &lt;&lt; &quot;type error...&quot; &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;引用dynamic_cast</span><br><span class="line">    Base&amp; rf &#x3D; de;</span><br><span class="line">    try</span><br><span class="line">    &#123;</span><br><span class="line">        Derived&amp; d &#x3D; dynamic_cast&lt;Derived&amp;&gt;(rf);</span><br><span class="line">        d.print_ival();</span><br><span class="line">    &#125;</span><br><span class="line">    catch (const std::bad_cast&amp; ex)</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;转换失败，抛出std::bad_cast异常</span><br><span class="line">        cout &lt;&lt; ex.what();</span><br><span class="line">    &#125;</span><br><span class="line">    system(&quot;pause&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/C/"># C++</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/03/30/Algorithm%20%7C%20%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">Algorithm | 归并排序</a>
+            
+            
+            <a class="next" rel="next" href="/2020/02/02/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%92%8C%E7%AE%A1%E7%90%86/">C++内存管理</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

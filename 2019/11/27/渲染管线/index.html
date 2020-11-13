@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>渲染管线 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">渲染管线</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 27, 2019&nbsp;&nbsp;15:26:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>渲染管线是一个非常重要的概念，同时涉及的东西也非常多。在不同的书籍上阅读过相关的篇章，没有系统的总结过，这篇文章大致总结一下，一些经常在文章里出现的地方就不赘述，着重记录一些我不太理解的东西。</p>
+<p>参考书目<br>《Fundamentals of computer graphics Third Edition》<br>《Real-time rendering 4th Edition》<br>《Unity Shader入门精要》</p>
+<a id="more"></a>
+<h3 id="在渲染管线之前"><a href="#在渲染管线之前" class="headerlink" title="在渲染管线之前"></a>在渲染管线之前</h3><p>渲染管线听起来似乎很高大上的样子（其实就是），但是说的通俗一点就是流水线渲染。管线（Pipeline）就是我们熟知的流水线技术，这个在设计CPU的时候已经饱经荼毒。渲染管线就是使用流水线技术对图形进行渲染，使得硬盘中的数字图形信息显示在屏幕上。</p>
+<p>很多书籍和博客在这一部分会直接开始看流水线流程，尽管如此，本文还是想先写一下渲染管线的目标是什么。搞明白这个才知道为什么要设计管线。还记得<a target="_blank" rel="noopener" href="https://crowfeablog.com/2019/07/26/Ray%20Tracing%E7%AE%80%E4%BB%8B/">Ray Tracing简介</a>这个文章么，其中我们提到了两种渲染的方法：</p>
+<ul>
+<li><p>object-order rendering</p>
+<p>遍历每个object，计算object对于每个像素的贡献。</p>
+</li>
+<li><p>image-order rendering</p>
+<p>遍历每个像素，计算当前像素有哪些object的贡献。<br>一般来说会更一般的使用第一种方法，object-order的效率要更高。考察每一个几何图元中的像素的过程称为<strong>Rasterization</strong>。而将每一个object逐个渲染到屏幕上，需要一个序列的操作，起始为objects（各种模型数据），终止为对屏幕像素的更新，这个过程称为图形管线。</p>
+</li>
+</ul>
+<p>应当注意的是图形管线并不定论，他只提供一个理论上的通用方法。对于不同的场景，会缠上许多不同的管线。比如硬件管线需要运行的足够快才能使得图形看起来“真”，一些电影的管线需要渲染大规模的复杂场景，但是需要运行很久。</p>
+<h3 id="图形渲染管线"><a href="#图形渲染管线" class="headerlink" title="图形渲染管线"></a>图形渲染管线</h3><p>无论怎样，渲染管线都应该包含一些相同的结构，如下图所示。</p>
+<p><img src="https://s2.ax1x.com/2019/11/27/QCpVHJ.png" alt="GPU"><br><em>图来源于 Real-time rendering 4th Edition</em></p>
+<p>在入门精要中，后两个阶段合并为一个阶段叫光栅化阶段；在Fundmentals of Computer Graphics里面，只是着重强调了顶点着色器、栅格化、片段着色器三个部分。实际上，在之前编写shader的过程中，我们打交道最多的两个部分，就是顶点和片段着色器。可编程管线里面基本上就是这个，因此其实可以做出这样的理解：对于这个图形渲染的过程，有一条大的流水线，包括了从CPU到GPU的过程；在这之中每一部分都是小的管线，我们额外注意的是在GPU中进行的部分，也就是拿到了顶点数据后，开始vertex shading到Merging的部分，即上图中的几何阶段、栅格化阶段和片元着色阶段。</p>
+<h3 id="Application阶段"><a href="#Application阶段" class="headerlink" title="Application阶段"></a>Application阶段</h3><p>对于此阶段不做过多的描述，Application往往发生在CPU中，这一阶段是对要进行渲染的数据进行整理，包括模型数据、纹理、shader等打包好之后扔给GPU（GPU：我就是个工具人）。</p>
+<p>值得一提的是，CPU在要发出渲染要求的时候，会发送一个Draw Call指令给GPU，其中包含了要渲染的各种数据。这其中牵扯了一些性能的问题。首先我们来看GPU的流水线设计，不仅仅是在操作序列上的流水线，而是在每一层操作间有大量的并发操作。比如下面这样</p>
+<p><img src="https://s2.ax1x.com/2019/11/27/Q9HCUU.jpg" alt="GPU"><br><em>图来源于 The Book of Shader</em></p>
+<p>这是因为GPU每次计算需要计算大量的像素，我们现在的PC一般的分辨率也可以达到1920*1080，，如果帧数按60 FPS计算，这意味着每秒计算量都是10的9次方级别的。好在每一个像素的计算并不复杂，因此我们需要的就是想这样“鞭炮”一样的结构，大量的小额计算，每一个都不是很响，但是连在一起就噼里啪啦的。我们后面提到的，在GPU中的操作基本都是这样的结构。</p>
+<p>同时，CPU将每一次的打包数据，也就是渲染图元，需要从内存送到显存中。这是因为显卡对显存的存取更迅速。因此，实际上每一次CPU发出的Draw Call指令，GPU往往可以很快完成，甚至快于CPU发出下一次的Draw Call指令。这是由于IO速度较慢导致的，虽然我们加入了缓冲区的结构，但是IO速度依然是渲染的瓶颈。为此，一个解决思路是批处理，CPU将多个Draw call指令打包，一次交给GPU。</p>
+<p>理解渲染最重要的是：<strong>为了渲染一帧，CPU和GPU必须都完成他们的任务</strong>。他们中的任何一个花费了过长的时间去完成任务，都会造成渲染延迟。因此渲染管线的基本思路是：一是增强渲染管线的处理能力，这个好理解；二是减少渲染数据的数量和复杂性，如果数据太繁琐，GPU再强也顶不住。</p>
+<h3 id="几何阶段"><a href="#几何阶段" class="headerlink" title="几何阶段"></a>几何阶段</h3><p>接下来就是主要的流水线过程，在几何阶段中，我们要关注的是以下几个过程：</p>
+<p><img src="https://s2.ax1x.com/2019/11/27/QCpeE9.png" alt="GPU"><br><em>图来源于 Real-time rendering 4th Edition</em></p>
+<h4 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h4><p>顶点着色器是可以编程的一个环节，主要有两个工作：</p>
+<ul>
+<li>计算顶点坐标。将顶点坐标映射到齐次裁剪空间，这个我们之后会提到</li>
+<li>计算顶点颜色。通常这一步是通过对每个顶点加光照，计算顶点的位置和法线信息，最后存储计算得到的颜色信息。</li>
+</ul>
+<p>这里有一个困扰了我很久的究极疑惑，就是顶点怎么会有法向量？最后在知乎上找到了这样一个回答<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/294271776/answer/544982916">顶点法向量的方向是怎样的？ - 夏清的回答 - 知乎</a></p>
+<p><img src="https://s2.ax1x.com/2019/11/27/QCklvt.jpg" alt="img"><br><em>图来源于 libigl.github.io</em></p>
+<p>可以看到，如果我们通过三角形片元的法线进行计算的话，算出来就是一片一片的，如最左的图。如果想得到更平滑的图，就需要让每一个顶点拥有一个法向量，顶点因为是多个片元三角形共享的，因此通过某种处理（可能是平均）后获得。这就是顶点法向量的来历，这个法向量还与共享的几个三角形片元的二面角有关。</p>
+<p>关于顶点着色器具体如何工作暂且不表（实际上是很麻烦还没看懂），其中涉及到空间坐标的变换较多，之后或许会有相关的文章。</p>
+<h3 id="光栅化"><a href="#光栅化" class="headerlink" title="光栅化"></a>光栅化</h3><p>几何阶段在顶点着色器处理、裁剪、屏幕映射之后会产生一堆图元，这些图元并非模型输入的所有图元，而是仅仅会在屏幕世界内出现的图元。找到所有在这些图元里的像素，这一过程称为光栅化。<strong>事实上，这就是将连续的图形，转化为离散的图形</strong>。至于如何决定像素是否在图元（一般是三角形）“里面”，是由管线决定的，也就是所这一部分是由管线的程序员自主决定。</p>
+<p>另外一个疑惑是，为什么是三角形作为图元而非其他。这是因为三角化是一种重要的将连续问题转化为离散问题的手段，许多连续的几何概念，比如曲率及各种微分算子，在三角化模型中都有相应的离散版本。这是一个三角化的著名算法<a target="_blank" rel="noopener" href="https://people.eecs.berkeley.edu/~jrs/papers/imrtalk.pdf">Delaunay</a></p>
+<h3 id="片元着色器"><a href="#片元着色器" class="headerlink" title="片元着色器"></a>片元着色器</h3><p><img src="https://s2.ax1x.com/2019/11/28/QP1sxK.png" alt="img"></p>
+<p>这个部分终于到了我们编程最多碰见的部分。一开始在shadertoy上写的代码实际就是片元着色器。这部分也最容易出活，在片元着色器之前的操作，都是将模型变成可供我们涂色的二维形状，这一部分才是涂鸦的部分。但同时，大量的技术在这个地方可以应用，可以像我们之前手写光照、颜色、变换，也可以用Texture等方法。</p>
+<p>Texture值得一提，它是非常常用的一种方法，简单来说就是将图片“粘贴”在物体上，事实上我们在用unity的时候，也是将texture“粘”在了material上面，再把有着shader和texture的material赋给object。对于Texture而言，复杂的在于如何把一张二维的图片，映射到二维或是三维的物体上，这里是UV mapping或者texture mapping。</p>
+<h3 id="测试与混合"><a href="#测试与混合" class="headerlink" title="测试与混合"></a>测试与混合</h3><p>最后一个部分是管线对之前输出的颜色buffer、三角形等数据进行测试，对透明度与颜色进行混合。虽然这样说有点无情，但并非所有的工作都可以通过测试，失败的工作将不会出现在屏幕上。</p>
+<p>渲染管线到这里基本上介绍完毕了，可见的是若干个部分介绍的相当简略，这是因为本文只关注于管线的流程，介绍其中每个部分做什么，对其中具体的操作并不涉及。下面这篇文章非常详细的介绍了每一个阶段的操作，总结了十余篇文章所提到的所有过程。</p>
+<p><a target="_blank" rel="noopener" href="https://positiveczp.github.io/%E7%BB%86%E8%AF%B4%E5%9B%BE%E5%BD%A2%E5%AD%A6%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF.html">细说图形学渲染管线</a></p>
+<p>总而言之，渲染管线是写完了。对于其中的一些部分，如果今后需要深入的话，再继续写文章吧。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"># 图形学</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/12/05/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB%E7%9A%84%E7%AE%97%E6%B3%95%E5%B0%8F%E6%8A%80%E5%B7%A7/">杂七杂八的算法小技巧</a>
+            
+            
+            <a class="next" rel="next" href="/2019/11/23/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/">位运算的小技巧</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

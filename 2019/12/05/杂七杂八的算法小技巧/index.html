@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>杂七杂八的算法小技巧 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">杂七杂八的算法小技巧</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 5, 2019&nbsp;&nbsp;10:32:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>记录一些很小的算法的小技巧，长期更新。</p>
+<a id="more"></a>
+<h4 id="int-last-NULL"><a href="#int-last-NULL" class="headerlink" title="int *last = NULL;"></a>int *last = NULL;</h4><p>有些时候在排序，或者是树相关的问题时，我们希望有一个变量表示着刚刚走过的变量的值。在申请这个变量的时候，往往要对第一次特殊处理，要么单独处理一次，在第一次后引入新的变量；要么就是一开始将这个对比值设的极大或者极小。这样都不是很好，可以直接将变量设为指针，不赋初值。每一次判断是否为NULL，如果是，就说明是第一次，直接通过；如果不是，进行该进行的判断。注意在每次把上一个的值赋给last的时候要写取址符号</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last = &amp;val;</span><br></pre></td></tr></table></figure>
+
+<h3 id="主对角线为横纵坐标之差，次对角线为横纵坐标之和"><a href="#主对角线为横纵坐标之差，次对角线为横纵坐标之和" class="headerlink" title="主对角线为横纵坐标之差，次对角线为横纵坐标之和"></a>主对角线为横纵坐标之差，次对角线为横纵坐标之和</h3><p>在二维数组内查找的时候，沿对角线查找可能会写的很复杂，记住上面的公式，可以减少代码量和开销。</p>
+<h3 id="实现sqrt函数"><a href="#实现sqrt函数" class="headerlink" title="实现sqrt函数"></a>实现sqrt函数</h3><p>有的会说用牛顿迭代法，但实际上在代码中就是二分。比如说求x的平方根，设下限为0，上限为x，不断二分判断是否$x/i&lt;i$，注意不能直接$i*i$，这样会溢出。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mySqrt</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(x==<span class="number">1</span>)    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> l=<span class="number">0</span>,h=x;</span><br><span class="line">        <span class="keyword">while</span>(h&gt;l+<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (l+h)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(mid&gt;x/mid)   h=mid;</span><br><span class="line">            <span class="keyword">else</span>    l=mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> l;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="快速幂"><a href="#快速幂" class="headerlink" title="快速幂"></a>快速幂</h3><p>既然写了平方根就把快速幂也写一下吧，基本的思路都相同。都要注意<strong>溢出问题</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">myPow</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1.0</span>;</span><br><span class="line">        <span class="keyword">double</span> tmp = myPow(x, n / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span> (n % <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> n &lt; <span class="number">0</span> ? <span class="number">1</span> / x*tmp*tmp : x*tmp*tmp;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> tmp*tmp;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="反转链表相关"><a href="#反转链表相关" class="headerlink" title="反转链表相关"></a>反转链表相关</h3><h4 id="反转全部链表"><a href="#反转全部链表" class="headerlink" title="反转全部链表"></a>反转全部链表</h4><p>反转链表是个好玩的问题。据传HomeBrew的作者去Google面试，因为写不出反转链表被拒了。这个问题有个一般的解法，就是用两个指针来回倒，思路清晰一点就行。还有一个很简便但是不太好理解的方法:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode *p;</span><br><span class="line">        <span class="keyword">for</span>(p=<span class="literal">NULL</span>; head; swap(head,p))</span><br><span class="line">            swap(p,head-&gt;next);</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法实际上是把链表最后的NULL看作一个节点，每次都更换头和尾<br>更一般的做法是</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span>* <span class="title">prev</span> = <span class="title">NULL</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span>* <span class="title">curr</span> = <span class="title">head</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span>* <span class="title">next</span> = <span class="title">NULL</span>;</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">while</span> (curr) &#123;</span><br><span class="line">        next = curr-&gt;next;</span><br><span class="line">        curr-&gt;next = prev;</span><br><span class="line">        prev = curr;</span><br><span class="line">        curr = next;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> prev;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="反转部分链表"><a href="#反转部分链表" class="headerlink" title="反转部分链表"></a>反转部分链表</h4><p>接下来一个升级版是，反转从位置m到n的链表，上述的简便方法也可以使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ListNode* <span class="title">reverseBetween</span><span class="params">(ListNode* head, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        ListNode H(-1), *left, *right;</span><br><span class="line">        <span class="keyword">for</span>(n=n-m+<span class="number">1</span>, H.next=head, left=&amp;H; --m; left=left-&gt;next);</span><br><span class="line">        <span class="keyword">for</span>(right=<span class="literal">NULL</span>, head=left-&gt;next; n--; swap(head,right))</span><br><span class="line">            swap(right,head-&gt;next);</span><br><span class="line">        left-&gt;next-&gt;next=head;</span><br><span class="line">        left-&gt;next=right;</span><br><span class="line">        <span class="keyword">return</span> H.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>更一般的方法是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseBetween</span><span class="params">(ListNode head, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        dummy.next = head;</span><br><span class="line">        ListNode pre = dummy;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; m; i++)&#123;</span><br><span class="line">            pre = pre.next;</span><br><span class="line">        &#125;</span><br><span class="line">        head = pre.next;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m; i &lt; n; i++)&#123;</span><br><span class="line">            ListNode nex = head.next;</span><br><span class="line">            head.next = nex.next;</span><br><span class="line">            nex.next = pre.next;</span><br><span class="line">            pre.next = nex;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="旋转排序数组相关"><a href="#旋转排序数组相关" class="headerlink" title="旋转排序数组相关"></a>旋转排序数组相关</h3><p>旋转排序数组的设定是已经是排好序的数组，绕着数组中的某一点进行旋转。在旋转数组中有若干的问题，基本是寻找旋转点、寻找某个特定值等。基本都可以通过二分法解决。分出来的一半有序、另一半无序；接下来将无序的部分继续二分。</p>
+<p>这里有一个问题，就是如果旋转数组中有重复的数，可以通过一个简单的操作解决，就是发生mid==high的时候，将high–，跳过这个重复值。</p>
+<h3 id="计算器"><a href="#计算器" class="headerlink" title="计算器"></a>计算器</h3><p>前几天做csp ccf的题，很不习惯没有实时反馈ac的oj……但确实也显现了一些问题，在写一个简单的加减乘除计算器的时候犯了错。用栈写的，遇到乘除计算、最后统一算栈内的加减。但要注意的是，栈是先算后面的算式，所以如果前面有减号后面要变号。因此建议每一次碰见减号直接变成负数和加号。</p>
+<h3 id="upperbound"><a href="#upperbound" class="headerlink" title="upperbound"></a>upperbound</h3><p>upperbound(begin,end,num)用于返回从begin到end之间，第一个大于num的数的位置。</p>
+<p>lowerbound(begin,end,num)用于返回从begin到end之间，第一个小于等于num的数的位置。</p>
+<h3 id="跳台阶"><a href="#跳台阶" class="headerlink" title="跳台阶"></a>跳台阶</h3><p>跳台阶类型的题目都可以这样想：dp[当前的台阶]=sum dp[能从上一个跳到当前位置的台阶];</p>
+<p>比如经典的跳一个或者跳两个的就是</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i]=dp[i<span class="number">-1</span>]+dp[i<span class="number">-2</span>];</span><br></pre></td></tr></table></figure>
+<p>如果每次都能跳2的幂次，就要从当前台阶往前数，每数到一个2的幂次就加上</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;n;++i)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=i;j*=<span class="number">2</span>)&#123;</span><br><span class="line">        dp[i]+=dp[i-j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="取模"><a href="#取模" class="headerlink" title="取模"></a>取模</h3><p>如果感觉数比较大，要取模的话，试一试1e9+7，或者1e9+3。注意不要写科学计数法，写1000000007或者1000000003。</p>
+<h3 id="m段子序列和"><a href="#m段子序列和" class="headerlink" title="m段子序列和"></a>m段子序列和</h3><p>有意思的一系列题目，dp做法。牢记住一个表就可以了：</p>
+<p><img src="https://s2.ax1x.com/2019/12/05/QGJFiT.jpg" alt="img"></p>
+<p>dp[i][j]表示前j项i段子段和的最大值，即要么是左边的一项加上自己（加入已有的子段），要么是上一行前面的所有项的最大值加上自己（自己变成新的一个子段）</p>
+<p>因此不需要大的二维数组，他只和当前行和上一行有关。用i和2的模数表示当前列还是上一列，简化后板子如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// M是分为M段</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= M; i++) &#123;</span><br><span class="line">    sum = <span class="number">0</span>;</span><br><span class="line">    x=i&amp;<span class="number">1</span>;</span><br><span class="line">    y=(i<span class="number">-1</span>)&amp;<span class="number">1</span>;</span><br><span class="line">    dp[x][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; N; j++) &#123;</span><br><span class="line">        sum = <span class="built_in">max</span>(sum, dp[y][j - <span class="number">1</span>]);</span><br><span class="line">        dp[x][j] = <span class="built_in">max</span>(sum , dp[x][j - <span class="number">1</span>]) + nums[j<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="回文串"><a href="#回文串" class="headerlink" title="回文串"></a>回文串</h3><p>我总觉得我在哪里写过这个东西，找了一圈没找到，可能是某天想写又鸽掉了。<strong>幸亏没写</strong>。对于这个题目有两个做法：dp和中心扩展，还有一个马拉车算法，个人感觉手撕不出来就不算在内。</p>
+<p>注意：<strong>最好用dp</strong>，如果要求普通的回文串，都可以做。但如果求可能存在的回文串，中心扩展就出问题了。比如说求bbab里面可能存在的回文串长度，很明显是bbb，是3，但这个子串没办法从某个中心扩展过去（可能有但我不知道，如果有的话请留言）。</p>
+<p>这玩意太坑了，我找了一个小时的bug，最后发现是这个问题，老老实实用dp了。</p>
+<p>最后注意dp每次从i到0，我把dp的板子放在下面。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;++i)&#123;</span><br><span class="line">    dp[i][i]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span>;--j)&#123;</span><br><span class="line">        dp[j][i]=<span class="built_in">max</span>(dp[j+<span class="number">1</span>][i],dp[j][i<span class="number">-1</span>]);</span><br><span class="line">        dp[j][i]=s[i]==s[j]?<span class="built_in">max</span>(dp[j+<span class="number">1</span>][i<span class="number">-1</span>]+<span class="number">2</span>,dp[j][i]):dp[j][i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/12/05/%E5%8D%A1%E9%80%9A%E9%A3%8E%E6%A0%BC%E6%B8%B2%E6%9F%93Toon%20Shader/">卡通风格渲染</a>
+            
+            
+            <a class="next" rel="next" href="/2019/11/27/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF/">渲染管线</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
