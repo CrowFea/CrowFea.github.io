@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="CrowFea">
+
+
+
+
+
+<title>iOS丨Cocoapods使用 | CrowFea|Blog</title>
+
+
+
+    <link rel="icon" href="/image/logo.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">CrowFea&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">CrowFea&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS丨Cocoapods使用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">CrowFea</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 18, 2020&nbsp;&nbsp;22:21:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/iOS/">iOS</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前使用pod也是简单的进行pod install之类的操作，并没有深入看一看使用pod之后发生的若干改变。这一次恰好要额外手动引入一个第三方库，并且和目前已经在pod里面的库是重名的。记录一下碰到的问题。也把cocoapod这个工具整理一下。</p>
+<h2 id="Pod结构"><a href="#Pod结构" class="headerlink" title="Pod结构"></a>Pod结构</h2><p>引入pod首先要定义podfile。这个本质上是一个config文件，以声明的方式确定需要引入哪些库。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># <span class="type">Uncomment</span> the next line to define a global platform <span class="keyword">for</span> your project</span><br><span class="line">source &#x27;https:<span class="comment">//github.com/CocoaPods/Specs.git&#x27;</span></span><br><span class="line">platform :ios, &#x27;<span class="number">11.0</span>&#x27;</span><br><span class="line"></span><br><span class="line">target &#x27;<span class="type">Mercury&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  # <span class="type">Comment</span> the next line <span class="keyword">if</span> you don&#x27;t want to use <span class="keyword">dynamic</span> frameworks</span><br><span class="line">  #use_frameworks!</span><br><span class="line"></span><br><span class="line">  # <span class="type">Pods</span> <span class="keyword">for</span> <span class="type">Mercury</span></span><br><span class="line">  pod &#x27;<span class="type">SnapKit&#x27;</span>, &#x27;~&gt; <span class="number">5.0</span>.<span class="number">0</span>&#x27;</span><br><span class="line">  pod &#x27;<span class="type">Alamofire&#x27;</span>, &#x27;~&gt; <span class="number">5.2</span>&#x27;</span><br><span class="line">end</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>之后直接<code>pod install</code>就可以直接安装这些库了。安装好了之后目录结构会发生变化：</p>
+<ul>
+<li>首先是生成了一个workspace。xcworkspace文件，使用CocoaPod管理依赖的项目，XCode只能使用workspace编译项目，如果还只打开以前的xcodeproj文件进行开发，编译会失败。而xcworkspace文件实际是一个文件夹，实际Workspace信息保存在contents.xcworkspacedata里，该文件的内容非常简单，实际上只指示它所使用的工程的文件目录</li>
+<li>podfile.lock是当前安装依赖库的版本<br><img src="iOS%E4%B8%A8Cocoapods%E4%BD%BF%E7%94%A8/%E6%88%AA%E5%B1%8F2020-11-21%20%E4%B8%8A%E5%8D%8810.01.56.png"></li>
+</ul>
+<p>关于pods的更多内容可以看这篇文章<a target="_blank" rel="noopener" href="https://juejin.cn/entry/6844903502829846541">Cocoapods原理总结 - iOS</a></p>
+<h2 id="引入第三方库"><a href="#引入第三方库" class="headerlink" title="引入第三方库"></a>引入第三方库</h2><h3 id="pods引入"><a href="#pods引入" class="headerlink" title="pods引入"></a>pods引入</h3><p>pods引入是非常简单的。我们只需要在podfile中声明即可。</p>
+<h3 id="手动引入"><a href="#手动引入" class="headerlink" title="手动引入"></a>手动引入</h3><p>但有的时候使用pod并不能解决问题。比如我们可能需要同一个库的两个版本，以lottie为例。使用podfile的话只能引入一个版本，如果是两个的话生成的target实际上会重复。因此pod只会安装位置在前面的那一个。<br><img src="iOS%E4%B8%A8Cocoapods%E4%BD%BF%E7%94%A8/%E6%88%AA%E5%B1%8F2020-11-21%20%E4%B8%8A%E5%8D%8810.21.09.png"></p>
+<p>我们可以直接把代码拖进去，但是可能平时开发使用的代码本身就是通过pod管理的。本地手动拖的话一次pod install就又都没有了。因此还是要通过pod管理一下。</p>
+<h3 id="建一个本地的pod库"><a href="#建一个本地的pod库" class="headerlink" title="建一个本地的pod库"></a>建一个本地的pod库</h3><p>我们可以通过建一个本地库的方式去完成这个操作。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">#</span><br><span class="line"># <span class="type">Be</span> sure to run `pod lib lint <span class="type">BNShare</span>.podspec&#x27; to ensure this <span class="keyword">is</span> a</span><br><span class="line"># valid spec before submitting.</span><br><span class="line">#</span><br><span class="line"># <span class="type">Any</span> lines starting with a # are <span class="keyword">optional</span>, but their use <span class="keyword">is</span> encouraged</span><br><span class="line"># <span class="type">To</span> learn more about a <span class="type">Podspec</span> see https:<span class="comment">//guides.cocoapods.org/syntax/podspec.html</span></span><br><span class="line">#</span><br><span class="line"></span><br><span class="line"><span class="type">Pod</span>::<span class="type">Spec</span>.new <span class="keyword">do</span> |s|</span><br><span class="line">  s.name             = &#x27;<span class="type">LottieOC&#x27;</span></span><br><span class="line">  s.version          = &#x27;<span class="number">0.0</span>.<span class="number">1</span>&#x27;</span><br><span class="line">  s.summary          = &#x27;<span class="type">LottieOC&#x27;</span></span><br><span class="line">  s.description      = &lt;&lt;-<span class="type">DESC</span></span><br><span class="line"><span class="type">M</span> <span class="type">Team</span> <span class="type">LottieOC</span></span><br><span class="line">                       <span class="type">DESC</span></span><br><span class="line">  s.homepage         = &#x27;https:<span class="comment">//code.byted.org/anote/TTBeethoven&#x27;</span></span><br><span class="line">#  s.license          = &#123; :type =&gt; &#x27;<span class="type">MIT&#x27;</span>, :file =&gt; &#x27;<span class="type">LICENSE&#x27;</span> &#125;</span><br><span class="line">  s.author           = &#123; <span class="string">&quot;&quot;</span> =&gt; <span class="string">&quot;&quot;</span> &#125;</span><br><span class="line">  s.source           = &#123; :git =&gt; &#x27;ssh:<span class="comment">//no_such_git_yet/haha.git&#x27;, :tag =&gt; s.version.to_s &#125;</span></span><br><span class="line">  s.ios.deployment_target = &#x27;<span class="number">10.0</span>&#x27;</span><br><span class="line">  s.source_files = &#x27;**<span class="comment">/*.&#123;h,m,swift&#125;&#x27;</span></span><br><span class="line"><span class="comment">#  s.vendored_libraries = &#x27;xx/Classes/Vendor/SQLcipherArchive/xx.a&#x27;</span></span><br><span class="line"><span class="comment">#  s.libraries = &#x27;sqlite3&#x27;</span></span><br><span class="line"><span class="comment">  # s.resource_bundles = &#123;</span></span><br><span class="line"><span class="comment">  #    &#x27;TTBeethovenNetModel&#x27; =&gt; [&#x27;Assets<span class="comment">/*&#x27;, &quot;**/</span>*.xib&quot;]</span></span><br><span class="line"><span class="comment">  #   &#125;</span></span><br><span class="line"><span class="comment">  #s.prefix_header_contents = &#x27;#import &quot;TTFoundation.h&quot;&#x27;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">#  s.public_header_files = &#x27;**/</span>*.h&#x27;</span><br><span class="line">  </span><br><span class="line">#  non_arc_files = &#x27;eif-iOS-framework/<span class="type">Classes</span>/<span class="type">HDFoundation</span>/<span class="type">HDZombie</span>/<span class="type">NSObject</span>+<span class="type">Zombie</span>.m&#x27;,&#x27;eif-iOS-framework/<span class="type">Classes</span>/<span class="type">HDFoundation</span>/<span class="type">HDZombie</span>/<span class="type">HDZombieAdvanceHelper</span>.m&#x27;</span><br><span class="line">#  s.exclude_files = non_arc_files</span><br><span class="line">#  s.subspec &#x27;<span class="type">TTNonArc&#x27;</span> <span class="keyword">do</span> |sp|</span><br><span class="line">#   sp.source_files = non_arc_files</span><br><span class="line">#   sp.requires_arc = <span class="literal">false</span></span><br><span class="line">#  end</span><br><span class="line">  </span><br><span class="line">  s.frameworks = &#x27;<span class="type">Foundation&#x27;</span>, &#x27;<span class="type">UIKit&#x27;</span></span><br><span class="line">  </span><br><span class="line">end</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接着在podfilie中去引入这个库，注意source_path一定要选择本地的文件夹。</p>
+<p>接下来执行pod install，就会发现这个库可以被pod进来了。并且module的名称是podspec中定义的名称。</p>
+<p>需要注意的一点是，在新生成的pod文件中，一定要引入一个顶级的swift文件，名称为module的名称。否则是不会生成对应的modulemap的。</p>
+<p>在别的pod中去引入目前的pod时，也需要在对应的podspec中引入dependcy。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>CrowFea</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/11/21/iOS%20%E5%BC%80%E6%BA%90%E5%BA%93%E4%B8%A8Alamofire%2001/">iOS丨Alamofire 01</a>
+            
+            
+            <a class="next" rel="next" href="/2020/11/07/%E5%93%8D%E5%BA%94%E9%93%BE/">iOS丨响应链</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© CrowFea | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
